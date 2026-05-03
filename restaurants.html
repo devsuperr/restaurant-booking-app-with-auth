@@ -1,0 +1,507 @@
+<!-- route: /restaurants -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Restaurants — RestauBook</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: { display: ['Fraunces','serif'], sans: ['Inter','sans-serif'] },
+      colors: {
+        rust:  { 50:'#fdf6f0', 100:'#fae8d8', 400:'#d97757', 500:'#c25e3f', 600:'#a84a2e', 700:'#8a3a23' },
+        sage:  { 400:'#8a9b7a', 500:'#6b7d5b' },
+        cream: { 50:'#faf7f2', 100:'#f3ede1', 200:'#e8dcc7' },
+      }
+    }
+  }
+}
+</script>
+<style>
+  body { font-family: 'Inter', sans-serif; background: #faf7f2; color: #2a1f15; }
+  .font-display { font-family: 'Fraunces', serif; }
+  .card-hover { transition: transform 0.2s, box-shadow 0.2s; }
+  .card-hover:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(42,31,21,0.14); }
+  .filter-chip {
+    padding: 7px 16px; border-radius: 99px; font-size: 13px; font-weight: 500;
+    border: 1.5px solid #e8dcc7; background: #fff; color: #5a4a3c;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .filter-chip:hover { border-color: #c25e3f; color: #c25e3f; }
+  .filter-chip.active { background: #c25e3f; border-color: #c25e3f; color: #fff; }
+  .user-dropdown { position: relative; }
+  .dropdown-menu { position: absolute; right: 0; top: calc(100% + 10px); background: #fff; border: 1px solid #e8dcc7; border-radius: 16px; box-shadow: 0 8px 32px rgba(42,31,21,0.13); min-width: 200px; padding: 6px; z-index: 200; display: none; }
+  .dropdown-menu.open { display: block; }
+  .dd-item { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 10px; font-size: 13px; color: #2a1f15; text-decoration: none; cursor: pointer; transition: background 0.15s; border: none; background: none; width: 100%; text-align: left; }
+  .dd-item:hover { background: #faf7f2; }
+  .dd-item.red { color: #dc2626; }
+  .dd-item.red:hover { background: #fef2f2; }
+  .avatar { width: 34px; height: 34px; border-radius: 50%; background: #c25e3f; color: #fff; font-weight: 700; font-size: 13px; font-family: 'Fraunces', serif; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+  .spinner { display: inline-block; width: 22px; height: 22px; border: 2px solid rgba(194,94,63,0.2); border-top-color: #c25e3f; border-radius: 50%; animation: spin 0.7s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .modal-backdrop { position: fixed; inset: 0; background: rgba(42,31,21,0.6); backdrop-filter: blur(4px); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 16px; }
+  .modal-card { background: #faf7f2; border-radius: 24px; width: 100%; max-width: 440px; overflow: hidden; box-shadow: 0 24px 64px rgba(42,31,21,0.2); }
+  .input-modal { width: 100%; padding: 11px 14px; background: #fff; border: 1.5px solid #e8dcc7; border-radius: 10px; color: #2a1f15; font-size: 14px; outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
+  .input-modal:focus { border-color: #c25e3f; box-shadow: 0 0 0 3px rgba(194,94,63,0.1); }
+  .toast { position: fixed; bottom: 24px; right: 24px; z-index: 9999; padding: 12px 20px; border-radius: 12px; font-size: 14px; font-weight: 500; box-shadow: 0 8px 24px rgba(0,0,0,0.15); animation: slideUp 0.3s ease; max-width: 320px; }
+  @keyframes slideUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+</style>
+</head>
+<body class="min-h-screen">
+
+<!-- ══ NAV ══ -->
+<nav class="fixed top-0 inset-x-0 z-50 bg-cream-50/90 backdrop-blur-md border-b border-cream-200">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+    <a href="index.html" class="flex items-center gap-2">
+      <div class="w-9 h-9 rounded-full bg-rust-500 flex items-center justify-center text-white font-display font-bold text-lg">R</div>
+      <span class="font-display text-xl font-bold text-stone-800">RestauBook</span>
+    </a>
+    <div class="hidden md:flex items-center gap-6 text-sm font-medium text-stone-700">
+      <a href="restaurants.html" class="text-rust-600 font-semibold">Restaurants</a>
+      <a href="bookings.html" class="hover:text-rust-600 transition-colors">My Bookings</a>
+      <div id="navGuest" class="flex items-center gap-4">
+        <a href="login.html"  class="hover:text-rust-600 transition-colors">Sign in</a>
+        <a href="signup.html" class="px-4 py-2 bg-rust-500 hover:bg-rust-600 text-white rounded-full transition-colors text-sm">Get started</a>
+      </div>
+      <div id="navUser" class="user-dropdown hidden">
+        <button onclick="document.getElementById('ddMenu').classList.toggle('open')" class="flex items-center gap-1.5 focus:outline-none">
+          <div id="navAvatar" class="avatar">?</div>
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div id="ddMenu" class="dropdown-menu">
+          <a href="dashboard.html" class="dd-item"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Dashboard</a>
+          <a href="bookings.html"  class="dd-item"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>My Bookings</a>
+          <button onclick="handleSignOut()" class="dd-item red"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sign out</button>
+        </div>
+      </div>
+    </div>
+    <button onclick="document.getElementById('mobileMenu').classList.toggle('hidden')" class="md:hidden text-stone-700" aria-label="Menu">
+      <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+  </div>
+  <div id="mobileMenu" class="md:hidden hidden border-t border-cream-200 bg-cream-50">
+    <div class="px-4 py-3 space-y-1 text-sm">
+      <a href="restaurants.html" class="block py-2 px-3 rounded-lg bg-cream-100 font-semibold text-rust-600">Restaurants</a>
+      <a href="bookings.html"    class="block py-2 px-3 rounded-lg hover:bg-cream-100">My Bookings</a>
+      <div id="mobileGuest">
+        <a href="login.html"  class="block py-2 px-3 rounded-lg hover:bg-cream-100">Sign in</a>
+        <a href="signup.html" class="block mt-2 py-2 px-3 bg-rust-500 text-white text-center rounded-full">Get started</a>
+      </div>
+      <div id="mobileUser" class="hidden">
+        <a href="dashboard.html" class="block py-2 px-3 rounded-lg hover:bg-cream-100">Dashboard</a>
+        <button onclick="handleSignOut()" class="block w-full py-2 px-3 text-left rounded-lg hover:bg-cream-100 text-red-600">Sign out</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ══ PAGE HEADER ══ -->
+<section class="pt-24 pb-10 bg-cream-50 border-b border-cream-200">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <h1 class="font-display text-4xl sm:text-5xl font-bold text-stone-800 mb-2">Find your table</h1>
+    <p class="text-stone-500 text-base">Browse and book from <span id="totalCount" class="font-semibold text-rust-500">1,200+</span> curated restaurants</p>
+
+    <!-- Search + filters -->
+    <div class="mt-6 flex flex-col sm:flex-row gap-3">
+      <div class="relative flex-1 max-w-md">
+        <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input id="searchInput" type="text" placeholder="Search by name or cuisine…"
+          class="w-full pl-10 pr-4 py-3 bg-white border border-cream-200 rounded-xl text-stone-800 text-sm focus:outline-none focus:ring-2 focus:ring-rust-400 placeholder-stone-400"
+          oninput="debounceSearch()" />
+      </div>
+      <select id="cityFilter" onchange="applyFilters()" class="px-4 py-3 bg-white border border-cream-200 rounded-xl text-stone-700 text-sm focus:outline-none focus:ring-2 focus:ring-rust-400">
+        <option value="">All cities</option>
+        <option>New York</option><option>Chicago</option><option>Los Angeles</option><option>Miami</option>
+      </select>
+      <select id="priceFilter" onchange="applyFilters()" class="px-4 py-3 bg-white border border-cream-200 rounded-xl text-stone-700 text-sm focus:outline-none focus:ring-2 focus:ring-rust-400">
+        <option value="">Any price</option>
+        <option value="1">£ Budget</option>
+        <option value="2">££ Moderate</option>
+        <option value="3">£££ Upscale</option>
+        <option value="4">££££ Fine dining</option>
+      </select>
+    </div>
+
+    <!-- Cuisine chips -->
+    <div id="cuisineChips" class="mt-4 flex flex-wrap gap-2"></div>
+  </div>
+</section>
+
+<!-- ══ RESULTS ══ -->
+<section class="py-10">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between mb-6">
+      <p id="resultsLabel" class="text-stone-500 text-sm"></p>
+      <button id="clearBtn" onclick="clearFilters()" class="hidden text-sm text-rust-600 hover:text-rust-700 font-medium transition-colors">Clear filters ✕</button>
+    </div>
+
+    <!-- Loading state -->
+    <div id="loadingState" class="flex items-center justify-center py-24">
+      <div class="text-center"><div class="spinner mx-auto mb-4"></div><p class="text-stone-400 text-sm">Loading restaurants…</p></div>
+    </div>
+
+    <!-- Grid -->
+    <div id="restaurantsGrid" class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
+
+    <!-- Empty state -->
+    <div id="emptyState" class="hidden text-center py-20">
+      <div class="text-5xl mb-4">🍽️</div>
+      <h3 class="font-display text-xl font-semibold text-stone-700 mb-2">No restaurants found</h3>
+      <p class="text-stone-400 text-sm mb-4">Try adjusting your filters or search term.</p>
+      <button onclick="clearFilters()" class="px-5 py-2.5 bg-rust-500 text-white text-sm font-semibold rounded-xl hover:bg-rust-600 transition-colors">Clear all filters</button>
+    </div>
+  </div>
+</section>
+
+<!-- ══ BOOKING MODAL ══ -->
+<div id="bookingModal" class="modal-backdrop hidden">
+  <div class="modal-card">
+    <div class="relative h-36 overflow-hidden">
+      <img id="modalImg" src="" alt="" class="w-full h-full object-cover" loading="lazy" />
+      <div class="absolute inset-0 bg-gradient-to-t from-stone-900/70 to-transparent"></div>
+      <button onclick="closeBookingModal()" class="absolute top-3 right-3 w-8 h-8 bg-white/20 backdrop-blur rounded-full flex items-center justify-center text-white hover:bg-white/40 transition-colors" aria-label="Close">✕</button>
+      <div class="absolute bottom-3 left-4 text-white">
+        <p id="modalName"    class="font-display text-lg font-bold leading-tight"></p>
+        <p id="modalCuisine" class="text-white/80 text-xs mt-0.5"></p>
+      </div>
+    </div>
+    <div class="p-5 space-y-4">
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-xs font-semibold text-stone-500 uppercase tracking-widest mb-1.5">Date</label>
+          <input id="bDate" type="date" class="input-modal" />
+          <p id="bDateErr" class="text-red-500 text-xs mt-1 hidden"></p>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-stone-500 uppercase tracking-widest mb-1.5">Time</label>
+          <select id="bTime" class="input-modal">
+            <option>12:00</option><option>12:30</option><option>13:00</option><option>13:30</option>
+            <option>14:00</option><option>18:00</option><option selected>18:30</option><option>19:00</option>
+            <option>19:30</option><option>20:00</option><option>20:30</option><option>21:00</option><option>21:30</option>
+          </select>
+        </div>
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-stone-500 uppercase tracking-widest mb-1.5">Party size</label>
+        <select id="bParty" class="input-modal">
+          <option value="1">1 guest</option><option value="2" selected>2 guests</option>
+          <option value="3">3 guests</option><option value="4">4 guests</option>
+          <option value="5">5 guests</option><option value="6">6 guests</option>
+          <option value="8">8 guests</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-stone-500 uppercase tracking-widest mb-1.5">Special requests <span class="normal-case font-normal text-stone-400">(optional)</span></label>
+        <textarea id="bNotes" rows="2" placeholder="Allergies, occasion, seating preference…" class="input-modal resize-none"></textarea>
+      </div>
+      <div id="bError" class="hidden px-4 py-3 bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl"></div>
+      <button id="bSubmitBtn" onclick="submitBooking()" class="w-full py-3.5 bg-rust-500 hover:bg-rust-600 text-white font-semibold rounded-xl transition-all text-sm shadow-lg shadow-rust-500/25 active:scale-95">
+        Confirm reservation
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SUCCESS MODAL ══ -->
+<div id="successModal" class="modal-backdrop hidden">
+  <div class="modal-card p-8 text-center">
+    <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5 text-white text-2xl" style="background:#6b7d5b">✓</div>
+    <h3 class="font-display text-2xl font-bold text-stone-800 mb-2">You're confirmed!</h3>
+    <p id="successDesc" class="text-stone-500 text-sm mb-5"></p>
+    <div id="successDetails" class="bg-white border border-cream-200 rounded-xl p-4 mb-5 text-left space-y-2 text-sm"></div>
+    <div class="flex gap-3">
+      <button onclick="document.getElementById('successModal').classList.add('hidden')" class="flex-1 py-3 bg-cream-100 hover:bg-cream-200 text-stone-700 font-semibold rounded-xl text-sm transition-all">Close</button>
+      <a href="bookings.html" class="flex-1 py-3 bg-rust-500 hover:bg-rust-600 text-white font-semibold rounded-xl text-sm transition-all text-center">My bookings</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL      = 'https://bnrptywymmnexndaqdko.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJucnB0eXd5bW1uZXhuZGFxZGtvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc3Nzc1MTcsImV4cCI6MjA5MzM1MzUxN30.4-bH2KuXPYmoPRUgQSS5iwIYxZgFxHv6md8dLS-wWEo';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+let currentUser = null;
+let allRestaurants = [];
+let favIds = [];
+let pendingRestaurant = null;
+let searchTimer = null;
+let activeCuisine = '';
+
+// ── AUTH ──
+async function initAuth() {
+  const { data: { session } } = await sb.auth.getSession();
+  currentUser = session?.user ?? null;
+  updateNav();
+  if (currentUser) {
+    const { data } = await sb.from('favorites').select('restaurant_id').eq('user_id', currentUser.id);
+    favIds = (data || []).map(f => f.restaurant_id);
+  }
+}
+
+function updateNav() {
+  const guest = document.getElementById('navGuest');
+  const user  = document.getElementById('navUser');
+  const mobileGuest = document.getElementById('mobileGuest');
+  const mobileUser  = document.getElementById('mobileUser');
+  if (currentUser) {
+    guest.classList.add('hidden'); user.classList.remove('hidden');
+    mobileGuest.classList.add('hidden'); mobileUser.classList.remove('hidden');
+    const name = currentUser.user_metadata?.full_name || currentUser.email || '';
+    const initials = name.trim().split(' ').map(p=>p[0]).join('').substring(0,2).toUpperCase();
+    document.getElementById('navAvatar').textContent = initials || '?';
+  } else {
+    guest.classList.remove('hidden'); user.classList.add('hidden');
+    mobileGuest.classList.remove('hidden'); mobileUser.classList.add('hidden');
+  }
+}
+
+async function handleSignOut() {
+  await sb.auth.signOut();
+  window.location.href = 'index.html';
+}
+
+// ── LOAD RESTAURANTS ──
+async function loadRestaurants() {
+  const { data, error } = await sb.from('restaurants').select('*').eq('is_active', true).order('rating', { ascending: false });
+  document.getElementById('loadingState').style.display = 'none';
+  if (error || !data || data.length === 0) {
+    document.getElementById('emptyState').classList.remove('hidden');
+    return;
+  }
+  allRestaurants = data;
+  document.getElementById('totalCount').textContent = data.length + '+';
+  buildCuisineChips(data);
+  renderGrid(data);
+}
+
+function buildCuisineChips(data) {
+  const cuisines = [...new Set(data.map(r => r.cuisine))].sort();
+  const el = document.getElementById('cuisineChips');
+  el.innerHTML = `<button class="filter-chip active" onclick="filterCuisine('')" data-cuisine="">All</button>` +
+    cuisines.map(c => `<button class="filter-chip" onclick="filterCuisine('${c}')" data-cuisine="${c}">${c}</button>`).join('');
+}
+
+function filterCuisine(cuisine) {
+  activeCuisine = cuisine;
+  document.querySelectorAll('[data-cuisine]').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.cuisine === cuisine);
+  });
+  applyFilters();
+}
+
+function applyFilters() {
+  const search = document.getElementById('searchInput').value.toLowerCase().trim();
+  const city   = document.getElementById('cityFilter').value;
+  const price  = document.getElementById('priceFilter').value;
+  let filtered = allRestaurants;
+
+  if (activeCuisine) filtered = filtered.filter(r => r.cuisine === activeCuisine);
+  if (city)  filtered = filtered.filter(r => r.city === city);
+  if (price) filtered = filtered.filter(r => r.price_range === parseInt(price));
+  if (search) filtered = filtered.filter(r => r.name.toLowerCase().includes(search) || r.cuisine.toLowerCase().includes(search) || r.description.toLowerCase().includes(search));
+
+  const hasFilters = activeCuisine || city || price || search;
+  document.getElementById('clearBtn').classList.toggle('hidden', !hasFilters);
+  document.getElementById('resultsLabel').textContent = `${filtered.length} restaurant${filtered.length !== 1 ? 's' : ''} found`;
+  renderGrid(filtered);
+}
+
+function debounceSearch() {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(applyFilters, 280);
+}
+
+function clearFilters() {
+  activeCuisine = '';
+  document.getElementById('searchInput').value = '';
+  document.getElementById('cityFilter').value  = '';
+  document.getElementById('priceFilter').value = '';
+  document.querySelectorAll('[data-cuisine]').forEach(btn => btn.classList.toggle('active', btn.dataset.cuisine === ''));
+  applyFilters();
+}
+
+function renderGrid(data) {
+  const grid  = document.getElementById('restaurantsGrid');
+  const empty = document.getElementById('emptyState');
+  if (!data || data.length === 0) {
+    grid.classList.add('hidden'); empty.classList.remove('hidden'); return;
+  }
+  grid.classList.remove('hidden'); empty.classList.add('hidden');
+  grid.innerHTML = data.map(r => {
+    const price  = '£'.repeat(r.price_range);
+    const isFav  = favIds.includes(r.id);
+    const stars  = Math.round(r.rating);
+    return `<div class="bg-white border border-cream-200 rounded-2xl overflow-hidden card-hover flex flex-col">
+      <div class="relative overflow-hidden">
+        <img src="${r.image_url || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=250&fit=crop'}" alt="${r.name}" class="w-full h-48 object-cover" loading="lazy" />
+        <button onclick="toggleFav('${r.id}', this)" data-fav="${isFav}"
+          class="absolute top-3 right-3 w-9 h-9 bg-white/90 backdrop-blur rounded-full flex items-center justify-center text-lg shadow-sm hover:bg-white transition-all active:scale-90"
+          aria-label="${isFav ? 'Remove from favourites' : 'Add to favourites'}">${isFav ? '♥' : '♡'}</button>
+        <div class="absolute bottom-3 left-3">
+          <span class="px-2.5 py-1 bg-white/90 backdrop-blur rounded-full text-xs font-semibold text-stone-700">${r.cuisine}</span>
+        </div>
+      </div>
+      <div class="p-4 flex-1 flex flex-col justify-between">
+        <div>
+          <div class="flex items-start justify-between gap-1">
+            <h3 class="font-display font-bold text-stone-800 text-base leading-tight">${r.name}</h3>
+            <span class="text-stone-400 text-sm shrink-0">${price}</span>
+          </div>
+          <p class="text-stone-500 text-xs mt-1">${r.city} · ${r.address}</p>
+          <div class="flex items-center gap-1 mt-2">
+            <span class="text-amber-500 text-sm">${'★'.repeat(stars)}${'☆'.repeat(5-stars)}</span>
+            <span class="text-stone-600 text-xs font-medium">${r.rating}</span>
+            <span class="text-stone-300 text-xs">·</span>
+            <span class="text-stone-400 text-xs">${r.review_count.toLocaleString()} reviews</span>
+          </div>
+          <p class="text-stone-400 text-xs mt-1">${r.opening_time} – ${r.closing_time}</p>
+        </div>
+        <button onclick="openBookingModal('${r.id}','${r.name.replace(/'/g,"\\'")}','${r.cuisine}','${r.image_url}')"
+          class="mt-4 w-full py-2.5 bg-rust-500 hover:bg-rust-600 text-white font-semibold rounded-xl text-sm transition-all active:scale-95 shadow-md shadow-rust-500/20">
+          Reserve a table
+        </button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── FAVOURITES ──
+async function toggleFav(id, btn) {
+  if (!currentUser) {
+    showToast('Sign in to save favourites.', 'info');
+    setTimeout(() => window.location.href = 'login.html', 1200);
+    return;
+  }
+  const isFav = btn.dataset.fav === 'true';
+  try {
+    if (isFav) {
+      await sb.from('favorites').delete().eq('user_id', currentUser.id).eq('restaurant_id', id);
+      btn.dataset.fav = 'false'; btn.textContent = '♡'; favIds = favIds.filter(f => f !== id);
+    } else {
+      await sb.from('favorites').insert({ user_id: currentUser.id, restaurant_id: id });
+      btn.dataset.fav = 'true'; btn.textContent = '♥'; favIds = [...favIds, id];
+    }
+  } catch (err) {
+    showToast('Could not update favourites.', 'error');
+  }
+}
+
+// ── BOOKING MODAL ──
+function openBookingModal(id, name, cuisine, imgUrl) {
+  if (!currentUser) {
+    showToast('Please sign in to make a booking.', 'info');
+    setTimeout(() => window.location.href = 'login.html', 1200);
+    return;
+  }
+  pendingRestaurant = { id, name, cuisine };
+  document.getElementById('modalImg').src        = imgUrl || '';
+  document.getElementById('modalImg').alt        = name;
+  document.getElementById('modalName').textContent    = name;
+  document.getElementById('modalCuisine').textContent = cuisine;
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('bDate').value  = today;
+  document.getElementById('bDate').min    = today;
+  document.getElementById('bNotes').value = '';
+  document.getElementById('bError').classList.add('hidden');
+  document.getElementById('bDateErr').classList.add('hidden');
+  document.getElementById('bSubmitBtn').disabled    = false;
+  document.getElementById('bSubmitBtn').textContent = 'Confirm reservation';
+  document.getElementById('bookingModal').classList.remove('hidden');
+}
+
+function closeBookingModal() {
+  document.getElementById('bookingModal').classList.add('hidden');
+  pendingRestaurant = null;
+}
+
+async function submitBooking() {
+  if (!pendingRestaurant || !currentUser) return;
+  const date  = document.getElementById('bDate').value;
+  const time  = document.getElementById('bTime').value;
+  const party = parseInt(document.getElementById('bParty').value);
+  const notes = document.getElementById('bNotes').value.trim();
+  const errEl = document.getElementById('bError');
+  const btn   = document.getElementById('bSubmitBtn');
+
+  if (!date) {
+    document.getElementById('bDateErr').textContent = 'Please select a date.';
+    document.getElementById('bDateErr').classList.remove('hidden');
+    return;
+  }
+  document.getElementById('bDateErr').classList.add('hidden');
+
+  btn.disabled = true;
+  btn.innerHTML = '<span style="display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,0.4);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;margin-right:8px"></span>Confirming…';
+
+  const code = 'RB' + Math.random().toString(36).substring(2,8).toUpperCase();
+
+  try {
+    const { error } = await sb.from('bookings').insert({
+      user_id:           currentUser.id,
+      restaurant_id:     pendingRestaurant.id,
+      booking_date:      date,
+      booking_time:      time,
+      party_size:        party,
+      special_requests:  notes || null,
+      status:            'confirmed',
+      confirmation_code: code,
+    });
+    if (error) throw error;
+  } catch (err) {
+    errEl.textContent = 'Booking failed: ' + (err.message || 'Please try again.');
+    errEl.classList.remove('hidden');
+    btn.disabled = false;
+    btn.textContent = 'Confirm reservation';
+    return;
+  }
+
+  closeBookingModal();
+  const dateLabel = new Date(date + 'T12:00').toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric' });
+  document.getElementById('successDesc').textContent = `Your table at ${pendingRestaurant.name} is booked.`;
+  document.getElementById('successDetails').innerHTML = `
+    <div class="flex justify-between"><span class="text-stone-500">Date</span><span class="font-medium text-stone-800">${dateLabel}</span></div>
+    <div class="flex justify-between"><span class="text-stone-500">Time</span><span class="font-medium text-stone-800">${time}</span></div>
+    <div class="flex justify-between"><span class="text-stone-500">Guests</span><span class="font-medium text-stone-800">${party}</span></div>
+    <div class="flex justify-between border-t border-cream-200 pt-2 mt-1"><span class="text-stone-500">Confirmation</span><span class="font-mono font-bold text-rust-600">${code}</span></div>`;
+  document.getElementById('successModal').classList.remove('hidden');
+}
+
+function showToast(msg, type = 'success') {
+  const existing = document.querySelector('.toast');
+  if (existing) existing.remove();
+  const t = document.createElement('div');
+  t.className = 'toast';
+  const bg = type === 'success' ? '#6b7d5b' : type === 'error' ? '#dc2626' : '#2a1f15';
+  t.style.cssText = `background:${bg};color:#fff;`;
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => { t.style.opacity='0'; t.style.transition='opacity 0.3s'; setTimeout(()=>t.remove(),300); }, 3500);
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', e => {
+  if (!e.target.closest('.user-dropdown')) {
+    document.getElementById('ddMenu')?.classList.remove('open');
+  }
+});
+
+// Close modals on backdrop click
+document.getElementById('bookingModal').addEventListener('click', e => {
+  if (e.target === document.getElementById('bookingModal')) closeBookingModal();
+});
+
+document.addEventListener('DOMContentLoaded', async () => {
+  await initAuth();
+  await loadRestaurants();
+  document.getElementById('resultsLabel').textContent = 'Loading restaurants…';
+});
+</script>
+</body>
+</html>
