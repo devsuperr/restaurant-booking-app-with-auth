@@ -10,7 +10,8 @@ Built with [**Studio Jungle**](https://studiojungle.ai) — describe what you wa
 
 ## Stack
 
-- Supabase (Postgres + Auth + Edge Functions)
+- Vite
+- React + TypeScript
 
 ## Run locally
 
@@ -18,14 +19,6 @@ Built with [**Studio Jungle**](https://studiojungle.ai) — describe what you wa
 npm install
 npm run dev
 ```
-
-## Backend setup
-
-This app uses Supabase for database, auth, and edge functions. To run locally:
-
-1. Copy `.env.example` to `.env` and fill in your Supabase project URL + anon key
-2. Run the migration: `supabase db push` (or paste `schema.sql` into the Supabase SQL editor)
-3. Deploy edge functions: `supabase functions deploy`
 
 ## Deploy
 
