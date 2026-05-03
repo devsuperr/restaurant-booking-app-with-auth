@@ -1,0 +1,527 @@
+<!-- route: /signup -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Create Account — RestauBook</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: { display: ['Fraunces','serif'], sans: ['Inter','sans-serif'] },
+      colors: {
+        rust:  { 50:'#fdf6f0', 100:'#fae8d8', 200:'#fbd5b5', 400:'#d97757', 500:'#c25e3f', 600:'#a84a2e', 700:'#8a3a23' },
+        sage:  { 400:'#8a9b7a', 500:'#6b7d5b' },
+        cream: { 50:'#faf7f2', 100:'#f3ede1', 200:'#e8dcc7' },
+      }
+    }
+  }
+}
+</script>
+<style>
+  body { font-family: 'Inter', sans-serif; background: #faf7f2; color: #2a1f15; }
+  .font-display { font-family: 'Fraunces', serif; }
+  .input-field {
+    width: 100%; padding: 12px 16px;
+    background: #fff; border: 1.5px solid #e8dcc7;
+    border-radius: 12px; color: #2a1f15; font-size: 14px;
+    outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .input-field:focus { border-color: #c25e3f; box-shadow: 0 0 0 3px rgba(194,94,63,0.12); }
+  .input-field::placeholder { color: #a8907c; }
+  .input-field.error { border-color: #dc2626; box-shadow: 0 0 0 3px rgba(220,38,38,0.1); }
+  .btn-primary {
+    width: 100%; padding: 13px 24px;
+    background: #c25e3f; color: #fff; font-weight: 600; font-size: 15px;
+    border-radius: 12px; border: none; cursor: pointer;
+    transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+    box-shadow: 0 4px 14px rgba(194,94,63,0.3);
+  }
+  .btn-primary:hover { background: #a84a2e; box-shadow: 0 6px 20px rgba(168,74,46,0.35); }
+  .btn-primary:active { transform: scale(0.98); }
+  .btn-primary:disabled { background: #d9b8ac; box-shadow: none; cursor: not-allowed; }
+  .divider { display: flex; align-items: center; gap: 12px; color: #a8907c; font-size: 12px; }
+  .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: #e8dcc7; }
+  .btn-google {
+    width: 100%; padding: 12px 24px; background: #fff;
+    border: 1.5px solid #e8dcc7; border-radius: 12px; cursor: pointer;
+    font-size: 14px; font-weight: 600; color: #2a1f15;
+    display: flex; align-items: center; justify-content: center;
+    gap: 10px; transition: background 0.2s, border-color 0.2s;
+  }
+  .btn-google:hover { background: #fdf6f0; border-color: #c25e3f; }
+  .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.4); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .strength-bar { height: 4px; border-radius: 99px; transition: width 0.3s, background 0.3s; }
+  .fade-in { animation: fadeIn 0.4s ease both; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+  .check-item { display: flex; align-items: center; gap: 6px; font-size: 12px; }
+  .check-item.met { color: #6b7d5b; }
+  .check-item.unmet { color: #a8907c; }
+  .field-error { color: #dc2626; font-size: 12px; margin-top: 6px; display: none; align-items: center; gap: 4px; }
+  .field-error.show { display: flex; }
+</style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+<!-- NAV -->
+<nav class="fixed top-0 inset-x-0 z-50 bg-cream-50/90 backdrop-blur-md border-b border-cream-200">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+    <a href="index.html" class="flex items-center gap-2">
+      <div class="w-9 h-9 rounded-full bg-rust-500 flex items-center justify-center text-white font-display font-bold text-lg">R</div>
+      <span class="font-display text-xl font-bold text-stone-800">RestauBook</span>
+    </a>
+    <div class="text-sm text-stone-500">
+      Already have an account? <a href="login.html" class="text-rust-600 font-semibold hover:text-rust-700">Sign in</a>
+    </div>
+  </div>
+</nav>
+
+<!-- SPLIT LAYOUT -->
+<div class="flex min-h-screen pt-16">
+
+  <!-- LEFT — image panel (desktop only) -->
+  <div class="hidden lg:flex lg:w-1/2 relative overflow-hidden">
+    <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1200&q=80" alt="Fine dining" class="absolute inset-0 w-full h-full object-cover" loading="eager" />
+    <div class="absolute inset-0 bg-gradient-to-tr from-stone-900/80 via-stone-900/50 to-transparent"></div>
+    <div class="relative z-10 flex flex-col justify-end p-12 text-white">
+      <div class="mb-4 flex items-center gap-3">
+        <div class="w-12 h-12 rounded-xl bg-rust-500 flex items-center justify-center font-display font-bold text-xl">R</div>
+        <span class="font-display text-2xl font-bold">RestauBook</span>
+      </div>
+      <h2 class="font-display text-3xl font-semibold leading-snug mb-3">Your next great<br/>meal starts here.</h2>
+      <p class="text-stone-300 text-sm mb-8">Join thousands of food lovers who discover and book the city's best restaurants every day.</p>
+      <div class="flex flex-wrap gap-2">
+        <div class="px-3 py-1 bg-white/10 backdrop-blur rounded-full text-xs text-white border border-white/20">✓ Free to join</div>
+        <div class="px-3 py-1 bg-white/10 backdrop-blur rounded-full text-xs text-white border border-white/20">✓ Instant confirmation</div>
+        <div class="px-3 py-1 bg-white/10 backdrop-blur rounded-full text-xs text-white border border-white/20">✓ 1,200+ restaurants</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT — form panel -->
+  <div class="w-full lg:w-1/2 flex items-start justify-center px-6 py-10 bg-cream-50 overflow-y-auto">
+    <div class="w-full max-w-md fade-in">
+
+      <!-- Brand mark -->
+      <div class="flex flex-col items-center mb-8">
+        <div class="w-14 h-14 rounded-2xl bg-rust-500 flex items-center justify-center text-white font-display font-bold text-2xl shadow-lg mb-4">R</div>
+        <h1 class="font-display text-3xl font-bold text-stone-800">Create your account</h1>
+        <p class="text-stone-500 text-sm mt-1">Start booking great restaurants today — it's free</p>
+      </div>
+
+      <!-- ══ SIGNUP FORM SECTION ══ -->
+      <div id="signupFormWrap">
+
+        <!-- Google OAuth -->
+        <button onclick="signUpWithGoogle()" class="btn-google mb-5" type="button">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4"/>
+            <path d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z" fill="#34A853"/>
+            <path d="M3.964 10.707A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.707V4.961H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.039l3.007-2.332z" fill="#FBBC05"/>
+            <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z" fill="#EA4335"/>
+          </svg>
+          Continue with Google
+        </button>
+
+        <div class="divider mb-5">or sign up with email</div>
+
+        <!-- Global error banner -->
+        <div id="formError" class="mb-4 px-4 py-3 bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl" style="display:none">
+          <div class="flex items-start gap-2">
+            <svg class="shrink-0 mt-0.5" width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+            <span id="formErrorText"></span>
+          </div>
+        </div>
+
+        <form id="signupForm" onsubmit="handleSignup(event)" novalidate>
+
+          <!-- Full name -->
+          <div class="mb-4">
+            <label for="fullName" class="block text-xs font-semibold text-stone-500 uppercase tracking-widest mb-1.5">Full name</label>
+            <input id="fullName" type="text" placeholder="Jane Smith" class="input-field" autocomplete="name" />
+            <p id="fullNameError" class="field-error">
+              <svg width="12" height="12" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+              <span id="fullNameErrorText"></span>
+            </p>
+          </div>
+
+          <!-- Email -->
+          <div class="mb-4">
+            <label for="email" class="block text-xs font-semibold text-stone-500 uppercase tracking-widest mb-1.5">Email address</label>
+            <input id="email" type="email" placeholder="you@example.com" class="input-field" autocomplete="email" />
+            <p id="emailError" class="field-error">
+              <svg width="12" height="12" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+              <span id="emailErrorText"></span>
+            </p>
+          </div>
+
+          <!-- Phone (optional) -->
+          <div class="mb-4">
+            <label for="phone" class="block text-xs font-semibold text-stone-500 uppercase tracking-widest mb-1.5">
+              Phone <span class="normal-case font-normal text-stone-400">(optional)</span>
+            </label>
+            <input id="phone" type="tel" placeholder="+1 555 000 0000" class="input-field" autocomplete="tel" />
+          </div>
+
+          <!-- Password -->
+          <div class="mb-4">
+            <label for="password" class="block text-xs font-semibold text-stone-500 uppercase tracking-widest mb-1.5">Password</label>
+            <div class="relative">
+              <input id="password" type="password" placeholder="Min. 8 characters" class="input-field pr-11" autocomplete="new-password" oninput="checkStrength()" />
+              <button type="button" onclick="togglePwd('password','eyeIcon1')" class="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600 transition-colors" aria-label="Show/hide password">
+                <svg id="eyeIcon1" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                </svg>
+              </button>
+            </div>
+            <!-- Strength bar -->
+            <div class="mt-2 bg-cream-200 rounded-full overflow-hidden">
+              <div id="strengthBar" class="strength-bar" style="width:0;background:#e8dcc7"></div>
+            </div>
+            <!-- Checklist -->
+            <div id="strengthChecks" class="hidden mt-2 grid grid-cols-2 gap-1">
+              <span id="chk-len"   class="check-item unmet"><span>○</span> 8+ characters</span>
+              <span id="chk-upper" class="check-item unmet"><span>○</span> Uppercase letter</span>
+              <span id="chk-num"   class="check-item unmet"><span>○</span> Number</span>
+              <span id="chk-spec"  class="check-item unmet"><span>○</span> Special character</span>
+            </div>
+            <p id="passwordError" class="field-error">
+              <svg width="12" height="12" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+              <span id="passwordErrorText"></span>
+            </p>
+          </div>
+
+          <!-- Confirm password -->
+          <div class="mb-6">
+            <label for="confirmPassword" class="block text-xs font-semibold text-stone-500 uppercase tracking-widest mb-1.5">Confirm password</label>
+            <div class="relative">
+              <input id="confirmPassword" type="password" placeholder="Repeat your password" class="input-field pr-11" autocomplete="new-password" />
+              <button type="button" onclick="togglePwd('confirmPassword','eyeIcon2')" class="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600 transition-colors" aria-label="Show/hide confirm password">
+                <svg id="eyeIcon2" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                </svg>
+              </button>
+            </div>
+            <p id="confirmPasswordError" class="field-error">
+              <svg width="12" height="12" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+              <span id="confirmPasswordErrorText"></span>
+            </p>
+          </div>
+
+          <!-- Terms -->
+          <p class="text-xs text-stone-400 mb-5 text-center">
+            By creating an account you agree to our
+            <a href="#" class="text-rust-600 hover:underline">Terms of Service</a> and
+            <a href="#" class="text-rust-600 hover:underline">Privacy Policy</a>.
+          </p>
+
+          <button type="submit" id="submitBtn" class="btn-primary">
+            <span id="submitLabel">Create account</span>
+          </button>
+        </form>
+
+        <p class="text-center text-sm text-stone-500 mt-6">
+          Already have an account? <a href="login.html" class="text-rust-600 font-semibold hover:text-rust-700">Sign in</a>
+        </p>
+      </div>
+
+      <!-- ══ EMAIL VERIFICATION SCREEN ══ -->
+      <div id="verifyScreen" class="hidden text-center fade-in">
+        <div class="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6" style="background:#6b7d5b">
+          <svg width="36" height="36" fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"/>
+          </svg>
+        </div>
+        <h2 class="font-display text-2xl font-bold text-stone-800 mb-3">Check your inbox!</h2>
+        <p class="text-stone-600 text-sm leading-relaxed mb-2">We sent a verification link to:</p>
+        <p id="verifyEmail" class="font-semibold text-rust-600 text-base mb-6 break-all px-4"></p>
+
+        <div class="bg-cream-100 border border-cream-200 rounded-xl p-5 text-left mb-6">
+          <p class="text-stone-700 text-sm font-semibold mb-2">Next steps:</p>
+          <ol class="text-stone-600 text-sm space-y-1.5 list-decimal list-inside">
+            <li>Open the email from Supabase / RestauBook</li>
+            <li>Click <strong>"Confirm your email"</strong></li>
+            <li>You'll be signed in and redirected automatically</li>
+          </ol>
+          <p class="text-stone-400 text-xs mt-3">Don't see it? Check your <strong>spam / junk</strong> folder.</p>
+        </div>
+
+        <button id="resendBtn" onclick="resendEmail()" type="button"
+          class="w-full py-3 border-2 border-rust-300 hover:border-rust-500 text-rust-600 hover:text-rust-700 font-semibold rounded-xl transition-all text-sm mb-3">
+          Resend verification email
+        </button>
+        <p id="resendMsg" class="hidden text-sm font-medium mb-3" style="color:#6b7d5b">✓ Email resent — check your inbox.</p>
+        <a href="login.html" class="block text-center text-sm text-stone-400 hover:text-stone-600 transition-colors">← Back to sign in</a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── Supabase — use the REAL anon key (public, safe for browser) ──
+const SUPABASE_URL      = 'https://bnrptywymmnexndaqdko.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJucnB0eXd5bW1uZXhuZGFxZGtvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc3Nzc1MTcsImV4cCI6MjA5MzM1MzUxN30.4-bH2KuXPYmoPRUgQSS5iwIYxZgFxHv6md8dLS-wWEo';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+let lastEmail = '';
+
+// ─── Redirect if already logged in ───────────────────────────
+sb.auth.getSession().then(({ data: { session } }) => {
+  if (session) window.location.href = 'index.html';
+});
+
+// ─── Loading state ────────────────────────────────────────────
+function setLoading(on) {
+  const btn   = document.getElementById('submitBtn');
+  const label = document.getElementById('submitLabel');
+  btn.disabled = on;
+  label.innerHTML = on
+    ? '<span class="spinner" style="display:inline-block;vertical-align:middle;margin-right:6px"></span>Creating account…'
+    : 'Create account';
+}
+
+// ─── Error / message helpers ──────────────────────────────────
+function showFormError(msg) {
+  const el = document.getElementById('formError');
+  document.getElementById('formErrorText').textContent = msg;
+  el.style.display = 'block';
+  el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function clearErrors() {
+  document.getElementById('formError').style.display = 'none';
+  ['fullName','email','password','confirmPassword'].forEach(id => {
+    const inp = document.getElementById(id);
+    if (inp) inp.classList.remove('error');
+    const errEl = document.getElementById(id + 'Error');
+    if (errEl) errEl.classList.remove('show');
+  });
+}
+
+function fieldError(fieldId, msg) {
+  const input  = document.getElementById(fieldId);
+  const errEl  = document.getElementById(fieldId + 'Error');
+  const errTxt = document.getElementById(fieldId + 'ErrorText');
+  if (input)  input.classList.add('error');
+  if (errTxt) errTxt.textContent = msg;
+  if (errEl)  errEl.classList.add('show');
+}
+
+// ─── Password strength meter ──────────────────────────────────
+function checkStrength() {
+  const pwd = document.getElementById('password').value;
+  const checks = document.getElementById('strengthChecks');
+  const bar    = document.getElementById('strengthBar');
+
+  if (pwd.length > 0) checks.classList.remove('hidden');
+  else { checks.classList.add('hidden'); bar.style.width = '0'; return; }
+
+  const hasLen   = pwd.length >= 8;
+  const hasUpper = /[A-Z]/.test(pwd);
+  const hasNum   = /[0-9]/.test(pwd);
+  const hasSpec  = /[^A-Za-z0-9]/.test(pwd);
+
+  setCheck('chk-len',   hasLen);
+  setCheck('chk-upper', hasUpper);
+  setCheck('chk-num',   hasNum);
+  setCheck('chk-spec',  hasSpec);
+
+  const score  = [hasLen, hasUpper, hasNum, hasSpec].filter(Boolean).length;
+  const widths = ['0%','30%','55%','80%','100%'];
+  const colors = ['','#dc2626','#f59e0b','#f59e0b','#6b7d5b'];
+  bar.style.width      = widths[score];
+  bar.style.background = colors[score];
+}
+
+function setCheck(id, met) {
+  const el = document.getElementById(id);
+  el.className = 'check-item ' + (met ? 'met' : 'unmet');
+  el.querySelector('span').textContent = met ? '✓' : '○';
+}
+
+// ─── Toggle password visibility ───────────────────────────────
+function togglePwd(inputId, iconId) {
+  const input = document.getElementById(inputId);
+  const icon  = document.getElementById(iconId);
+  if (input.type === 'password') {
+    input.type = 'text';
+    icon.innerHTML = `<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>`;
+  } else {
+    input.type = 'password';
+    icon.innerHTML = `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>`;
+  }
+}
+
+// ─── Client-side validation ───────────────────────────────────
+function validate() {
+  const fullName = document.getElementById('fullName').value.trim();
+  const email    = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  const confirm  = document.getElementById('confirmPassword').value;
+  let valid = true;
+  clearErrors();
+
+  if (!fullName || fullName.length < 2) {
+    fieldError('fullName', 'Please enter your full name (min. 2 characters).');
+    valid = false;
+  }
+
+  if (!email) {
+    fieldError('email', 'Email address is required.');
+    valid = false;
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    fieldError('email', 'Please enter a valid email address.');
+    valid = false;
+  }
+
+  if (!password) {
+    fieldError('password', 'Password is required.');
+    valid = false;
+  } else if (password.length < 8) {
+    fieldError('password', 'Password must be at least 8 characters.');
+    valid = false;
+  }
+
+  if (!confirm) {
+    fieldError('confirmPassword', 'Please confirm your password.');
+    valid = false;
+  } else if (password !== confirm) {
+    fieldError('confirmPassword', 'Passwords do not match.');
+    valid = false;
+  }
+
+  return valid;
+}
+
+// ─── SIGN UP — calls Supabase Auth + DB trigger ───────────────
+async function handleSignup(e) {
+  e.preventDefault();
+  if (!validate()) return;
+
+  const fullName = document.getElementById('fullName').value.trim();
+  const email    = document.getElementById('email').value.trim();
+  const phone    = document.getElementById('phone').value.trim();
+  const password = document.getElementById('password').value;
+
+  lastEmail = email;
+  setLoading(true);
+
+  // 1. Create Auth user — fires handle_new_user() trigger → inserts public.profiles row
+  //    Supabase will send a confirmation email automatically (if email confirm is ON in Dashboard)
+  const { data, error } = await sb.auth.signUp({
+    email,
+    password,
+    options: {
+      data: {
+        full_name: fullName,
+        phone: phone || null,
+      },
+      // After email link is clicked, land back on home page
+      emailRedirectTo: window.location.origin + '/index.html',
+    }
+  });
+
+  setLoading(false);
+
+  if (error) {
+    if (error.message.toLowerCase().includes('already registered') ||
+        error.message.toLowerCase().includes('user already registered') ||
+        error.message.toLowerCase().includes('email address is already')) {
+      showFormError('An account with this email already exists. Try signing in instead.');
+    } else if (error.message.toLowerCase().includes('password')) {
+      showFormError('Password is too weak — please choose a stronger password (min. 8 characters).');
+    } else if (error.message.toLowerCase().includes('rate limit') ||
+               error.message.toLowerCase().includes('too many')) {
+      showFormError('Too many sign-up attempts. Please wait a minute and try again.');
+    } else if (error.message.toLowerCase().includes('invalid email') ||
+               error.message.toLowerCase().includes('email address') &&
+               error.message.toLowerCase().includes('invalid')) {
+      showFormError('Please enter a valid email address.');
+    } else {
+      showFormError('Sign-up error: ' + error.message);
+    }
+    return;
+  }
+
+  // 2. If a session was returned immediately (email confirm disabled in Supabase settings),
+  //    also write the phone number to the profile row the trigger created.
+  if (data?.session && phone) {
+    try {
+      await sb.from('profiles').upsert({
+        id:         data.session.user.id,
+        email,
+        full_name:  fullName,
+        phone,
+        updated_at: new Date().toISOString(),
+      }, { onConflict: 'id' });
+    } catch (_) {
+      // Non-fatal — the trigger already created the core profile row
+    }
+  }
+
+  // 3. Show verification screen regardless of confirm setting
+  document.getElementById('signupFormWrap').classList.add('hidden');
+  document.getElementById('verifyScreen').classList.remove('hidden');
+  document.getElementById('verifyEmail').textContent = email;
+
+  // If auto-confirm is ON (session returned immediately), redirect after a short pause
+  if (data?.session) {
+    setTimeout(() => { window.location.href = 'index.html'; }, 3000);
+  }
+}
+
+// ─── Google OAuth ─────────────────────────────────────────────
+async function signUpWithGoogle() {
+  const { error } = await sb.auth.signInWithOAuth({
+    provider: 'google',
+    options: { redirectTo: window.location.origin + '/index.html' }
+  });
+  if (error) showFormError('Google sign-up failed: ' + error.message);
+}
+
+// ─── Resend verification email ────────────────────────────────
+async function resendEmail() {
+  if (!lastEmail) return;
+  const btn = document.getElementById('resendBtn');
+  btn.disabled = true;
+  btn.textContent = 'Sending…';
+
+  const { error } = await sb.auth.resend({
+    type: 'signup',
+    email: lastEmail,
+    options: { emailRedirectTo: window.location.origin + '/index.html' }
+  });
+
+  btn.disabled = false;
+  btn.textContent = 'Resend verification email';
+
+  if (error) {
+    alert('Could not resend: ' + error.message);
+  } else {
+    const msg = document.getElementById('resendMsg');
+    msg.classList.remove('hidden');
+    setTimeout(() => msg.classList.add('hidden'), 6000);
+  }
+}
+
+// ─── Live clear on input ──────────────────────────────────────
+['fullName','email','password','confirmPassword'].forEach(id => {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.addEventListener('input', () => {
+    el.classList.remove('error');
+    const errEl = document.getElementById(id + 'Error');
+    if (errEl) errEl.classList.remove('show');
+    document.getElementById('formError').style.display = 'none';
+  });
+});
+</script>
+</body>
+</html>

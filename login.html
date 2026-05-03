@@ -1,0 +1,318 @@
+<!-- route: /login -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Sign In — RestauBook</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: { display: ['Fraunces','serif'], sans: ['Inter','sans-serif'] },
+      colors: {
+        rust: { 50:'#fdf6f0', 100:'#fae8d8', 200:'#fbd5b5', 400:'#d97757', 500:'#c25e3f', 600:'#a84a2e', 700:'#8a3a23' },
+        sage: { 400:'#8a9b7a', 500:'#6b7d5b' },
+        cream: { 50:'#faf7f2', 100:'#f3ede1', 200:'#e8dcc7' },
+      }
+    }
+  }
+}
+</script>
+<style>
+  body { font-family: 'Inter', sans-serif; background: #faf7f2; color: #2a1f15; }
+  .font-display { font-family: 'Fraunces', serif; }
+  .input-field {
+    width: 100%; padding: 12px 16px;
+    background: #fff; border: 1.5px solid #e8dcc7;
+    border-radius: 12px; color: #2a1f15; font-size: 14px;
+    outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .input-field:focus { border-color: #c25e3f; box-shadow: 0 0 0 3px rgba(194,94,63,0.12); }
+  .input-field::placeholder { color: #a8907c; }
+  .input-field.error { border-color: #dc2626; box-shadow: 0 0 0 3px rgba(220,38,38,0.1); }
+  .btn-primary {
+    width: 100%; padding: 13px 24px;
+    background: #c25e3f; color: #fff; font-weight: 600; font-size: 15px;
+    border-radius: 12px; border: none; cursor: pointer;
+    transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+    box-shadow: 0 4px 14px rgba(194,94,63,0.3);
+  }
+  .btn-primary:hover { background: #a84a2e; box-shadow: 0 6px 20px rgba(168,74,46,0.35); }
+  .btn-primary:active { transform: scale(0.98); }
+  .btn-primary:disabled { background: #d9b8ac; box-shadow: none; cursor: not-allowed; }
+  .divider { display: flex; align-items: center; gap: 12px; color: #a8907c; font-size: 12px; }
+  .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: #e8dcc7; }
+  .btn-google {
+    width: 100%; padding: 12px 24px; background: #fff;
+    border: 1.5px solid #e8dcc7; border-radius: 12px; cursor: pointer;
+    font-size: 14px; font-weight: 600; color: #2a1f15;
+    display: flex; align-items: center; justify-content: center; gap-10px;
+    transition: background 0.2s, border-color 0.2s;
+    gap: 10px;
+  }
+  .btn-google:hover { background: #fdf6f0; border-color: #c25e3f; }
+  .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.4); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .fade-in { animation: fadeIn 0.4s ease both; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+<!-- NAV -->
+<nav class="fixed top-0 inset-x-0 z-50 bg-cream-50/90 backdrop-blur-md border-b border-cream-200">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+    <a href="index.html" class="flex items-center gap-2">
+      <div class="w-9 h-9 rounded-full bg-rust-500 flex items-center justify-center text-white font-display font-bold text-lg">R</div>
+      <span class="font-display text-xl font-bold text-stone-800">RestauBook</span>
+    </a>
+    <div class="text-sm text-stone-500">
+      No account? <a href="signup.html" class="text-rust-600 font-semibold hover:text-rust-700">Sign up free</a>
+    </div>
+  </div>
+</nav>
+
+<!-- SPLIT LAYOUT -->
+<div class="flex min-h-screen pt-16">
+
+  <!-- LEFT — image panel (desktop only) -->
+  <div class="hidden lg:flex lg:w-1/2 relative overflow-hidden">
+    <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1200&q=80" alt="Fine dining" class="absolute inset-0 w-full h-full object-cover" />
+    <div class="absolute inset-0 bg-gradient-to-tr from-stone-900/80 via-stone-900/50 to-transparent"></div>
+    <div class="relative z-10 flex flex-col justify-end p-12 text-white">
+      <blockquote class="font-display text-2xl font-semibold leading-snug mb-4">
+        "Every great meal<br/>begins with a great table."
+      </blockquote>
+      <p class="text-cream-200 text-sm">— RestauBook, connecting food lovers since 2023</p>
+      <div class="mt-8 flex gap-3">
+        <div class="px-3 py-1 bg-white/10 backdrop-blur rounded-full text-xs text-white border border-white/20">1,200+ restaurants</div>
+        <div class="px-3 py-1 bg-white/10 backdrop-blur rounded-full text-xs text-white border border-white/20">Instant confirmation</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT — form panel -->
+  <div class="w-full lg:w-1/2 flex items-center justify-center px-6 py-12 bg-cream-50">
+    <div class="w-full max-w-md fade-in">
+
+      <!-- Brand mark -->
+      <div class="flex flex-col items-center mb-10">
+        <div class="w-14 h-14 rounded-2xl bg-rust-500 flex items-center justify-center text-white font-display font-bold text-2xl shadow-lg shadow-rust-500/30 mb-4">R</div>
+        <h1 class="font-display text-3xl font-bold text-stone-800">Welcome back</h1>
+        <p class="text-stone-500 text-sm mt-1">Sign in to manage your reservations</p>
+      </div>
+
+      <!-- Google OAuth -->
+      <button onclick="signInWithGoogle()" class="btn-google mb-5">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4"/>
+          <path d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z" fill="#34A853"/>
+          <path d="M3.964 10.707A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.707V4.961H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.039l3.007-2.332z" fill="#FBBC05"/>
+          <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z" fill="#EA4335"/>
+        </svg>
+        Continue with Google
+      </button>
+
+      <div class="divider mb-5">or sign in with email</div>
+
+      <!-- Login Form -->
+      <form id="loginForm" onsubmit="handleLogin(event)" novalidate>
+
+        <div class="mb-4">
+          <label for="email" class="block text-xs font-semibold text-stone-500 uppercase tracking-widest mb-1.5">Email address</label>
+          <input id="email" type="email" placeholder="you@example.com" class="input-field" autocomplete="email" required />
+          <p id="emailError" class="hidden text-red-600 text-xs mt-1.5 flex items-center gap-1">
+            <svg width="12" height="12" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+            <span id="emailErrorText"></span>
+          </p>
+        </div>
+
+        <div class="mb-2">
+          <label for="password" class="block text-xs font-semibold text-stone-500 uppercase tracking-widest mb-1.5">Password</label>
+          <div class="relative">
+            <input id="password" type="password" placeholder="Your password" class="input-field pr-11" autocomplete="current-password" required />
+            <button type="button" onclick="togglePwd('password', 'eyeIcon')" class="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600 transition-colors" aria-label="Toggle password">
+              <svg id="eyeIcon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
+          </div>
+          <p id="passwordError" class="hidden text-red-600 text-xs mt-1.5"><span id="passwordErrorText"></span></p>
+        </div>
+
+        <div class="flex justify-end mb-6">
+          <a href="forgot-password.html" class="text-xs text-rust-600 hover:text-rust-700 font-medium">Forgot password?</a>
+        </div>
+
+        <!-- General error -->
+        <div id="formError" class="hidden mb-4 px-4 py-3 bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl flex items-start gap-2">
+          <svg class="shrink-0 mt-0.5" width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+          <span id="formErrorText"></span>
+        </div>
+
+        <!-- Success -->
+        <div id="formSuccess" class="hidden mb-4 px-4 py-3 bg-green-50 border border-green-200 text-green-700 text-sm rounded-xl flex items-center gap-2">
+          <svg class="shrink-0" width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+          <span id="formSuccessText"></span>
+        </div>
+
+        <button type="submit" id="submitBtn" class="btn-primary">
+          <span id="submitLabel">Sign in</span>
+        </button>
+      </form>
+
+      <p class="text-center text-sm text-stone-500 mt-6">
+        Don't have an account? <a href="signup.html" class="text-rust-600 font-semibold hover:text-rust-700">Create one free</a>
+      </p>
+
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── Supabase init ────────────────────────────────────────────
+const SUPABASE_URL = 'https://bnrptywymmnexndaqdko.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJucnB0eXd5bW1uZXhuZGFxZGtvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc3Nzc1MTcsImV4cCI6MjA5MzM1MzUxN30.4-bH2KuXPYmoPRUgQSS5iwIYxZgFxHv6md8dLS-wWEo';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// ─── Redirect if already logged in ───────────────────────────
+sb.auth.getSession().then(({ data: { session } }) => {
+  if (session) window.location.href = 'index.html';
+});
+
+// ─── Helpers ─────────────────────────────────────────────────
+function setLoading(loading) {
+  const btn   = document.getElementById('submitBtn');
+  const label = document.getElementById('submitLabel');
+  btn.disabled = loading;
+  label.innerHTML = loading
+    ? '<span class="spinner"></span> Signing in…'
+    : 'Sign in';
+}
+
+function showError(msg) {
+  const el = document.getElementById('formError');
+  document.getElementById('formErrorText').textContent = msg;
+  el.classList.remove('hidden');
+  el.classList.add('flex');
+  document.getElementById('formSuccess').classList.add('hidden');
+}
+
+function showSuccess(msg) {
+  const el = document.getElementById('formSuccess');
+  document.getElementById('formSuccessText').textContent = msg;
+  el.classList.remove('hidden');
+  el.classList.add('flex');
+  document.getElementById('formError').classList.add('hidden');
+}
+
+function clearErrors() {
+  document.getElementById('formError').classList.add('hidden');
+  document.getElementById('formSuccess').classList.add('hidden');
+  ['email','password'].forEach(id => {
+    document.getElementById(id).classList.remove('error');
+    document.getElementById(id + 'Error').classList.add('hidden');
+  });
+}
+
+function fieldError(fieldId, msg) {
+  const input = document.getElementById(fieldId);
+  const errEl = document.getElementById(fieldId + 'Error');
+  const errTxt = document.getElementById(fieldId + 'ErrorText');
+  input.classList.add('error');
+  errTxt.textContent = msg;
+  errEl.classList.remove('hidden');
+  errEl.classList.add('flex');
+}
+
+function togglePwd(inputId, iconId) {
+  const input = document.getElementById(inputId);
+  const icon  = document.getElementById(iconId);
+  if (input.type === 'password') {
+    input.type = 'text';
+    icon.innerHTML = `<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>`;
+  } else {
+    input.type = 'password';
+    icon.innerHTML = `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>`;
+  }
+}
+
+// ─── Validate ────────────────────────────────────────────────
+function validate() {
+  const email    = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  let valid = true;
+  clearErrors();
+
+  if (!email) {
+    fieldError('email', 'Email address is required.');
+    valid = false;
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    fieldError('email', 'Please enter a valid email address.');
+    valid = false;
+  }
+
+  if (!password) {
+    fieldError('password', 'Password is required.');
+    valid = false;
+  } else if (password.length < 6) {
+    fieldError('password', 'Password must be at least 6 characters.');
+    valid = false;
+  }
+
+  return valid;
+}
+
+// ─── Login ───────────────────────────────────────────────────
+async function handleLogin(e) {
+  e.preventDefault();
+  if (!validate()) return;
+
+  const email    = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+
+  setLoading(true);
+  const { error } = await sb.auth.signInWithPassword({ email, password });
+  setLoading(false);
+
+  if (error) {
+    if (error.message.includes('Invalid login credentials') || error.message.includes('invalid_credentials')) {
+      showError('Incorrect email or password. Please try again.');
+    } else if (error.message.includes('Email not confirmed')) {
+      showError('Please verify your email before signing in. Check your inbox.');
+    } else {
+      showError(error.message);
+    }
+    return;
+  }
+
+  showSuccess('Signed in! Redirecting you…');
+  setTimeout(() => { window.location.href = 'index.html'; }, 900);
+}
+
+// ─── Google OAuth ─────────────────────────────────────────────
+async function signInWithGoogle() {
+  const { error } = await sb.auth.signInWithOAuth({
+    provider: 'google',
+    options: { redirectTo: window.location.origin + '/index.html' }
+  });
+  if (error) showError('Google sign-in failed: ' + error.message);
+}
+
+// ─── Live validation ──────────────────────────────────────────
+document.getElementById('email').addEventListener('input', () => {
+  document.getElementById('email').classList.remove('error');
+  document.getElementById('emailError').classList.add('hidden');
+});
+document.getElementById('password').addEventListener('input', () => {
+  document.getElementById('password').classList.remove('error');
+  document.getElementById('passwordError').classList.add('hidden');
+});
+</script>
+</body>
+</html>
