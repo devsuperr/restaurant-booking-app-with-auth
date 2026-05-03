@@ -78,12 +78,12 @@ export const GIG_TASKS: GigTask[] = [
 
 export const AI_RESPONSES: Record<string, string> = {
   default: '🙂 Bilkul bhai! Batao kya jaanna chahte ho? Main yahan hoon tumhari help ke liye!',
-  fast: '🚀 Fast seekhne ke liye yeh 3 tips yaad raho:\n\n1️⃣ Roz 30 min practice karo – no excuse!\n2️⃣ Ek skill pe focus karo, sab kuch mat seekho ek saath\n3️⃣ Seekhke turant apply karo – warna bhool jaoge\n\nBas yahi formula hai bhai! 💪',
+  fast: '🚀 Fast seekhne ke liye yeh 3 tips yaad raho:\n\n1️⃣ Roz 30 min practice karo\n2️⃣ Ek skill pe focus karo\n3️⃣ Seekhke turant apply karo\n\nBas yahi formula hai bhai! 💪',
   task: '📋 Aaj ke liye 3 tasks hain tumhare:\n\n✅ Task 1: 1 video edit karo (30 min)\n✅ Task 2: Portfolio drive mein save karo\n✅ Task 3: Ek platform pe profile update karo\n\nYeh kar lo, aaj ₹250 earn ho sakta hai! 💰',
-  earn: '💰 Abhi tumhare paas 3 earning options hain:\n\n🔥 Gig 1: Instagram reels edit karo – ₹800\n🔥 Gig 2: Canva design banao – ₹500\n🔥 Gig 3: Data entry karo – ₹350\n\nKonsa karna chahte ho? Main guide kar sakta hoon! 👇',
-  motivation: '🔥 Bhai, yaad rako – tumne yeh start kiya hai toh kuch sochke kiya hai!\n\nIndia mein lakho log freelancing se ₹20,000–₹50,000 per month kama rahe hain.\n\nTum bhi kar sakte ho. Bas 7 din consistent raho. Phir dekho kya hota hai! 💯',
-  help: '🙌 Main tumhara AI Coach hoon – SkillForBharat ka!\n\nMujhse puchh sakte ho:\n• "Fast kaise seekhun?"\n• "Aaj ke tasks kya hain?"\n• "Earn kaise karu?"\n• "Mujhe motivate karo!"\n• "Kaunsi skill sahi rahegi mere liye?"\n\nBolo, main ready hoon! 💬',
-  skill: '🎯 Tumhare liye best 3 skills yeh hain:\n\n1️⃣ Video Editing – ₹15,000–₹40,000/month\n   → Phone se shuru ho sakta hai!\n\n2️⃣ Social Media Management – ₹12,000–₹30,000/month\n   → Instagram use karte ho? Toh tum ready ho!\n\n3️⃣ Freelance Writing – ₹8,000–₹25,000/month\n   → Hindi + English dono chalega!\n\nKonsi choose karni hai? 🤔',
+  earn: '💰 Abhi tumhare paas 3 earning options hain:\n\n🔥 Gig 1: Instagram reels – ₹800\n🔥 Gig 2: Canva design – ₹500\n🔥 Gig 3: Data entry – ₹350\n\nKonsa karna chahte ho? 👇',
+  motivation: '🔥 Bhai, tumne yeh start kiya hai toh kuch sochke kiya hai!\n\nIndia mein lakho log freelancing se ₹20,000–₹50,000 per month kama rahe hain.\n\nTum bhi kar sakte ho. Bas 7 din consistent raho! 💯',
+  help: '🙌 Main tumhara AI Coach hoon!\n\nMujhse puchh sakte ho:\n• "Fast kaise seekhun?"\n• "Aaj ke tasks kya hain?"\n• "Earn kaise karu?"\n• "Mujhe motivate karo!"\n\nBolo, main ready hoon! 💬',
+  skill: '🎯 Tumhare liye best 3 skills:\n\n1️⃣ Video Editing – ₹15k–₹40k/month\n2️⃣ Social Media – ₹12k–₹30k/month\n3️⃣ Freelance Writing – ₹8k–₹25k/month\n\nKonsi choose karni hai? 🤔',
 };
 
 export const BADGES: Badge[] = [

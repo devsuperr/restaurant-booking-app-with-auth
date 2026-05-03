@@ -30,10 +30,10 @@ const AppContext = createContext<AppContextType | null>(null);
 
 function getAIResponse(text: string): string {
   const lower = text.toLowerCase();
-  if (lower.includes('fast') || lower.includes('jaldi') || lower.includes('quickly')) return AI_RESPONSES.fast;
+  if (lower.includes('fast') || lower.includes('jaldi')) return AI_RESPONSES.fast;
   if (lower.includes('task') || lower.includes('kaam')) return AI_RESPONSES.task;
-  if (lower.includes('earn') || lower.includes('paisa') || lower.includes('money') || lower.includes('kamai')) return AI_RESPONSES.earn;
-  if (lower.includes('motivat') || lower.includes('sad') || lower.includes('give up') || lower.includes('chhod')) return AI_RESPONSES.motivation;
+  if (lower.includes('earn') || lower.includes('paisa') || lower.includes('money')) return AI_RESPONSES.earn;
+  if (lower.includes('motivat') || lower.includes('give up') || lower.includes('chhod')) return AI_RESPONSES.motivation;
   if (lower.includes('skill') || lower.includes('konsa') || lower.includes('which')) return AI_RESPONSES.skill;
   if (lower.includes('help') || lower.includes('kya') || lower.includes('what')) return AI_RESPONSES.help;
   return AI_RESPONSES.default;
@@ -53,7 +53,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     {
       id: '1',
       role: 'ai',
-      content: '👋 Namaste! Main hoon tumhara SkillBot – SkillForBharat ka AI Coach!\n\nAaj kya seekhna chahte ho? Koi bhi sawaal puchho, main yahan hoon! 🚀',
+      content: '👋 Namaste! Main hoon tumhara SkillBot!\n\nAaj kya seekhna chahte ho? Koi bhi sawaal puchho – main yahan hoon! 🚀',
       timestamp: new Date(),
     },
   ]);
@@ -66,15 +66,24 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const sendMessage = useCallback((text: string) => {
-    const userMsg: ChatMessage = { id: Date.now().toString(), role: 'user', content: text, timestamp: new Date() };
+    const userMsg: ChatMessage = {
+      id: Date.now().toString(),
+      role: 'user',
+      content: text,
+      timestamp: new Date(),
+    };
     setChatMessages(prev => [...prev, userMsg]);
     setIsTyping(true);
-    const delay = 900 + Math.random() * 700;
     setTimeout(() => {
-      const aiMsg: ChatMessage = { id: (Date.now() + 1).toString(), role: 'ai', content: getAIResponse(text), timestamp: new Date() };
+      const aiMsg: ChatMessage = {
+        id: (Date.now() + 1).toString(),
+        role: 'ai',
+        content: getAIResponse(text),
+        timestamp: new Date(),
+      };
       setChatMessages(prev => [...prev, aiMsg]);
       setIsTyping(false);
-    }, delay);
+    }, 900 + Math.random() * 600);
   }, []);
 
   const addEarning = useCallback((amount: number) => {
