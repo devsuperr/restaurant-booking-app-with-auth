@@ -17,6 +17,7 @@ interface AppContextType {
   setIsOnboarded: (v: boolean) => void;
   chatMessages: ChatMessage[];
   sendMessage: (text: string) => void;
+  isTyping: boolean;
   currentSkillId: string;
   setCurrentSkillId: (id: string) => void;
   totalEarned: number;
@@ -47,6 +48,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     completed: false,
   });
   const [isOnboarded, setIsOnboarded] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([
     {
       id: '1',
@@ -64,23 +66,15 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const sendMessage = useCallback((text: string) => {
-    const userMsg: ChatMessage = {
-      id: Date.now().toString(),
-      role: 'user',
-      content: text,
-      timestamp: new Date(),
-    };
+    const userMsg: ChatMessage = { id: Date.now().toString(), role: 'user', content: text, timestamp: new Date() };
     setChatMessages(prev => [...prev, userMsg]);
-
+    setIsTyping(true);
+    const delay = 900 + Math.random() * 700;
     setTimeout(() => {
-      const aiMsg: ChatMessage = {
-        id: (Date.now() + 1).toString(),
-        role: 'ai',
-        content: getAIResponse(text),
-        timestamp: new Date(),
-      };
+      const aiMsg: ChatMessage = { id: (Date.now() + 1).toString(), role: 'ai', content: getAIResponse(text), timestamp: new Date() };
       setChatMessages(prev => [...prev, aiMsg]);
-    }, 800 + Math.random() * 600);
+      setIsTyping(false);
+    }, delay);
   }, []);
 
   const addEarning = useCallback((amount: number) => {
@@ -95,7 +89,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     <AppContext.Provider value={{
       onboardingData, setOnboardingData,
       isOnboarded, setIsOnboarded,
-      chatMessages, sendMessage,
+      chatMessages, sendMessage, isTyping,
       currentSkillId, setCurrentSkillId,
       totalEarned, addEarning,
       completedDays, completeDay,
