@@ -15,7 +15,7 @@ tailwind.config = {
     extend: {
       fontFamily: { display: ['Fraunces','serif'], sans: ['Inter','sans-serif'] },
       colors: {
-        rust:  { 50:'#fdf6f0', 100:'#fae8d8', 400:'#d97757', 500:'#c25e3f', 600:'#a84a2e', 700:'#8a3a23' },
+        rust:  { 50:'#fdf6f0', 100:'#fae8d8', 200:'#fbd5b5', 400:'#d97757', 500:'#c25e3f', 600:'#a84a2e', 700:'#8a3a23' },
         sage:  { 400:'#8a9b7a', 500:'#6b7d5b', 600:'#556347' },
         cream: { 50:'#faf7f2', 100:'#f3ede1', 200:'#e8dcc7' },
       }
@@ -26,17 +26,6 @@ tailwind.config = {
 <style>
   body { font-family: 'Inter', sans-serif; background: #faf7f2; color: #2a1f15; }
   .font-display { font-family: 'Fraunces', serif; }
-  .sidebar { width: 260px; flex-shrink: 0; }
-  .nav-item {
-    display: flex; align-items: center; gap: 10px; padding: 10px 14px;
-    border-radius: 12px; font-size: 14px; font-weight: 500; color: #5a4a3c;
-    text-decoration: none; transition: background 0.15s, color 0.15s;
-    border: none; background: none; width: 100%; cursor: pointer; text-align: left;
-  }
-  .nav-item:hover { background: #f3ede1; color: #2a1f15; }
-  .nav-item.active { background: #fae8d8; color: #c25e3f; font-weight: 600; }
-  .nav-item.danger:hover { background: #fef2f2; color: #dc2626; }
-  .stat-card { background: #fff; border: 1px solid #e8dcc7; border-radius: 16px; padding: 20px 24px; }
   .input-field {
     width: 100%; padding: 11px 14px; background: #fff;
     border: 1.5px solid #e8dcc7; border-radius: 12px;
@@ -45,682 +34,703 @@ tailwind.config = {
   }
   .input-field:focus { border-color: #c25e3f; box-shadow: 0 0 0 3px rgba(194,94,63,0.12); }
   .input-field::placeholder { color: #a8907c; }
+  .input-field:disabled { background: #f3ede1; cursor: not-allowed; color: #8a7266; }
   .btn-primary {
     display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-    padding: 11px 20px; background: #c25e3f; color: #fff;
+    padding: 11px 22px; background: #c25e3f; color: #fff;
     font-weight: 600; font-size: 14px; border-radius: 12px;
     border: none; cursor: pointer; transition: background 0.2s, transform 0.1s;
     box-shadow: 0 4px 12px rgba(194,94,63,0.25);
   }
   .btn-primary:hover { background: #a84a2e; }
   .btn-primary:active { transform: scale(0.97); }
-  .btn-primary:disabled { background: #d9b8ac; cursor: not-allowed; }
-  .btn-secondary {
+  .btn-primary:disabled { background: #d9b8ac; cursor: not-allowed; box-shadow: none; }
+  .btn-outline {
     display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-    padding: 11px 20px; background: #fff; color: #2a1f15;
+    padding: 11px 22px; background: #fff; color: #2a1f15;
     font-weight: 600; font-size: 14px; border-radius: 12px;
-    border: 1.5px solid #e8dcc7; cursor: pointer; transition: background 0.2s, border-color 0.2s;
+    border: 1.5px solid #e8dcc7; cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
   }
-  .btn-secondary:hover { background: #faf7f2; border-color: #c25e3f; color: #c25e3f; }
-  .badge { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 99px; font-size: 12px; font-weight: 600; }
-  .badge-confirmed { background: #dcfce7; color: #15803d; }
-  .badge-cancelled { background: #fee2e2; color: #dc2626; }
-  .badge-completed { background: #e0e7ff; color: #4338ca; }
-  .badge-pending   { background: #fef9c3; color: #a16207; }
+  .btn-outline:hover { background: #fdf6f0; border-color: #c25e3f; color: #c25e3f; }
+  .badge { display:inline-flex; align-items:center; padding:3px 10px; border-radius:99px; font-size:12px; font-weight:600; }
+  .badge-confirmed { background:#dcfce7; color:#15803d; }
+  .badge-cancelled { background:#fee2e2; color:#dc2626; }
+  .badge-completed { background:#e0e7ff; color:#4338ca; }
+  .badge-pending   { background:#fef9c3; color:#a16207; }
+  .tab-btn {
+    padding: 8px 18px; border-radius: 99px; font-size: 14px; font-weight: 500;
+    border: none; background: none; cursor: pointer; color: #5a4a3c;
+    transition: background 0.15s, color 0.15s; white-space: nowrap;
+  }
+  .tab-btn.active { background: #c25e3f; color: #fff; }
+  .tab-btn:not(.active):hover { background: #fae8d8; color: #c25e3f; }
   .avatar-lg {
     width: 80px; height: 80px; border-radius: 50%;
     background: #c25e3f; color: #fff; font-weight: 700; font-size: 28px;
     display: flex; align-items: center; justify-content: center;
     font-family: 'Fraunces', serif; flex-shrink: 0;
   }
-  .tab-btn {
-    padding: 8px 18px; border-radius: 99px; font-size: 14px; font-weight: 500;
-    border: none; background: none; cursor: pointer; color: #5a4a3c;
-    transition: background 0.15s, color 0.15s;
+  .avatar-sm {
+    width: 34px; height: 34px; border-radius: 50%;
+    background: #c25e3f; color: #fff; font-weight: 700; font-size: 13px;
+    font-family: 'Fraunces', serif; display: flex; align-items: center;
+    justify-content: center; cursor: pointer;
+    border: 2px solid transparent; transition: border-color 0.2s;
   }
-  .tab-btn.active { background: #c25e3f; color: #fff; }
-  .tab-btn:not(.active):hover { background: #fae8d8; color: #c25e3f; }
-  .spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid rgba(194,94,63,0.2); border-top-color: #c25e3f; border-radius: 50%; animation: spin 0.7s linear infinite; }
+  .avatar-sm:hover { border-color: rgba(194,94,63,0.4); }
+  .stat-card { background: #fff; border: 1px solid #e8dcc7; border-radius: 16px; padding: 20px 24px; }
+  .skeleton { background: linear-gradient(90deg,#f3ede1 25%,#faf7f2 50%,#f3ede1 75%); background-size:200% 100%; animation:shimmer 1.4s infinite; border-radius:10px; }
+  @keyframes shimmer { from{background-position:200% 0;}to{background-position:-200% 0;} }
+  .spinner { display:inline-block; width:18px; height:18px; border:2px solid rgba(194,94,63,0.2); border-top-color:#c25e3f; border-radius:50%; animation:spin 0.7s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
-  .toast { position: fixed; bottom: 24px; right: 24px; z-index: 9999; padding: 12px 20px; border-radius: 12px; font-size: 14px; font-weight: 500; box-shadow: 0 8px 24px rgba(0,0,0,0.15); animation: slideUp 0.3s ease; }
-  @keyframes slideUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+  /* dropdown */
+  .user-dropdown { position: relative; }
+  .dropdown-menu { position:absolute; right:0; top:calc(100% + 10px); background:#fff; border:1px solid #e8dcc7; border-radius:16px; box-shadow:0 8px 32px rgba(42,31,21,0.13); min-width:210px; padding:6px; z-index:200; display:none; }
+  .dropdown-menu.open { display:block; }
+  .dd-item { display:flex; align-items:center; gap:10px; padding:9px 12px; border-radius:10px; font-size:13px; color:#2a1f15; text-decoration:none; cursor:pointer; transition:background 0.15s; border:none; background:none; width:100%; text-align:left; }
+  .dd-item:hover { background:#faf7f2; }
+  .dd-item.red { color:#dc2626; }
+  .dd-item.red:hover { background:#fef2f2; }
+  .toast { position:fixed; bottom:24px; right:24px; z-index:9999; padding:12px 20px; border-radius:12px; font-size:14px; font-weight:500; box-shadow:0 8px 24px rgba(0,0,0,0.15); animation:slideUp 0.3s ease; max-width:320px; }
+  @keyframes slideUp { from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);} }
+  .strength-bar { height:4px; border-radius:99px; transition:width 0.3s,background 0.3s; }
 </style>
 </head>
 <body class="min-h-screen bg-cream-50">
 
-<!-- ══ TOP NAV ══ -->
-<nav class="fixed top-0 inset-x-0 z-50 bg-white border-b border-cream-200 h-16 flex items-center px-6 justify-between">
-  <a href="index.html" class="flex items-center gap-2">
-    <div class="w-9 h-9 rounded-full bg-rust-500 flex items-center justify-center text-white font-display font-bold text-lg">R</div>
-    <span class="font-display text-xl font-bold text-stone-800">RestauBook</span>
-  </a>
-  <div class="flex items-center gap-4">
-    <a href="restaurants.html" class="text-sm text-stone-600 hover:text-rust-600 font-medium transition-colors hidden sm:block">Browse restaurants</a>
-    <div id="navAvatar" class="w-9 h-9 rounded-full bg-rust-500 text-white font-display font-bold flex items-center justify-center text-sm cursor-pointer"></div>
+<!-- ══ NAV ══ -->
+<nav class="fixed top-0 inset-x-0 z-50 bg-cream-50/90 backdrop-blur-md border-b border-cream-200">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+    <a href="index.html" class="flex items-center gap-2">
+      <div class="w-9 h-9 rounded-full bg-rust-500 flex items-center justify-center text-white font-display font-bold text-lg">R</div>
+      <span class="font-display text-xl font-bold text-stone-800">RestauBook</span>
+    </a>
+    <div class="hidden md:flex items-center gap-5 text-sm font-medium text-stone-700">
+      <a href="restaurants.html" class="hover:text-rust-600 transition-colors">Restaurants</a>
+      <a href="bookings.html"    class="hover:text-rust-600 transition-colors">My Bookings</a>
+      <div class="user-dropdown">
+        <button onclick="toggleDropdown(event)" class="flex items-center gap-1.5 focus:outline-none">
+          <div id="avatarEl" class="avatar-sm">?</div>
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div id="dropdownMenu" class="dropdown-menu">
+          <div class="px-3 py-2 border-b border-cream-100 mb-1">
+            <p id="ddName"  class="font-semibold text-stone-800 text-sm truncate"></p>
+            <p id="ddEmail" class="text-stone-400 text-xs truncate mt-0.5"></p>
+          </div>
+          <a href="dashboard.html" class="dd-item" style="color:#c25e3f;font-weight:600">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Dashboard
+          </a>
+          <a href="bookings.html" class="dd-item">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>My Bookings
+          </a>
+          <button onclick="handleSignOut()" class="dd-item red">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sign out
+          </button>
+        </div>
+      </div>
+    </div>
+    <button onclick="document.getElementById('mobileMenu').classList.toggle('hidden')" class="md:hidden text-stone-700" aria-label="Menu">
+      <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+  </div>
+  <div id="mobileMenu" class="md:hidden hidden border-t border-cream-200 bg-cream-50">
+    <div class="px-4 py-3 space-y-1 text-sm">
+      <a href="index.html"       class="block py-2 px-3 rounded-lg hover:bg-cream-100">Home</a>
+      <a href="restaurants.html" class="block py-2 px-3 rounded-lg hover:bg-cream-100">Restaurants</a>
+      <a href="bookings.html"    class="block py-2 px-3 rounded-lg hover:bg-cream-100">My Bookings</a>
+      <button onclick="handleSignOut()" class="block w-full py-2 px-3 text-left rounded-lg text-red-600 hover:bg-red-50">Sign out</button>
+    </div>
   </div>
 </nav>
 
-<div class="flex pt-16 min-h-screen">
-
-  <!-- ══ SIDEBAR ══ -->
-  <aside class="sidebar hidden md:flex flex-col bg-white border-r border-cream-200 fixed top-16 bottom-0 left-0 overflow-y-auto p-4">
-    <!-- Profile summary -->
-    <div class="flex flex-col items-center text-center py-6 border-b border-cream-100 mb-4">
-      <div id="sidebarAvatar" class="avatar-lg mb-3">?</div>
-      <p id="sidebarName"  class="font-display font-bold text-stone-800 text-lg leading-tight"></p>
-      <p id="sidebarEmail" class="text-stone-400 text-xs mt-1 truncate max-w-full px-2"></p>
-    </div>
-
-    <nav class="flex flex-col gap-1 flex-1">
-      <button onclick="showTab('overview')" id="nav-overview" class="nav-item active">
-        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-        Overview
-      </button>
-      <button onclick="showTab('bookings')" id="nav-bookings" class="nav-item">
-        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-        My Bookings
-      </button>
-      <button onclick="showTab('favorites')" id="nav-favorites" class="nav-item">
-        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-        Favourites
-      </button>
-      <button onclick="showTab('profile')" id="nav-profile" class="nav-item">
-        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        Edit Profile
-      </button>
-      <a href="restaurants.html" class="nav-item">
-        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-        Find Restaurants
-      </a>
-      <div class="flex-1"></div>
-      <button onclick="handleSignOut()" class="nav-item danger mt-4">
-        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-        Sign out
-      </button>
-    </nav>
-  </aside>
-
-  <!-- ══ MAIN CONTENT ══ -->
-  <main class="flex-1 md:ml-[260px] p-6 max-w-5xl">
-
-    <!-- ── LOADING STATE ── -->
-    <div id="loadingState" class="flex items-center justify-center py-32">
-      <div class="text-center">
-        <div class="spinner mx-auto mb-4"></div>
-        <p class="text-stone-400 text-sm">Loading your dashboard…</p>
-      </div>
-    </div>
-
-    <!-- ── OVERVIEW TAB ── -->
-    <div id="tab-overview" class="hidden">
-      <div class="mb-8">
-        <h1 id="welcomeHeading" class="font-display text-3xl font-bold text-stone-800"></h1>
-        <p class="text-stone-500 text-sm mt-1">Here's what's happening with your reservations</p>
-      </div>
-
-      <!-- Stats row -->
-      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <div class="stat-card">
-          <p class="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-1">Total Bookings</p>
-          <p id="statTotal" class="font-display text-3xl font-bold text-stone-800">—</p>
-        </div>
-        <div class="stat-card">
-          <p class="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-1">Upcoming</p>
-          <p id="statUpcoming" class="font-display text-3xl font-bold text-rust-500">—</p>
-        </div>
-        <div class="stat-card">
-          <p class="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-1">Completed</p>
-          <p id="statCompleted" class="font-display text-3xl font-bold text-sage-500">—</p>
-        </div>
-        <div class="stat-card">
-          <p class="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-1">Favourites</p>
-          <p id="statFavs" class="font-display text-3xl font-bold text-stone-800">—</p>
-        </div>
-      </div>
-
-      <!-- Upcoming bookings -->
-      <div class="bg-white border border-cream-200 rounded-2xl overflow-hidden mb-6">
-        <div class="flex items-center justify-between px-6 py-4 border-b border-cream-100">
-          <h2 class="font-display text-lg font-bold text-stone-800">Upcoming reservations</h2>
-          <button onclick="showTab('bookings')" class="text-sm text-rust-600 hover:text-rust-700 font-medium transition-colors">View all →</button>
-        </div>
-        <div id="upcomingList" class="divide-y divide-cream-100">
-          <div class="px-6 py-8 text-center text-stone-400 text-sm">Loading…</div>
-        </div>
-      </div>
-
-      <!-- Favourite restaurants -->
-      <div class="bg-white border border-cream-200 rounded-2xl overflow-hidden">
-        <div class="flex items-center justify-between px-6 py-4 border-b border-cream-100">
-          <h2 class="font-display text-lg font-bold text-stone-800">Saved restaurants</h2>
-          <button onclick="showTab('favorites')" class="text-sm text-rust-600 hover:text-rust-700 font-medium transition-colors">View all →</button>
-        </div>
-        <div id="favPreviewList" class="divide-y divide-cream-100">
-          <div class="px-6 py-8 text-center text-stone-400 text-sm">Loading…</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── BOOKINGS TAB ── -->
-    <div id="tab-bookings" class="hidden">
-      <div class="flex items-center justify-between mb-6">
-        <div>
-          <h1 class="font-display text-3xl font-bold text-stone-800">My Bookings</h1>
-          <p class="text-stone-500 text-sm mt-1">All your reservations in one place</p>
-        </div>
-        <a href="restaurants.html" class="btn-primary text-sm">+ New booking</a>
-      </div>
-
-      <!-- Filter tabs -->
-      <div class="flex gap-2 mb-6 bg-cream-100 p-1 rounded-full w-fit">
-        <button onclick="filterBookings('all')"       id="bf-all"       class="tab-btn active">All</button>
-        <button onclick="filterBookings('upcoming')"  id="bf-upcoming"  class="tab-btn">Upcoming</button>
-        <button onclick="filterBookings('completed')" id="bf-completed" class="tab-btn">Completed</button>
-        <button onclick="filterBookings('cancelled')" id="bf-cancelled" class="tab-btn">Cancelled</button>
-      </div>
-
-      <div id="bookingsList" class="space-y-4">
-        <div class="text-center py-12"><div class="spinner mx-auto"></div></div>
-      </div>
-    </div>
-
-    <!-- ── FAVOURITES TAB ── -->
-    <div id="tab-favorites" class="hidden">
-      <div class="mb-6">
-        <h1 class="font-display text-3xl font-bold text-stone-800">Saved Restaurants</h1>
-        <p class="text-stone-500 text-sm mt-1">Restaurants you've added to your favourites</p>
-      </div>
-      <div id="favoritesList" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div class="col-span-2 text-center py-12"><div class="spinner mx-auto"></div></div>
-      </div>
-    </div>
-
-    <!-- ── PROFILE TAB ── -->
-    <div id="tab-profile" class="hidden">
-      <div class="mb-6">
-        <h1 class="font-display text-3xl font-bold text-stone-800">Edit Profile</h1>
-        <p class="text-stone-500 text-sm mt-1">Update your personal details</p>
-      </div>
-
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <!-- Profile form -->
-        <div class="lg:col-span-2 bg-white border border-cream-200 rounded-2xl p-6">
-          <div class="flex items-center gap-4 mb-6 pb-6 border-b border-cream-100">
-            <div id="profileAvatar" class="avatar-lg">?</div>
-            <div>
-              <p id="profileName" class="font-display text-xl font-bold text-stone-800"></p>
-              <p id="profileEmail" class="text-stone-400 text-sm mt-0.5"></p>
-              <p class="text-stone-400 text-xs mt-1">Member since <span id="profileJoined"></span></p>
-            </div>
-          </div>
-
-          <form id="profileForm" onsubmit="saveProfile(event)">
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-              <div>
-                <label class="block text-xs font-semibold text-stone-500 uppercase tracking-widest mb-1.5">Full name</label>
-                <input id="editName" type="text" class="input-field" placeholder="Your full name" />
-              </div>
-              <div>
-                <label class="block text-xs font-semibold text-stone-500 uppercase tracking-widest mb-1.5">Phone</label>
-                <input id="editPhone" type="tel" class="input-field" placeholder="+1 555 000 0000" />
-              </div>
-            </div>
-            <div class="mb-6">
-              <label class="block text-xs font-semibold text-stone-500 uppercase tracking-widest mb-1.5">Email address</label>
-              <input id="editEmail" type="email" class="input-field" disabled style="opacity:0.6;cursor:not-allowed;" />
-              <p class="text-stone-400 text-xs mt-1">Email cannot be changed here. Contact support.</p>
-            </div>
-            <div id="profileMsg" class="hidden mb-4 px-4 py-3 rounded-xl text-sm font-medium"></div>
-            <button type="submit" id="saveProfileBtn" class="btn-primary">
-              <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-              Save changes
-            </button>
-          </form>
-        </div>
-
-        <!-- Security section -->
-        <div class="bg-white border border-cream-200 rounded-2xl p-6 h-fit">
-          <h3 class="font-display text-lg font-bold text-stone-800 mb-4">Security</h3>
-          <div class="space-y-3">
-            <button onclick="sendPasswordReset()" class="btn-secondary w-full text-sm justify-start gap-3">
-              <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-              Change password
-            </button>
-          </div>
-          <div class="mt-6 pt-5 border-t border-cream-100">
-            <p class="text-xs font-semibold text-stone-500 uppercase tracking-widest mb-3">Account</p>
-            <button onclick="if(confirm('Sign out of all devices?')) handleSignOut()" class="btn-secondary w-full text-sm justify-start gap-3 text-red-600 border-red-200 hover:bg-red-50">
-              <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-              Sign out
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </main>
+<!-- ══ AUTH GATE ══ -->
+<div id="authGate" class="flex items-center justify-center min-h-screen">
+  <div class="text-center">
+    <div class="spinner mx-auto mb-4" style="width:32px;height:32px;border-width:3px"></div>
+    <p class="text-stone-500 text-sm">Loading your dashboard…</p>
+  </div>
 </div>
 
-<!-- Mobile bottom nav -->
-<nav class="md:hidden fixed bottom-0 inset-x-0 bg-white border-t border-cream-200 flex z-40">
-  <button onclick="showTab('overview')"  id="mnav-overview"  class="flex-1 flex flex-col items-center py-3 text-xs font-medium text-rust-500 gap-1">
-    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-    Overview
-  </button>
-  <button onclick="showTab('bookings')"  id="mnav-bookings"  class="flex-1 flex flex-col items-center py-3 text-xs font-medium text-stone-400 gap-1">
-    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-    Bookings
-  </button>
-  <button onclick="showTab('favorites')" id="mnav-favorites" class="flex-1 flex flex-col items-center py-3 text-xs font-medium text-stone-400 gap-1">
-    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-    Saved
-  </button>
-  <button onclick="showTab('profile')"   id="mnav-profile"   class="flex-1 flex flex-col items-center py-3 text-xs font-medium text-stone-400 gap-1">
-    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-    Profile
-  </button>
-</nav>
+<!-- ══ MAIN CONTENT ══ -->
+<main id="mainContent" class="hidden pt-24 pb-20 px-4 sm:px-6 max-w-5xl mx-auto">
+
+  <!-- Profile header card -->
+  <div class="bg-white border border-cream-200 rounded-2xl p-6 sm:p-8 mb-6 shadow-sm">
+    <div class="flex flex-col sm:flex-row items-start sm:items-center gap-5">
+      <div id="profileAvatar" class="avatar-lg">?</div>
+      <div class="flex-1 min-w-0">
+        <h1 id="profileName"  class="font-display text-2xl sm:text-3xl font-bold text-stone-800 mb-0.5">Loading…</h1>
+        <p  id="profileEmail" class="text-stone-400 text-sm mb-3"></p>
+        <div class="flex flex-wrap gap-5 text-sm text-stone-600">
+          <span><strong id="statBookings" class="text-stone-800">—</strong> bookings</span>
+          <span><strong id="statFavs"     class="text-stone-800">—</strong> favourites</span>
+          <span>Member since <strong id="statSince" class="text-stone-800">—</strong></span>
+        </div>
+      </div>
+      <button onclick="showTab('profile')" class="btn-outline text-sm flex-shrink-0">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        Edit profile
+      </button>
+    </div>
+  </div>
+
+  <!-- Stats row -->
+  <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+    <div class="stat-card text-center">
+      <div id="s1" class="font-display text-3xl font-bold text-rust-500">—</div>
+      <div class="text-stone-500 text-xs mt-1">Total bookings</div>
+    </div>
+    <div class="stat-card text-center">
+      <div id="s2" class="font-display text-3xl font-bold text-sage-500">—</div>
+      <div class="text-stone-500 text-xs mt-1">Completed</div>
+    </div>
+    <div class="stat-card text-center">
+      <div id="s3" class="font-display text-3xl font-bold text-amber-500">—</div>
+      <div class="text-stone-500 text-xs mt-1">Upcoming</div>
+    </div>
+    <div class="stat-card text-center">
+      <div id="s4" class="font-display text-3xl font-bold text-stone-500">—</div>
+      <div class="text-stone-500 text-xs mt-1">Favourites</div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="flex gap-2 mb-6 overflow-x-auto pb-1 scrollbar-hide">
+    <button class="tab-btn active" id="tab-bookings"   onclick="showTab('bookings')">📅 Bookings</button>
+    <button class="tab-btn"        id="tab-favourites" onclick="showTab('favourites')">♥ Favourites</button>
+    <button class="tab-btn"        id="tab-profile"    onclick="showTab('profile')">👤 Edit Profile</button>
+    <button class="tab-btn"        id="tab-password"   onclick="showTab('password')">🔒 Password</button>
+  </div>
+
+  <!-- ══ PANE: BOOKINGS ══ -->
+  <div id="pane-bookings">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="font-display text-xl font-bold text-stone-800">My Reservations</h2>
+      <a href="restaurants.html" class="text-rust-600 hover:text-rust-700 text-sm font-semibold transition-colors">+ New booking</a>
+    </div>
+    <!-- Filter pills -->
+    <div class="flex gap-2 mb-5 flex-wrap">
+      <button onclick="filterBookings('all')"       id="bf-all"       class="bfilt text-xs px-3 py-1.5 rounded-full border border-cream-200 font-medium bg-rust-500 text-white">All</button>
+      <button onclick="filterBookings('confirmed')" id="bf-confirmed" class="bfilt text-xs px-3 py-1.5 rounded-full border border-cream-200 font-medium text-stone-600 bg-white hover:bg-cream-100">Confirmed</button>
+      <button onclick="filterBookings('completed')" id="bf-completed" class="bfilt text-xs px-3 py-1.5 rounded-full border border-cream-200 font-medium text-stone-600 bg-white hover:bg-cream-100">Completed</button>
+      <button onclick="filterBookings('cancelled')" id="bf-cancelled" class="bfilt text-xs px-3 py-1.5 rounded-full border border-cream-200 font-medium text-stone-600 bg-white hover:bg-cream-100">Cancelled</button>
+    </div>
+    <div id="bookingsLoading" class="space-y-3">
+      <div class="skeleton h-24 w-full"></div>
+      <div class="skeleton h-24 w-full"></div>
+    </div>
+    <div id="bookingsList" class="hidden space-y-3"></div>
+    <div id="bookingsEmpty" class="hidden bg-white border border-cream-200 rounded-2xl p-12 text-center">
+      <div class="text-5xl mb-4">📅</div>
+      <h3 class="font-display text-lg font-semibold text-stone-700 mb-2">No bookings yet</h3>
+      <p class="text-stone-500 text-sm mb-5">Your reservations will appear here once you book a table.</p>
+      <a href="restaurants.html" class="btn-primary inline-flex">Browse restaurants</a>
+    </div>
+  </div>
+
+  <!-- ══ PANE: FAVOURITES ══ -->
+  <div id="pane-favourites" class="hidden">
+    <h2 class="font-display text-xl font-bold text-stone-800 mb-5">Saved Restaurants</h2>
+    <div id="favsLoading" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div class="skeleton h-32"></div>
+      <div class="skeleton h-32"></div>
+    </div>
+    <div id="favsList" class="hidden grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
+    <div id="favsEmpty" class="hidden bg-white border border-cream-200 rounded-2xl p-12 text-center">
+      <div class="text-5xl mb-4">♡</div>
+      <h3 class="font-display text-lg font-semibold text-stone-700 mb-2">No favourites yet</h3>
+      <p class="text-stone-500 text-sm mb-5">Heart a restaurant while browsing to save it here.</p>
+      <a href="restaurants.html" class="btn-primary inline-flex">Discover restaurants</a>
+    </div>
+  </div>
+
+  <!-- ══ PANE: EDIT PROFILE ══ -->
+  <div id="pane-profile" class="hidden">
+    <h2 class="font-display text-xl font-bold text-stone-800 mb-5">Edit Profile</h2>
+    <div class="bg-white border border-cream-200 rounded-2xl p-6 sm:p-8">
+
+      <!-- Avatar preview -->
+      <div class="flex items-center gap-5 mb-7 pb-7 border-b border-cream-200">
+        <div id="formAvatar" class="avatar-lg">?</div>
+        <div>
+          <p class="font-semibold text-stone-800 text-sm mb-1">Profile initials</p>
+          <p class="text-stone-400 text-xs leading-relaxed">Your avatar is auto-generated from your name.<br/>It updates instantly when you save.</p>
+        </div>
+      </div>
+
+      <form id="profileForm" onsubmit="saveProfile(event)">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-6">
+          <div>
+            <label class="block text-xs font-semibold text-stone-500 uppercase tracking-widest mb-1.5">Full name</label>
+            <input id="editName" type="text" class="input-field" placeholder="Jane Smith" autocomplete="name" />
+            <p id="editNameErr" class="text-red-600 text-xs mt-1 hidden"></p>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-stone-500 uppercase tracking-widest mb-1.5">Email address</label>
+            <input id="editEmail" type="email" class="input-field" disabled />
+            <p class="text-stone-400 text-xs mt-1">Email address cannot be changed</p>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-stone-500 uppercase tracking-widest mb-1.5">Phone number</label>
+            <input id="editPhone" type="tel" class="input-field" placeholder="+1 555 000 0000" autocomplete="tel" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-stone-500 uppercase tracking-widest mb-1.5">Member since</label>
+            <input id="editSince" type="text" class="input-field" disabled />
+          </div>
+        </div>
+
+        <div id="profileSaveError"   class="hidden mb-4 px-4 py-3 bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl"></div>
+        <div id="profileSaveSuccess" class="hidden mb-4 px-4 py-3 bg-green-50 border border-green-200 text-green-700 text-sm rounded-xl">✓ Profile updated successfully!</div>
+
+        <div class="flex gap-3">
+          <button type="submit" id="saveProfileBtn" class="btn-primary">
+            <span id="saveProfileLabel">Save changes</span>
+          </button>
+          <button type="button" onclick="loadProfile()" class="btn-outline">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ══ PANE: CHANGE PASSWORD ══ -->
+  <div id="pane-password" class="hidden">
+    <h2 class="font-display text-xl font-bold text-stone-800 mb-5">Change Password</h2>
+    <div class="bg-white border border-cream-200 rounded-2xl p-6 sm:p-8 max-w-md">
+      <form id="passwordForm" onsubmit="changePassword(event)" novalidate>
+
+        <div class="mb-4">
+          <label class="block text-xs font-semibold text-stone-500 uppercase tracking-widest mb-1.5">New password</label>
+          <div class="relative">
+            <input id="newPassword" type="password" placeholder="Min. 8 characters" class="input-field pr-11" oninput="checkPwdStrength()" autocomplete="new-password" />
+            <button type="button" onclick="togglePwd('newPassword','eye1')" class="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600">
+              <svg id="eye1" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+          <div class="mt-2 bg-cream-200 rounded-full overflow-hidden">
+            <div id="pwdStrengthBar" class="strength-bar" style="width:0;background:#e8dcc7"></div>
+          </div>
+          <p id="newPasswordErr" class="text-red-600 text-xs mt-1 hidden"></p>
+        </div>
+
+        <div class="mb-6">
+          <label class="block text-xs font-semibold text-stone-500 uppercase tracking-widest mb-1.5">Confirm new password</label>
+          <div class="relative">
+            <input id="confirmPassword" type="password" placeholder="Repeat new password" class="input-field pr-11" autocomplete="new-password" />
+            <button type="button" onclick="togglePwd('confirmPassword','eye2')" class="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600">
+              <svg id="eye2" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+          <p id="confirmPasswordErr" class="text-red-600 text-xs mt-1 hidden"></p>
+        </div>
+
+        <div id="pwdError"   class="hidden mb-4 px-4 py-3 bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl"></div>
+        <div id="pwdSuccess" class="hidden mb-4 px-4 py-3 bg-green-50 border border-green-200 text-green-700 text-sm rounded-xl">✓ Password updated successfully!</div>
+
+        <button type="submit" id="changePwdBtn" class="btn-primary">
+          <span id="changePwdLabel">Update password</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+</main>
 
 <script>
 const SUPABASE_URL      = 'https://bnrptywymmnexndaqdko.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJucnB0eXd5bW1uZXhuZGFxZGtvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc3Nzc1MTcsImV4cCI6MjA5MzM1MzUxN30.4-bH2KuXPYmoPRUgQSS5iwIYxZgFxHv6md8dLS-wWEo';
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-let currentUser   = null;
-let currentProfile = null;
-let allBookings   = [];
-let currentBookingFilter = 'all';
+let currentUser  = null;
+let allBookings  = [];
+let currentFilter = 'all';
 
-// ── AUTH GUARD ──
-async function initDashboard() {
+// ── AUTH GUARD ──────────────────────────────────────────────
+async function initAuth() {
   const { data: { session } } = await sb.auth.getSession();
   if (!session) {
     window.location.href = 'login.html';
     return;
   }
   currentUser = session.user;
-  await loadProfile();
-  updateNavAvatar();
-  document.getElementById('loadingState').style.display = 'none';
-  showTab('overview');
-  loadOverviewData();
+  document.getElementById('authGate').style.display    = 'none';
+  document.getElementById('mainContent').style.display = 'block';
+
+  const name  = currentUser.user_metadata?.full_name || currentUser.email.split('@')[0];
+  const init  = name.charAt(0).toUpperCase();
+  const email = currentUser.email;
+
+  document.getElementById('avatarEl').textContent    = init;
+  document.getElementById('ddName').textContent      = name;
+  document.getElementById('ddEmail').textContent     = email;
+  document.getElementById('profileAvatar').textContent = init;
+  document.getElementById('formAvatar').textContent  = init;
+  document.getElementById('profileName').textContent = name;
+  document.getElementById('profileEmail').textContent = email;
+
+  const since = new Date(currentUser.created_at).toLocaleDateString('en-US', { month:'short', year:'numeric' });
+  document.getElementById('statSince').textContent  = since;
+  document.getElementById('editSince').value        = since;
+  document.getElementById('editEmail').value        = email;
+  document.getElementById('editName').value         = name;
+
+  await Promise.all([ loadBookings(), loadFavourites() ]);
 }
 
-// ── PROFILE ──
-async function loadProfile() {
-  const { data, error } = await sb
-    .from('profiles')
-    .select('*')
-    .eq('id', currentUser.id)
-    .single();
+// ── NAV DROPDOWN ────────────────────────────────────────────
+function toggleDropdown(e) {
+  e.stopPropagation();
+  document.getElementById('dropdownMenu').classList.toggle('open');
+}
+document.addEventListener('click', () => {
+  document.getElementById('dropdownMenu')?.classList.remove('open');
+});
 
-  if (!error && data) {
-    currentProfile = data;
-  } else {
-    // Fallback from auth metadata
-    currentProfile = {
-      id:         currentUser.id,
-      email:      currentUser.email,
-      full_name:  currentUser.user_metadata?.full_name || currentUser.email.split('@')[0],
-      phone:      currentUser.user_metadata?.phone || '',
-      created_at: currentUser.created_at,
-    };
-  }
-
-  const initials = getInitials(currentProfile.full_name || currentProfile.email);
-  const joined   = new Date(currentProfile.created_at).toLocaleDateString('en-US', { month:'long', year:'numeric' });
-
-  // Sidebar
-  document.getElementById('sidebarAvatar').textContent = initials;
-  document.getElementById('sidebarName').textContent   = currentProfile.full_name || 'Guest';
-  document.getElementById('sidebarEmail').textContent  = currentProfile.email;
-  document.getElementById('navAvatar').textContent     = initials;
-
-  // Welcome
-  document.getElementById('welcomeHeading').textContent = `Welcome back, ${(currentProfile.full_name || 'there').split(' ')[0]}! 👋`;
-
-  // Profile form
-  document.getElementById('profileAvatar').textContent   = initials;
-  document.getElementById('profileName').textContent     = currentProfile.full_name || '';
-  document.getElementById('profileEmail').textContent    = currentProfile.email;
-  document.getElementById('profileJoined').textContent   = joined;
-  document.getElementById('editName').value  = currentProfile.full_name  || '';
-  document.getElementById('editPhone').value = currentProfile.phone      || '';
-  document.getElementById('editEmail').value = currentProfile.email;
+async function handleSignOut() {
+  await sb.auth.signOut();
+  window.location.href = 'index.html';
 }
 
-async function saveProfile(e) {
-  e.preventDefault();
-  const name  = document.getElementById('editName').value.trim();
-  const phone = document.getElementById('editPhone').value.trim();
-  const btn   = document.getElementById('saveProfileBtn');
-  const msg   = document.getElementById('profileMsg');
-
-  if (!name) { showProfileMsg('Please enter your name.', 'error'); return; }
-
-  btn.disabled = true;
-  btn.textContent = 'Saving…';
-
-  const { error } = await sb.from('profiles').upsert({
-    id:         currentUser.id,
-    email:      currentProfile.email,
-    full_name:  name,
-    phone:      phone || null,
-    updated_at: new Date().toISOString(),
-  }, { onConflict: 'id' });
-
-  btn.disabled = false;
-  btn.innerHTML = '<svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> Save changes';
-
-  if (error) {
-    showProfileMsg('Could not save: ' + error.message, 'error');
-  } else {
-    currentProfile.full_name = name;
-    currentProfile.phone     = phone;
-    document.getElementById('sidebarName').textContent  = name;
-    document.getElementById('profileName').textContent  = name;
-    const initials = getInitials(name);
-    document.getElementById('sidebarAvatar').textContent  = initials;
-    document.getElementById('profileAvatar').textContent  = initials;
-    document.getElementById('navAvatar').textContent      = initials;
-    showProfileMsg('Profile updated successfully!', 'success');
-  }
-}
-
-function showProfileMsg(text, type) {
-  const el = document.getElementById('profileMsg');
-  el.textContent = text;
-  el.className   = 'mb-4 px-4 py-3 rounded-xl text-sm font-medium ' +
-    (type === 'success' ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-red-50 text-red-700 border border-red-200');
-  el.classList.remove('hidden');
-  setTimeout(() => el.classList.add('hidden'), 5000);
-}
-
-async function sendPasswordReset() {
-  const { error } = await sb.auth.resetPasswordForEmail(currentProfile.email, {
-    redirectTo: window.location.origin + '/index.html',
+// ── TABS ────────────────────────────────────────────────────
+function showTab(name) {
+  ['bookings','favourites','profile','password'].forEach(t => {
+    document.getElementById('pane-' + t).classList.toggle('hidden', t !== name);
+    document.getElementById('tab-' + t).classList.toggle('active', t === name);
   });
-  if (error) {
-    showToast('Could not send reset email: ' + error.message, 'error');
-  } else {
-    showToast('Password reset email sent! Check your inbox.', 'success');
-  }
 }
 
-// ── OVERVIEW DATA ──
-async function loadOverviewData() {
-  await Promise.all([loadBookings(), loadFavorites()]);
-  renderOverview();
-}
-
-// ── BOOKINGS ──
+// ── BOOKINGS ────────────────────────────────────────────────
 async function loadBookings() {
-  const { data, error } = await sb
-    .from('bookings')
-    .select(`*, restaurants(name, cuisine, image_url, address, city)`)
-    .eq('user_id', currentUser.id)
-    .order('booking_date', { ascending: false });
+  try {
+    const { data, error } = await sb
+      .from('bookings')
+      .select('*, restaurants(name, cuisine, image_url, address)')
+      .eq('user_id', currentUser.id)
+      .order('booking_date', { ascending: false });
 
-  if (error) {
-    console.error('loadBookings:', error.message);
-    allBookings = [];
-    return;
-  }
-  allBookings = data || [];
-}
+    if (error) throw error;
 
-function renderOverview() {
-  const now      = new Date().toISOString().split('T')[0];
-  const upcoming = allBookings.filter(b => b.booking_date >= now && b.status !== 'cancelled');
-  const completed = allBookings.filter(b => b.status === 'completed' || b.booking_date < now && b.status === 'confirmed');
+    allBookings = data || [];
 
-  document.getElementById('statTotal').textContent     = allBookings.length;
-  document.getElementById('statUpcoming').textContent  = upcoming.length;
-  document.getElementById('statCompleted').textContent = completed.length;
+    // Stats
+    const total     = allBookings.length;
+    const completed = allBookings.filter(b => b.status === 'completed').length;
+    const upcoming  = allBookings.filter(b => b.status === 'confirmed' && b.booking_date >= new Date().toISOString().split('T')[0]).length;
 
-  // Upcoming list
-  const upEl = document.getElementById('upcomingList');
-  if (upcoming.length === 0) {
-    upEl.innerHTML = `<div class="px-6 py-10 text-center">
-      <div class="text-4xl mb-3">🍽️</div>
-      <p class="font-display text-lg font-semibold text-stone-700 mb-1">No upcoming reservations</p>
-      <p class="text-stone-400 text-sm mb-4">Ready to book your next great meal?</p>
-      <a href="restaurants.html" class="inline-block px-5 py-2.5 bg-rust-500 text-white text-sm font-semibold rounded-xl hover:bg-rust-600 transition-colors">Browse restaurants</a>
-    </div>`;
-  } else {
-    upEl.innerHTML = upcoming.slice(0, 3).map(b => bookingRow(b)).join('');
+    document.getElementById('statBookings').textContent = total;
+    document.getElementById('s1').textContent = total;
+    document.getElementById('s2').textContent = completed;
+    document.getElementById('s3').textContent = upcoming;
+
+    renderBookings('all');
+  } catch (err) {
+    document.getElementById('bookingsLoading').innerHTML = `<p class="text-red-600 text-sm px-1">Failed to load bookings: ${err.message}</p>`;
   }
 }
 
-function bookingRow(b) {
-  const r    = b.restaurants || {};
-  const date = new Date(b.booking_date + 'T12:00').toLocaleDateString('en-US', { weekday:'short', month:'short', day:'numeric' });
-  const statusMap = { confirmed:'badge-confirmed', cancelled:'badge-cancelled', completed:'badge-completed', pending:'badge-pending' };
-  return `<div class="flex items-center gap-4 px-6 py-4">
-    <img src="${r.image_url || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=80&h=80&fit=crop'}" alt="${r.name || 'Restaurant'}" class="w-14 h-14 rounded-xl object-cover flex-shrink-0" loading="lazy" />
-    <div class="flex-1 min-w-0">
-      <p class="font-semibold text-stone-800 text-sm truncate">${r.name || 'Restaurant'}</p>
-      <p class="text-stone-500 text-xs mt-0.5">${date} · ${b.booking_time} · ${b.party_size} guest${b.party_size > 1 ? 's' : ''}</p>
-      <p class="font-mono text-xs text-rust-600 mt-0.5">${b.confirmation_code}</p>
-    </div>
-    <div class="flex flex-col items-end gap-2 flex-shrink-0">
-      <span class="badge ${statusMap[b.status] || 'badge-pending'}">${b.status}</span>
-      ${b.status === 'confirmed' && b.booking_date >= new Date().toISOString().split('T')[0]
-        ? `<button onclick="cancelBooking('${b.id}')" class="text-xs text-stone-400 hover:text-red-600 transition-colors">Cancel</button>`
-        : ''}
-    </div>
-  </div>`;
+function filterBookings(filter) {
+  currentFilter = filter;
+  document.querySelectorAll('.bfilt').forEach(b => {
+    const isActive = b.id === 'bf-' + filter;
+    b.className = `bfilt text-xs px-3 py-1.5 rounded-full border font-medium transition-colors ${
+      isActive ? 'bg-rust-500 text-white border-rust-500' : 'border-cream-200 text-stone-600 bg-white hover:bg-cream-100'
+    }`;
+  });
+  renderBookings(filter);
 }
 
-function renderBookingsList(filter) {
-  const now = new Date().toISOString().split('T')[0];
-  let filtered = allBookings;
-  if (filter === 'upcoming')  filtered = allBookings.filter(b => b.booking_date >= now && b.status !== 'cancelled');
-  if (filter === 'completed') filtered = allBookings.filter(b => b.status === 'completed' || (b.booking_date < now && b.status === 'confirmed'));
-  if (filter === 'cancelled') filtered = allBookings.filter(b => b.status === 'cancelled');
+function renderBookings(filter) {
+  const filtered = filter === 'all' ? allBookings : allBookings.filter(b => b.status === filter);
 
-  const el = document.getElementById('bookingsList');
+  document.getElementById('bookingsLoading').classList.add('hidden');
+  document.getElementById('bookingsList').classList.remove('hidden');
+  document.getElementById('bookingsEmpty').classList.add('hidden');
+
   if (filtered.length === 0) {
-    el.innerHTML = `<div class="bg-white border border-cream-200 rounded-2xl px-6 py-14 text-center">
-      <div class="text-4xl mb-3">📅</div>
-      <p class="font-display text-lg font-semibold text-stone-700 mb-1">No ${filter === 'all' ? '' : filter} bookings</p>
-      <p class="text-stone-400 text-sm mb-4">Your reservations will appear here.</p>
-      <a href="restaurants.html" class="inline-block px-5 py-2.5 bg-rust-500 text-white text-sm font-semibold rounded-xl hover:bg-rust-600 transition-colors">Find a table</a>
-    </div>`;
+    document.getElementById('bookingsList').innerHTML = '';
+    document.getElementById('bookingsEmpty').classList.remove('hidden');
     return;
   }
 
-  el.innerHTML = filtered.map(b => {
-    const r    = b.restaurants || {};
-    const date = new Date(b.booking_date + 'T12:00').toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric' });
-    const statusMap = { confirmed:'badge-confirmed', cancelled:'badge-cancelled', completed:'badge-completed', pending:'badge-pending' };
-    const isUpcoming = b.booking_date >= now && b.status === 'confirmed';
-    return `<div class="bg-white border border-cream-200 rounded-2xl p-5 flex gap-4 items-start">
-      <img src="${r.image_url || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=120&h=120&fit=crop'}" alt="${r.name || 'Restaurant'}" class="w-20 h-20 rounded-xl object-cover flex-shrink-0" loading="lazy" />
-      <div class="flex-1 min-w-0">
-        <div class="flex items-start justify-between gap-2 flex-wrap">
-          <div>
-            <p class="font-display font-bold text-stone-800 text-lg leading-tight">${r.name || 'Restaurant'}</p>
-            <p class="text-stone-500 text-sm mt-0.5">${r.cuisine || ''} · ${r.city || ''}</p>
+  document.getElementById('bookingsList').innerHTML = filtered.map(b => {
+    const r = b.restaurants || {};
+    const dateLabel = new Date(b.booking_date + 'T12:00').toLocaleDateString('en-US', { weekday:'short', month:'short', day:'numeric', year:'numeric' });
+    const isPast    = b.booking_date < new Date().toISOString().split('T')[0];
+    const badgeMap  = { confirmed:'badge-confirmed', cancelled:'badge-cancelled', completed:'badge-completed', pending:'badge-pending' };
+    const badge     = badgeMap[b.status] || 'badge-pending';
+    const img       = r.image_url || 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=120&h=120&fit=crop';
+
+    return `<div class="bg-white border border-cream-200 rounded-2xl overflow-hidden flex gap-0 shadow-sm hover:shadow-md transition-shadow">
+      <img src="${img}" alt="${r.name || 'Restaurant'}" class="w-24 sm:w-32 object-cover flex-shrink-0" loading="lazy" />
+      <div class="flex-1 p-4 flex flex-col justify-between min-w-0">
+        <div class="flex items-start justify-between gap-2">
+          <div class="min-w-0">
+            <h3 class="font-display font-bold text-stone-800 text-base truncate">${r.name || 'Restaurant'}</h3>
+            <p class="text-stone-400 text-xs mt-0.5">${r.cuisine || ''} · ${r.address || ''}</p>
           </div>
-          <span class="badge ${statusMap[b.status] || 'badge-pending'}">${b.status}</span>
+          <span class="badge ${badge} shrink-0">${b.status.charAt(0).toUpperCase() + b.status.slice(1)}</span>
         </div>
-        <div class="mt-3 flex flex-wrap gap-x-6 gap-y-1 text-sm text-stone-600">
-          <span>📅 ${date}</span>
-          <span>🕐 ${b.booking_time}</span>
-          <span>👥 ${b.party_size} guest${b.party_size > 1 ? 's' : ''}</span>
+        <div class="flex flex-wrap items-center gap-3 mt-3 text-sm">
+          <span class="flex items-center gap-1.5 text-stone-600">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            ${dateLabel}
+          </span>
+          <span class="flex items-center gap-1.5 text-stone-600">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            ${b.booking_time}
+          </span>
+          <span class="flex items-center gap-1.5 text-stone-600">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+            ${b.party_size} guests
+          </span>
+          <span class="font-mono text-xs text-stone-400">${b.confirmation_code}</span>
         </div>
-        ${b.special_requests ? `<p class="mt-2 text-xs text-stone-400 italic">"${b.special_requests}"</p>` : ''}
-        <div class="mt-3 flex items-center justify-between flex-wrap gap-2">
-          <span class="font-mono text-xs bg-cream-100 px-2 py-1 rounded-lg text-rust-700 font-semibold">${b.confirmation_code}</span>
-          ${isUpcoming ? `<button onclick="cancelBooking('${b.id}')" class="text-xs text-red-500 hover:text-red-700 font-medium transition-colors border border-red-200 px-3 py-1 rounded-lg hover:bg-red-50">Cancel booking</button>` : ''}
-        </div>
+        ${b.status === 'confirmed' && !isPast ? `
+          <div class="mt-3 flex gap-2">
+            <button onclick="cancelBooking('${b.id}')" class="text-xs px-3 py-1.5 border border-red-200 text-red-600 hover:bg-red-50 rounded-lg font-medium transition-colors">Cancel booking</button>
+          </div>` : ''}
+        ${b.special_requests ? `<p class="mt-2 text-stone-400 text-xs italic truncate">Note: ${b.special_requests}</p>` : ''}
       </div>
     </div>`;
   }).join('');
 }
 
 async function cancelBooking(bookingId) {
-  if (!confirm('Are you sure you want to cancel this reservation?')) return;
-  const { error } = await sb.from('bookings').update({ status: 'cancelled', updated_at: new Date().toISOString() })
-    .eq('id', bookingId).eq('user_id', currentUser.id);
-  if (error) {
-    showToast('Could not cancel booking. Please try again.', 'error');
-  } else {
+  if (!confirm('Are you sure you want to cancel this booking?')) return;
+  try {
+    const { error } = await sb
+      .from('bookings')
+      .update({ status: 'cancelled', updated_at: new Date().toISOString() })
+      .eq('id', bookingId)
+      .eq('user_id', currentUser.id);
+    if (error) throw error;
     showToast('Booking cancelled.', 'success');
     await loadBookings();
-    renderBookingsList(currentBookingFilter);
-    renderOverview();
+    filterBookings(currentFilter);
+  } catch (err) {
+    showToast('Could not cancel booking: ' + err.message, 'error');
   }
 }
 
-function filterBookings(filter) {
-  currentBookingFilter = filter;
-  ['all','upcoming','completed','cancelled'].forEach(f => {
-    document.getElementById('bf-' + f).classList.toggle('active', f === filter);
-  });
-  renderBookingsList(filter);
-}
+// ── FAVOURITES ──────────────────────────────────────────────
+async function loadFavourites() {
+  try {
+    const { data, error } = await sb
+      .from('favorites')
+      .select('restaurant_id, restaurants(id, name, cuisine, image_url, rating, price_range, city)')
+      .eq('user_id', currentUser.id);
 
-// ── FAVOURITES ──
-let favRestaurants = [];
+    if (error) throw error;
+    const favs = (data || []).filter(f => f.restaurants);
 
-async function loadFavorites() {
-  const { data, error } = await sb
-    .from('favorites')
-    .select(`*, restaurants(id, name, cuisine, image_url, address, city, rating, price_range)`)
-    .eq('user_id', currentUser.id)
-    .order('created_at', { ascending: false });
+    document.getElementById('favsLoading').classList.add('hidden');
+    document.getElementById('favsList').classList.remove('hidden');
+    document.getElementById('s4').textContent        = favs.length;
+    document.getElementById('statFavs').textContent  = favs.length;
 
-  if (error) { console.error('loadFavorites:', error.message); favRestaurants = []; return; }
-  favRestaurants = (data || []).map(f => f.restaurants).filter(Boolean);
-  document.getElementById('statFavs').textContent = favRestaurants.length;
+    if (favs.length === 0) {
+      document.getElementById('favsEmpty').classList.remove('hidden');
+      return;
+    }
 
-  // Overview preview (3 items)
-  const favPrev = document.getElementById('favPreviewList');
-  if (favRestaurants.length === 0) {
-    favPrev.innerHTML = `<div class="px-6 py-10 text-center">
-      <div class="text-4xl mb-3">❤️</div>
-      <p class="font-display text-lg font-semibold text-stone-700 mb-1">No saved restaurants yet</p>
-      <p class="text-stone-400 text-sm mb-4">Tap ♡ on any restaurant to save it here.</p>
-      <a href="restaurants.html" class="inline-block px-5 py-2.5 bg-rust-500 text-white text-sm font-semibold rounded-xl hover:bg-rust-600 transition-colors">Explore restaurants</a>
-    </div>`;
-  } else {
-    favPrev.innerHTML = favRestaurants.slice(0, 3).map(r => favRow(r)).join('');
-  }
-}
-
-function favRow(r) {
-  const stars = '★'.repeat(Math.round(r.rating)) + '☆'.repeat(5 - Math.round(r.rating));
-  return `<div class="flex items-center gap-4 px-6 py-4">
-    <img src="${r.image_url || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=80&h=80&fit=crop'}" alt="${r.name}" class="w-14 h-14 rounded-xl object-cover flex-shrink-0" loading="lazy" />
-    <div class="flex-1 min-w-0">
-      <p class="font-semibold text-stone-800 text-sm truncate">${r.name}</p>
-      <p class="text-stone-500 text-xs mt-0.5">${r.cuisine} · ${r.city}</p>
-      <p class="text-amber-500 text-xs mt-0.5">${stars} <span class="text-stone-400">${r.rating}</span></p>
-    </div>
-    <a href="restaurants.html" class="text-xs text-rust-600 hover:text-rust-700 font-medium whitespace-nowrap transition-colors">Book →</a>
-  </div>`;
-}
-
-function renderFavoritesFull() {
-  const el = document.getElementById('favoritesList');
-  if (favRestaurants.length === 0) {
-    el.innerHTML = `<div class="col-span-2 bg-white border border-cream-200 rounded-2xl px-6 py-14 text-center">
-      <div class="text-4xl mb-3">❤️</div>
-      <p class="font-display text-lg font-semibold text-stone-700 mb-2">No saved restaurants yet</p>
-      <p class="text-stone-400 text-sm mb-4">Tap the ♡ heart on any restaurant to save it here.</p>
-      <a href="restaurants.html" class="inline-block px-5 py-2.5 bg-rust-500 text-white text-sm font-semibold rounded-xl hover:bg-rust-600 transition-colors">Explore restaurants</a>
-    </div>`;
-    return;
-  }
-  el.innerHTML = favRestaurants.map(r => {
-    const price = '£'.repeat(r.price_range) + '<span style="color:#e8dcc7">' + '£'.repeat(4 - r.price_range) + '</span>';
-    return `<div class="bg-white border border-cream-200 rounded-2xl overflow-hidden flex flex-col">
-      <div class="relative">
-        <img src="${r.image_url || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=200&fit=crop'}" alt="${r.name}" class="w-full h-40 object-cover" loading="lazy" />
-        <button onclick="removeFavourite('${r.id}', this)" class="absolute top-3 right-3 w-8 h-8 bg-white rounded-full flex items-center justify-center text-rust-500 hover:bg-rust-50 transition-colors shadow-md text-lg">♥</button>
-      </div>
-      <div class="p-4 flex-1 flex flex-col justify-between">
-        <div>
-          <p class="font-display font-bold text-stone-800 text-base">${r.name}</p>
-          <p class="text-stone-500 text-xs mt-0.5">${r.cuisine} · ${r.city}</p>
-          <div class="flex items-center gap-2 mt-2">
-            <span class="text-amber-500 text-sm">★ ${r.rating}</span>
-            <span class="text-stone-300">·</span>
-            <span class="text-sm">${price}</span>
+    document.getElementById('favsList').innerHTML = favs.map(f => {
+      const r     = f.restaurants;
+      const price = '£'.repeat(r.price_range || 2);
+      const stars = Math.round(r.rating || 4);
+      return `<div class="bg-white border border-cream-200 rounded-2xl overflow-hidden flex gap-0 shadow-sm hover:shadow-md transition-shadow">
+        <img src="${r.image_url || 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=120&h=120&fit=crop'}"
+             alt="${r.name}" class="w-24 sm:w-32 object-cover flex-shrink-0" loading="lazy" />
+        <div class="flex-1 p-4 flex flex-col justify-between">
+          <div>
+            <h3 class="font-display font-bold text-stone-800 text-base">${r.name}</h3>
+            <p class="text-stone-400 text-xs mt-0.5">${r.cuisine} · ${r.city}</p>
+            <div class="flex items-center gap-2 mt-1.5">
+              <span class="text-amber-500 text-xs">${'★'.repeat(stars)}${'☆'.repeat(5-stars)}</span>
+              <span class="text-stone-500 text-xs">${r.rating}</span>
+              <span class="text-stone-300">·</span>
+              <span class="text-stone-400 text-xs">${price}</span>
+            </div>
+          </div>
+          <div class="flex gap-2 mt-3">
+            <a href="restaurants.html" class="text-xs px-3 py-1.5 bg-rust-500 hover:bg-rust-600 text-white rounded-lg font-medium transition-colors">Reserve</a>
+            <button onclick="removeFav('${r.id}', this)" class="text-xs px-3 py-1.5 border border-cream-200 text-stone-500 hover:border-red-300 hover:text-red-600 rounded-lg font-medium transition-colors">Remove</button>
           </div>
         </div>
-        <a href="restaurants.html" class="mt-3 block text-center py-2.5 bg-rust-500 hover:bg-rust-600 text-white font-semibold rounded-xl text-sm transition-colors">Book a table →</a>
-      </div>
-    </div>`;
-  }).join('');
+      </div>`;
+    }).join('');
+  } catch (err) {
+    document.getElementById('favsLoading').innerHTML = `<p class="text-red-600 text-sm">Failed to load favourites: ${err.message}</p>`;
+  }
 }
 
-async function removeFavourite(restaurantId, btn) {
-  const { error } = await sb.from('favorites').delete()
-    .eq('user_id', currentUser.id).eq('restaurant_id', restaurantId);
-  if (error) { showToast('Could not remove.', 'error'); return; }
-  showToast('Removed from favourites.', 'success');
-  await loadFavorites();
-  renderFavoritesFull();
+async function removeFav(restaurantId, btn) {
+  try {
+    await sb.from('favorites').delete().eq('user_id', currentUser.id).eq('restaurant_id', restaurantId);
+    btn.closest('.bg-white').remove();
+    showToast('Removed from favourites', 'success');
+    const remaining = document.querySelectorAll('#favsList .bg-white').length;
+    document.getElementById('s4').textContent       = remaining;
+    document.getElementById('statFavs').textContent = remaining;
+    if (remaining === 0) document.getElementById('favsEmpty').classList.remove('hidden');
+  } catch (err) {
+    showToast('Could not remove favourite', 'error');
+  }
 }
 
-// ── TAB NAVIGATION ──
-const TABS = ['overview','bookings','favorites','profile'];
-
-function showTab(tab) {
-  TABS.forEach(t => {
-    document.getElementById('tab-' + t).style.display  = t === tab ? 'block' : 'none';
-    const sideEl = document.getElementById('nav-' + t);
-    if (sideEl) sideEl.classList.toggle('active', t === tab);
-    const mobEl = document.getElementById('mnav-' + t);
-    if (mobEl) {
-      mobEl.style.color = t === tab ? '#c25e3f' : '#78716c';
-    }
-  });
-  if (tab === 'bookings')  renderBookingsList(currentBookingFilter);
-  if (tab === 'favorites') renderFavoritesFull();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+// ── PROFILE SAVE ────────────────────────────────────────────
+async function loadProfile() {
+  const name  = currentUser.user_metadata?.full_name || currentUser.email.split('@')[0];
+  document.getElementById('editName').value  = name;
+  document.getElementById('editPhone').value = currentUser.user_metadata?.phone || '';
+  document.getElementById('profileSaveSuccess').classList.add('hidden');
+  document.getElementById('profileSaveError').classList.add('hidden');
 }
 
-// ── SIGN OUT ──
-async function handleSignOut() {
-  await sb.auth.signOut();
-  window.location.href = 'index.html';
+async function saveProfile(e) {
+  e.preventDefault();
+  const name  = document.getElementById('editName').value.trim();
+  const phone = document.getElementById('editPhone').value.trim();
+  const errEl = document.getElementById('profileSaveError');
+  const sucEl = document.getElementById('profileSaveSuccess');
+  const btn   = document.getElementById('saveProfileBtn');
+  const lbl   = document.getElementById('saveProfileLabel');
+
+  errEl.classList.add('hidden');
+  sucEl.classList.add('hidden');
+
+  if (!name || name.length < 2) {
+    document.getElementById('editNameErr').textContent = 'Name must be at least 2 characters.';
+    document.getElementById('editNameErr').classList.remove('hidden');
+    return;
+  }
+  document.getElementById('editNameErr').classList.add('hidden');
+
+  btn.disabled = true;
+  lbl.innerHTML = '<span style="display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,0.4);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;margin-right:8px;vertical-align:middle"></span>Saving…';
+
+  try {
+    // Update Supabase Auth metadata
+    const { error: authErr } = await sb.auth.updateUser({ data: { full_name: name, phone } });
+    if (authErr) throw authErr;
+
+    // Update profiles table
+    const { error: dbErr } = await sb.from('profiles').upsert({
+      id:         currentUser.id,
+      email:      currentUser.email,
+      full_name:  name,
+      phone:      phone || null,
+      updated_at: new Date().toISOString(),
+    }, { onConflict: 'id' });
+    if (dbErr) throw dbErr;
+
+    // Update UI
+    const init = name.charAt(0).toUpperCase();
+    document.getElementById('profileAvatar').textContent = init;
+    document.getElementById('formAvatar').textContent    = init;
+    document.getElementById('avatarEl').textContent      = init;
+    document.getElementById('ddName').textContent        = name;
+    document.getElementById('profileName').textContent   = name;
+    sucEl.classList.remove('hidden');
+    showToast('Profile updated!', 'success');
+  } catch (err) {
+    errEl.textContent = 'Save failed: ' + err.message;
+    errEl.classList.remove('hidden');
+  } finally {
+    btn.disabled = false;
+    lbl.textContent = 'Save changes';
+  }
 }
 
-// ── HELPERS ──
-function getInitials(name) {
-  if (!name) return '?';
-  const parts = name.trim().split(' ');
-  return (parts[0][0] + (parts[1]?.[0] || '')).toUpperCase();
+// ── CHANGE PASSWORD ──────────────────────────────────────────
+function checkPwdStrength() {
+  const pwd  = document.getElementById('newPassword').value;
+  const bar  = document.getElementById('pwdStrengthBar');
+  if (!pwd) { bar.style.width = '0'; return; }
+  const score = [pwd.length >= 8, /[A-Z]/.test(pwd), /[0-9]/.test(pwd), /[^A-Za-z0-9]/.test(pwd)].filter(Boolean).length;
+  const w = ['0%','30%','55%','80%','100%'][score];
+  const c = ['','#dc2626','#f59e0b','#f59e0b','#6b7d5b'][score];
+  bar.style.width      = w;
+  bar.style.background = c;
 }
 
-function updateNavAvatar() {
-  const initials = getInitials(currentProfile?.full_name || currentUser?.email || '?');
-  document.getElementById('navAvatar').textContent = initials;
+function togglePwd(inputId, iconId) {
+  const input = document.getElementById(inputId);
+  const icon  = document.getElementById(iconId);
+  if (input.type === 'password') {
+    input.type = 'text';
+    icon.innerHTML = `<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>`;
+  } else {
+    input.type = 'password';
+    icon.innerHTML = `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>`;
+  }
 }
 
+async function changePassword(e) {
+  e.preventDefault();
+  const newPwd     = document.getElementById('newPassword').value;
+  const confirmPwd = document.getElementById('confirmPassword').value;
+  const errEl      = document.getElementById('pwdError');
+  const sucEl      = document.getElementById('pwdSuccess');
+  const btn        = document.getElementById('changePwdBtn');
+  const lbl        = document.getElementById('changePwdLabel');
+
+  errEl.classList.add('hidden');
+  sucEl.classList.add('hidden');
+  document.getElementById('newPasswordErr').classList.add('hidden');
+  document.getElementById('confirmPasswordErr').classList.add('hidden');
+
+  let valid = true;
+  if (!newPwd || newPwd.length < 8) {
+    document.getElementById('newPasswordErr').textContent = 'Password must be at least 8 characters.';
+    document.getElementById('newPasswordErr').classList.remove('hidden');
+    valid = false;
+  }
+  if (newPwd !== confirmPwd) {
+    document.getElementById('confirmPasswordErr').textContent = 'Passwords do not match.';
+    document.getElementById('confirmPasswordErr').classList.remove('hidden');
+    valid = false;
+  }
+  if (!valid) return;
+
+  btn.disabled = true;
+  lbl.innerHTML = '<span style="display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,0.4);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;margin-right:8px;vertical-align:middle"></span>Updating…';
+
+  try {
+    const { error } = await sb.auth.updateUser({ password: newPwd });
+    if (error) throw error;
+    sucEl.classList.remove('hidden');
+    document.getElementById('newPassword').value     = '';
+    document.getElementById('confirmPassword').value = '';
+    document.getElementById('pwdStrengthBar').style.width = '0';
+    showToast('Password updated!', 'success');
+  } catch (err) {
+    errEl.textContent = 'Failed to update password: ' + err.message;
+    errEl.classList.remove('hidden');
+  } finally {
+    btn.disabled = false;
+    lbl.textContent = 'Update password';
+  }
+}
+
+// ── TOAST ────────────────────────────────────────────────────
 function showToast(msg, type = 'success') {
-  const existing = document.querySelector('.toast');
-  if (existing) existing.remove();
-  const t = document.createElement('div');
+  document.querySelector('.toast')?.remove();
+  const t  = document.createElement('div');
   t.className = 'toast';
   const bg = type === 'success' ? '#6b7d5b' : type === 'error' ? '#dc2626' : '#2a1f15';
-  t.style.cssText = `background:${bg};color:#fff;`;
-  t.textContent = msg;
+  t.style.cssText = `background:${bg};color:#fff`;
+  t.textContent   = msg;
   document.body.appendChild(t);
-  setTimeout(() => { t.style.opacity='0'; t.style.transition='opacity 0.3s'; setTimeout(()=>t.remove(),300); }, 3500);
+  setTimeout(() => {
+    t.style.opacity = '0'; t.style.transition = 'opacity 0.3s';
+    setTimeout(() => t.remove(), 300);
+  }, 3500);
 }
 
-// ── AUTH CHANGE ──
-sb.auth.onAuthStateChange((event, session) => {
-  if (event === 'SIGNED_OUT') window.location.href = 'index.html';
-});
-
-// ── START ──
-initDashboard();
+// ── INIT ─────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', initAuth);
 </script>
 </body>
 </html>

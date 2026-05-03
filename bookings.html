@@ -1,0 +1,870 @@
+<!-- route: /bookings -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>My Bookings — RestauBook</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: { display: ['Fraunces','serif'], sans: ['Inter','sans-serif'] },
+      colors: {
+        rust:  { 50:'#fdf6f0', 100:'#fae8d8', 200:'#fbd5b5', 400:'#d97757', 500:'#c25e3f', 600:'#a84a2e', 700:'#8a3a23' },
+        sage:  { 400:'#8a9b7a', 500:'#6b7d5b', 600:'#556347' },
+        cream: { 50:'#faf7f2', 100:'#f3ede1', 200:'#e8dcc7' },
+      }
+    }
+  }
+}
+</script>
+<style>
+  body { font-family: 'Inter', sans-serif; background: #faf7f2; color: #2a1f15; }
+  .font-display { font-family: 'Fraunces', serif; }
+
+  /* Nav dropdown */
+  .user-dropdown { position: relative; display: inline-block; }
+  .user-dropdown-menu {
+    position: absolute; right: 0; top: calc(100% + 10px);
+    background: #fff; border: 1px solid #e8dcc7; border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(42,31,21,0.14); min-width: 210px;
+    padding: 8px; z-index: 200; opacity: 0; pointer-events: none;
+    transform: translateY(-6px); transition: opacity 0.18s, transform 0.18s;
+  }
+  .user-dropdown-menu.open { opacity: 1; pointer-events: auto; transform: translateY(0); }
+  .drop-item {
+    display: flex; align-items: center; gap: 10px; width: 100%;
+    padding: 9px 12px; border-radius: 10px; font-size: 14px; color: #2a1f15;
+    text-decoration: none; border: none; background: none; cursor: pointer;
+    transition: background 0.15s; text-align: left;
+  }
+  .drop-item:hover { background: #faf7f2; }
+  .drop-item.danger { color: #dc2626; }
+  .drop-item.danger:hover { background: #fef2f2; }
+  .avatar {
+    width: 34px; height: 34px; border-radius: 50%;
+    background: #c25e3f; color: #fff; font-weight: 700; font-size: 13px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; flex-shrink: 0; border: 2px solid transparent;
+    font-family: 'Fraunces', serif; transition: border-color 0.2s;
+  }
+  .avatar:hover { border-color: rgba(194,94,63,0.4); }
+
+  /* Tabs */
+  .tab-btn {
+    padding: 9px 20px; border-radius: 99px; font-size: 14px; font-weight: 500;
+    border: 1.5px solid #e8dcc7; background: #fff; color: #5a4a3c;
+    cursor: pointer; transition: all 0.15s; white-space: nowrap;
+  }
+  .tab-btn.active { background: #c25e3f; border-color: #c25e3f; color: #fff; font-weight: 600; }
+  .tab-btn:not(.active):hover { border-color: #c25e3f; color: #c25e3f; }
+
+  /* Status badges */
+  .badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 3px 10px; border-radius: 99px; font-size: 12px; font-weight: 600;
+  }
+  .badge-confirmed { background: #dcfce7; color: #15803d; }
+  .badge-completed { background: #e0e7ff; color: #4338ca; }
+  .badge-cancelled { background: #fee2e2; color: #dc2626; }
+  .badge-pending   { background: #fef9c3; color: #a16207; }
+
+  /* Booking card */
+  .booking-card {
+    background: #fff; border: 1px solid #e8dcc7; border-radius: 20px;
+    overflow: hidden; transition: box-shadow 0.2s;
+  }
+  .booking-card:hover { box-shadow: 0 8px 32px rgba(42,31,21,0.1); }
+
+  /* Modals */
+  .modal-backdrop {
+    position: fixed; inset: 0; background: rgba(42,31,21,0.6);
+    backdrop-filter: blur(4px); z-index: 1000;
+    display: none; align-items: center; justify-content: center; padding: 16px;
+  }
+  .modal-backdrop.open { display: flex; }
+  .modal-card {
+    background: #faf7f2; border-radius: 24px; width: 100%;
+    max-width: 440px; overflow: hidden;
+    box-shadow: 0 24px 64px rgba(42,31,21,0.22);
+    animation: slideUp 0.25s ease;
+  }
+  @keyframes slideUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+  .input-modal {
+    width: 100%; padding: 11px 14px; background: #fff;
+    border: 1.5px solid #e8dcc7; border-radius: 10px;
+    color: #2a1f15; font-size: 14px; outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .input-modal:focus { border-color: #c25e3f; box-shadow: 0 0 0 3px rgba(194,94,63,0.12); }
+
+  /* Skeleton */
+  .skeleton {
+    background: linear-gradient(90deg, #f3ede1 25%, #faf7f2 50%, #f3ede1 75%);
+    background-size: 200% 100%; animation: shimmer 1.4s infinite; border-radius: 12px;
+  }
+  @keyframes shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+
+  /* Toast */
+  .toast {
+    position: fixed; bottom: 24px; right: 24px; z-index: 9999;
+    padding: 12px 20px; border-radius: 12px; font-size: 14px; font-weight: 500;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15); max-width: 320px;
+    animation: toastIn 0.3s ease;
+  }
+  @keyframes toastIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .spinner-sm { display:inline-block; width:14px; height:14px; border:2px solid rgba(255,255,255,0.35); border-top-color:#fff; border-radius:50%; animation:spin 0.7s linear infinite; }
+</style>
+</head>
+<body class="min-h-screen bg-cream-50">
+
+<!-- ══ NAV ══ -->
+<nav class="fixed top-0 inset-x-0 z-50 bg-cream-50/90 backdrop-blur-md border-b border-cream-200">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+    <a href="index.html" class="flex items-center gap-2">
+      <div class="w-9 h-9 rounded-full bg-rust-500 flex items-center justify-center text-white font-display font-bold text-lg">R</div>
+      <span class="font-display text-xl font-bold text-stone-800">RestauBook</span>
+    </a>
+    <div class="hidden md:flex items-center gap-6 text-sm font-medium text-stone-700">
+      <a href="restaurants.html" class="hover:text-rust-600 transition-colors">Restaurants</a>
+      <a href="bookings.html" class="text-rust-600 font-semibold">My Bookings</a>
+      <!-- GUEST -->
+      <div id="navGuest" class="flex items-center gap-4">
+        <a href="login.html" class="hover:text-rust-600 transition-colors">Sign in</a>
+        <a href="signup.html" class="px-4 py-2 bg-rust-500 hover:bg-rust-600 text-white rounded-full transition-colors text-sm font-semibold">Get started</a>
+      </div>
+      <!-- USER -->
+      <div id="navUser" class="user-dropdown hidden">
+        <button id="avatarBtn" onclick="toggleDropdown(event)" class="flex items-center gap-1.5 focus:outline-none" aria-haspopup="true">
+          <div id="avatarEl" class="avatar">?</div>
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div id="dropdownMenu" class="user-dropdown-menu" role="menu">
+          <div class="px-3 py-2 border-b border-cream-100 mb-1">
+            <p id="ddName" class="font-semibold text-stone-800 text-sm truncate"></p>
+            <p id="ddEmail" class="text-stone-400 text-xs truncate mt-0.5"></p>
+          </div>
+          <a href="dashboard.html" class="drop-item">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Dashboard
+          </a>
+          <a href="bookings.html" class="drop-item" style="background:#faf7f2;color:#c25e3f;font-weight:600">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>My Bookings
+          </a>
+          <button onclick="handleSignOut()" class="drop-item danger">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sign out
+          </button>
+        </div>
+      </div>
+    </div>
+    <button onclick="document.getElementById('mobileMenu').classList.toggle('hidden')" class="md:hidden text-stone-700" aria-label="Menu">
+      <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+  </div>
+  <div id="mobileMenu" class="md:hidden hidden border-t border-cream-200 bg-cream-50">
+    <div class="px-4 py-3 space-y-1 text-sm font-medium">
+      <a href="index.html" class="block py-2 px-3 rounded-lg hover:bg-cream-100">Home</a>
+      <a href="restaurants.html" class="block py-2 px-3 rounded-lg hover:bg-cream-100">Restaurants</a>
+      <a href="bookings.html" class="block py-2 px-3 rounded-lg bg-rust-50 text-rust-600 font-semibold">My Bookings</a>
+      <div id="mobileGuest">
+        <a href="login.html" class="block py-2 px-3 rounded-lg hover:bg-cream-100">Sign in</a>
+        <a href="signup.html" class="block mt-2 py-2 px-3 bg-rust-500 text-white text-center rounded-full">Get started</a>
+      </div>
+      <div id="mobileUser" class="hidden">
+        <p id="mobileGreeting" class="py-1 px-3 text-stone-500 text-xs"></p>
+        <a href="dashboard.html" class="block py-2 px-3 rounded-lg hover:bg-cream-100">Dashboard</a>
+        <button onclick="handleSignOut()" class="block w-full py-2 px-3 text-left rounded-lg text-red-600 hover:bg-red-50">Sign out</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ══ PAGE HEADER ══ -->
+<div class="pt-24 pb-8 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+  <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+    <div>
+      <p class="text-rust-500 text-xs uppercase tracking-[0.2em] font-medium mb-1">Your account</p>
+      <h1 class="font-display text-3xl sm:text-4xl font-bold text-stone-800">My Bookings</h1>
+      <p id="bookingCount" class="text-stone-400 text-sm mt-1">Loading reservations…</p>
+    </div>
+    <a href="restaurants.html" class="inline-flex items-center gap-2 px-5 py-2.5 bg-rust-500 hover:bg-rust-600 text-white font-semibold rounded-xl text-sm transition-all shadow-lg shadow-rust-500/25 active:scale-95">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      Find a restaurant
+    </a>
+  </div>
+</div>
+
+<!-- ══ TABS + FILTERS ══ -->
+<div class="px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto mb-6">
+  <div class="flex items-center gap-3 overflow-x-auto pb-1 scrollbar-hide">
+    <button class="tab-btn active" id="tab-all"       onclick="setTab('all')">All</button>
+    <button class="tab-btn"        id="tab-upcoming"  onclick="setTab('upcoming')">
+      <span class="flex items-center gap-1.5">
+        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Upcoming
+      </span>
+    </button>
+    <button class="tab-btn" id="tab-past"      onclick="setTab('past')">Past</button>
+    <button class="tab-btn" id="tab-cancelled" onclick="setTab('cancelled')">Cancelled</button>
+  </div>
+</div>
+
+<!-- ══ AUTH GATE ══ -->
+<div id="authGate" class="hidden px-4 max-w-5xl mx-auto">
+  <div class="bg-white border border-cream-200 rounded-2xl p-12 text-center">
+    <div class="w-16 h-16 bg-rust-50 rounded-2xl flex items-center justify-center mx-auto mb-5">
+      <svg width="28" height="28" fill="none" stroke="#c25e3f" stroke-width="1.5" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    </div>
+    <h2 class="font-display text-xl font-bold text-stone-800 mb-2">Sign in to view your bookings</h2>
+    <p class="text-stone-500 text-sm mb-6">Your reservations are linked to your account.</p>
+    <div class="flex flex-col sm:flex-row gap-3 justify-center">
+      <a href="login.html" class="px-6 py-3 bg-rust-500 hover:bg-rust-600 text-white font-semibold rounded-xl transition-all text-sm">Sign in</a>
+      <a href="signup.html" class="px-6 py-3 border-2 border-cream-200 hover:border-rust-400 text-stone-700 font-semibold rounded-xl transition-all text-sm">Create account</a>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MAIN CONTENT ══ -->
+<main id="mainContent" class="hidden px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto pb-20">
+
+  <!-- Stats row -->
+  <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
+    <div class="bg-white border border-cream-200 rounded-2xl p-4 text-center">
+      <div id="statTotal" class="font-display text-3xl font-bold text-stone-800">—</div>
+      <div class="text-stone-400 text-xs mt-1 font-medium">Total bookings</div>
+    </div>
+    <div class="bg-white border border-cream-200 rounded-2xl p-4 text-center">
+      <div id="statUpcoming" class="font-display text-3xl font-bold text-stone-800">—</div>
+      <div class="text-stone-400 text-xs mt-1 font-medium">Upcoming</div>
+    </div>
+    <div class="bg-white border border-cream-200 rounded-2xl p-4 text-center">
+      <div id="statCompleted" class="font-display text-3xl font-bold text-stone-800">—</div>
+      <div class="text-stone-400 text-xs mt-1 font-medium">Completed</div>
+    </div>
+    <div class="bg-white border border-cream-200 rounded-2xl p-4 text-center">
+      <div id="statCancelled" class="font-display text-3xl font-bold text-stone-800">—</div>
+      <div class="text-stone-400 text-xs mt-1 font-medium">Cancelled</div>
+    </div>
+  </div>
+
+  <!-- Loading skeletons -->
+  <div id="loadingState" class="space-y-4">
+    <div class="skeleton h-36 w-full rounded-2xl"></div>
+    <div class="skeleton h-36 w-full rounded-2xl"></div>
+    <div class="skeleton h-36 w-full rounded-2xl"></div>
+  </div>
+
+  <!-- Error state -->
+  <div id="errorState" class="hidden bg-red-50 border border-red-200 rounded-2xl p-8 text-center">
+    <svg class="w-10 h-10 text-red-400 mx-auto mb-3" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    <h3 class="font-semibold text-red-800 mb-1">Couldn't load bookings</h3>
+    <p id="errorMsg" class="text-red-600 text-sm mb-4"></p>
+    <button onclick="loadBookings()" class="px-5 py-2 bg-red-600 text-white rounded-xl text-sm font-semibold hover:bg-red-700 transition-colors">Retry</button>
+  </div>
+
+  <!-- Bookings list -->
+  <div id="bookingsList" class="hidden space-y-4"></div>
+
+  <!-- Empty states per tab -->
+  <div id="emptyState" class="hidden">
+    <div class="bg-white border border-cream-200 rounded-2xl p-14 text-center">
+      <div id="emptyIcon" class="text-5xl mb-5">📅</div>
+      <h3 id="emptyTitle" class="font-display text-xl font-semibold text-stone-700 mb-2">No bookings yet</h3>
+      <p id="emptyDesc" class="text-stone-400 text-sm mb-6">Your reservations will appear here once you book a table.</p>
+      <a href="restaurants.html" class="inline-flex items-center gap-2 px-6 py-3 bg-rust-500 hover:bg-rust-600 text-white font-semibold rounded-xl text-sm transition-all shadow-lg shadow-rust-500/25">
+        Browse restaurants
+      </a>
+    </div>
+  </div>
+
+</main>
+
+<!-- ══ CANCEL CONFIRMATION MODAL ══ -->
+<div id="cancelModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="cancelModalTitle">
+  <div class="modal-card">
+    <div class="p-6 border-b border-cream-200">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
+          <svg width="18" height="18" fill="none" stroke="#dc2626" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+        </div>
+        <div>
+          <h3 id="cancelModalTitle" class="font-display font-bold text-stone-800 text-lg">Cancel reservation?</h3>
+          <p class="text-stone-500 text-sm mt-0.5">This cannot be undone.</p>
+        </div>
+      </div>
+    </div>
+    <div class="p-6">
+      <div id="cancelDetails" class="bg-cream-50 border border-cream-200 rounded-xl p-4 mb-5 space-y-1.5 text-sm"></div>
+      <div class="mb-4">
+        <label class="block text-xs font-semibold text-stone-500 uppercase tracking-widest mb-1.5">Reason <span class="normal-case font-normal text-stone-400">(optional)</span></label>
+        <textarea id="cancelReason" placeholder="Let us know why you're cancelling…" rows="2"
+          class="input-modal resize-none"></textarea>
+      </div>
+      <div id="cancelError" class="hidden mb-3 px-3 py-2 bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl"></div>
+      <div class="flex gap-3">
+        <button onclick="closeCancelModal()" class="flex-1 py-3 bg-cream-100 hover:bg-cream-200 text-stone-700 font-semibold rounded-xl text-sm transition-all">
+          Keep booking
+        </button>
+        <button id="confirmCancelBtn" onclick="confirmCancel()" class="flex-1 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-xl text-sm transition-all">
+          Cancel reservation
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ REBOOK / EDIT MODAL ══ -->
+<div id="editModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="editModalTitle">
+  <div class="modal-card">
+    <div class="flex items-center justify-between p-6 border-b border-cream-200">
+      <div>
+        <h3 id="editModalTitle" class="font-display font-bold text-stone-800 text-lg">Book again</h3>
+        <p id="editModalSubtitle" class="text-stone-400 text-sm mt-0.5"></p>
+      </div>
+      <button onclick="closeEditModal()" class="w-8 h-8 bg-cream-100 hover:bg-cream-200 rounded-full flex items-center justify-center transition-colors" aria-label="Close">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="p-6 space-y-4">
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-xs font-semibold text-stone-500 uppercase tracking-widest mb-1.5">Date</label>
+          <input id="editDate" type="date" class="input-modal" />
+          <p id="editDateErr" class="hidden text-red-600 text-xs mt-1">Please select a date.</p>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-stone-500 uppercase tracking-widest mb-1.5">Time</label>
+          <select id="editTime" class="input-modal">
+            <option>12:00</option><option>12:30</option><option>13:00</option><option>13:30</option>
+            <option>14:00</option><option>18:00</option><option>18:30</option><option>19:00</option>
+            <option selected>19:30</option><option>20:00</option><option>20:30</option><option>21:00</option>
+            <option>21:30</option><option>22:00</option>
+          </select>
+        </div>
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-stone-500 uppercase tracking-widest mb-1.5">Guests</label>
+        <select id="editParty" class="input-modal">
+          <option value="1">1 guest</option><option value="2" selected>2 guests</option>
+          <option value="3">3 guests</option><option value="4">4 guests</option>
+          <option value="5">5 guests</option><option value="6">6 guests</option>
+          <option value="8">8 guests</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-stone-500 uppercase tracking-widest mb-1.5">Special requests <span class="normal-case font-normal text-stone-400">(optional)</span></label>
+        <textarea id="editNotes" placeholder="Allergies, occasion, seating preference…" rows="2" class="input-modal resize-none"></textarea>
+      </div>
+      <div id="editError" class="hidden px-3 py-2 bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl"></div>
+    </div>
+    <div class="px-6 pb-6">
+      <button id="editSubmitBtn" onclick="submitRebook()" class="w-full py-3.5 bg-rust-500 hover:bg-rust-600 active:scale-95 text-white font-semibold rounded-xl transition-all text-sm shadow-lg shadow-rust-500/25">
+        Confirm new booking
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SUCCESS MODAL ══ -->
+<div id="successModal" class="modal-backdrop" role="dialog" aria-modal="true">
+  <div class="modal-card text-center p-8">
+    <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5" style="background:#6b7d5b">
+      <svg width="28" height="28" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <h3 class="font-display text-2xl font-bold text-stone-800 mb-2">You're confirmed!</h3>
+    <p id="successDesc" class="text-stone-500 text-sm mb-6"></p>
+    <div id="successDetails" class="bg-white border border-cream-200 rounded-xl p-4 mb-6 text-left space-y-2"></div>
+    <div class="flex gap-3">
+      <button onclick="closeSuccessModal()" class="flex-1 py-3 bg-cream-100 hover:bg-cream-200 text-stone-700 font-semibold rounded-xl text-sm transition-all">Close</button>
+      <button onclick="closeSuccessModal(); loadBookings();" class="flex-1 py-3 bg-rust-500 hover:bg-rust-600 text-white font-semibold rounded-xl text-sm transition-all">View bookings</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══ CONFIG ══
+const SUPABASE_URL      = 'https://bnrptywymmnexndaqdko.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJucnB0eXd5bW1uZXhuZGFxZGtvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc3Nzc1MTcsImV4cCI6MjA5MzM1MzUxN30.4-bH2KuXPYmoPRUgQSS5iwIYxZgFxHv6md8dLS-wWEo';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// ══ STATE ══
+let currentUser   = null;
+let allBookings   = [];     // raw rows with joined restaurant data
+let activeTab     = 'all';
+let cancelTarget  = null;   // { bookingId, restaurantName, date, time, code }
+let rebookTarget  = null;   // { restaurantId, name }
+
+// ══ AUTH ══
+async function initAuth() {
+  const { data: { session } } = await sb.auth.getSession();
+  currentUser = session?.user ?? null;
+  updateNav();
+  if (!currentUser) {
+    document.getElementById('authGate').classList.remove('hidden');
+    document.getElementById('mainContent').classList.add('hidden');
+    document.getElementById('loadingState').classList.add('hidden');
+    document.getElementById('bookingCount').textContent = 'Sign in to see your bookings';
+    return false;
+  }
+  document.getElementById('authGate').classList.add('hidden');
+  document.getElementById('mainContent').classList.remove('hidden');
+  return true;
+}
+
+function updateNav() {
+  const guestEl = document.getElementById('navGuest');
+  const userEl  = document.getElementById('navUser');
+  const mGuest  = document.getElementById('mobileGuest');
+  const mUser   = document.getElementById('mobileUser');
+  if (!currentUser) {
+    guestEl?.classList.remove('hidden');
+    userEl?.classList.add('hidden');
+    mGuest?.classList.remove('hidden');
+    mUser?.classList.add('hidden');
+    return;
+  }
+  guestEl?.classList.add('hidden');
+  userEl?.classList.remove('hidden');
+  mGuest?.classList.add('hidden');
+  mUser?.classList.remove('hidden');
+
+  const name  = currentUser.user_metadata?.full_name || currentUser.email?.split('@')[0] || '?';
+  const init  = name.charAt(0).toUpperCase();
+  const email = currentUser.email || '';
+  document.getElementById('avatarEl').textContent  = init;
+  document.getElementById('ddName').textContent     = name;
+  document.getElementById('ddEmail').textContent    = email;
+  const mg = document.getElementById('mobileGreeting');
+  if (mg) mg.textContent = `Signed in as ${email}`;
+}
+
+function toggleDropdown(e) {
+  e.stopPropagation();
+  document.getElementById('dropdownMenu').classList.toggle('open');
+}
+
+async function handleSignOut() {
+  await sb.auth.signOut();
+  window.location.href = 'index.html';
+}
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.user-dropdown')) {
+    document.getElementById('dropdownMenu')?.classList.remove('open');
+  }
+});
+
+// ══ LOAD BOOKINGS ══
+async function loadBookings() {
+  if (!currentUser) return;
+
+  document.getElementById('loadingState').classList.remove('hidden');
+  document.getElementById('bookingsList').classList.add('hidden');
+  document.getElementById('emptyState').classList.add('hidden');
+  document.getElementById('errorState').classList.add('hidden');
+
+  try {
+    // Fetch bookings joined with restaurant name + image
+    const { data, error } = await sb
+      .from('bookings')
+      .select(`
+        id, booking_date, booking_time, party_size,
+        status, special_requests, confirmation_code,
+        created_at, updated_at,
+        restaurants (
+          id, name, cuisine, image_url, address, city, phone
+        )
+      `)
+      .eq('user_id', currentUser.id)
+      .order('booking_date', { ascending: false })
+      .order('booking_time', { ascending: false });
+
+    if (error) throw error;
+
+    allBookings = data || [];
+    updateStats();
+    renderBookings();
+  } catch (err) {
+    console.error('loadBookings error:', err);
+    document.getElementById('loadingState').classList.add('hidden');
+    document.getElementById('errorState').classList.remove('hidden');
+    document.getElementById('errorMsg').textContent = err.message || 'An unexpected error occurred.';
+  }
+}
+
+// ══ STATS ══
+function updateStats() {
+  const today = new Date().toISOString().split('T')[0];
+  const total     = allBookings.length;
+  const upcoming  = allBookings.filter(b => b.booking_date >= today && !['cancelled'].includes(b.status)).length;
+  const completed = allBookings.filter(b => b.status === 'completed' || (b.booking_date < today && b.status === 'confirmed')).length;
+  const cancelled = allBookings.filter(b => b.status === 'cancelled').length;
+
+  document.getElementById('statTotal').textContent     = total;
+  document.getElementById('statUpcoming').textContent  = upcoming;
+  document.getElementById('statCompleted').textContent = completed;
+  document.getElementById('statCancelled').textContent = cancelled;
+  document.getElementById('bookingCount').textContent  =
+    total === 0 ? 'No reservations yet' :
+    total === 1 ? '1 reservation' : `${total} reservations`;
+}
+
+// ══ TABS ══
+function setTab(tab) {
+  activeTab = tab;
+  ['all','upcoming','past','cancelled'].forEach(t => {
+    document.getElementById('tab-' + t)?.classList.toggle('active', t === tab);
+  });
+  renderBookings();
+}
+
+// ══ RENDER ══
+function renderBookings() {
+  const today = new Date().toISOString().split('T')[0];
+  let filtered = allBookings;
+
+  if (activeTab === 'upcoming') {
+    filtered = allBookings.filter(b => b.booking_date >= today && b.status !== 'cancelled');
+  } else if (activeTab === 'past') {
+    filtered = allBookings.filter(b => b.booking_date < today || b.status === 'completed');
+  } else if (activeTab === 'cancelled') {
+    filtered = allBookings.filter(b => b.status === 'cancelled');
+  }
+
+  document.getElementById('loadingState').classList.add('hidden');
+
+  if (filtered.length === 0) {
+    document.getElementById('bookingsList').classList.add('hidden');
+    document.getElementById('emptyState').classList.remove('hidden');
+    setEmptyState(activeTab);
+    return;
+  }
+
+  document.getElementById('emptyState').classList.add('hidden');
+  document.getElementById('bookingsList').innerHTML = filtered.map(b => buildBookingCard(b, today)).join('');
+  document.getElementById('bookingsList').classList.remove('hidden');
+}
+
+function setEmptyState(tab) {
+  const states = {
+    all:       { icon:'📅', title:'No bookings yet',           desc:'Start exploring restaurants and make your first reservation.' },
+    upcoming:  { icon:'🗓️', title:'No upcoming reservations',  desc:'You have no confirmed bookings coming up. Time to plan a dinner!' },
+    past:      { icon:'🍽️', title:'No past bookings',          desc:'Once you visit a restaurant, your completed bookings will show here.' },
+    cancelled: { icon:'❌', title:'No cancelled bookings',     desc:'Great news — none of your reservations have been cancelled.' },
+  };
+  const s = states[tab] || states.all;
+  document.getElementById('emptyIcon').textContent  = s.icon;
+  document.getElementById('emptyTitle').textContent = s.title;
+  document.getElementById('emptyDesc').textContent  = s.desc;
+}
+
+function buildBookingCard(b, today) {
+  const r        = b.restaurants || {};
+  const isPast   = b.booking_date < today;
+  const isUpcoming = b.booking_date >= today && b.status !== 'cancelled';
+
+  // Status
+  let statusKey = b.status;
+  if (statusKey === 'confirmed' && isPast) statusKey = 'completed';
+  const statusLabels = { confirmed:'Confirmed', pending:'Pending', cancelled:'Cancelled', completed:'Completed' };
+  const statusClass  = `badge badge-${statusKey}`;
+  const statusDot    = { confirmed:'🟢', pending:'🟡', cancelled:'🔴', completed:'🔵' }[statusKey] || '⚪';
+
+  // Date
+  const dateObj   = new Date(b.booking_date + 'T12:00');
+  const dateLabel = dateObj.toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric', year:'numeric' });
+  const isToday   = b.booking_date === today;
+  const isTomorrow = b.booking_date === new Date(Date.now() + 86400000).toISOString().split('T')[0];
+
+  let dateBadge = '';
+  if (isToday)    dateBadge = '<span class="ml-2 px-2 py-0.5 bg-rust-100 text-rust-600 text-xs font-bold rounded-full">Today</span>';
+  if (isTomorrow) dateBadge = '<span class="ml-2 px-2 py-0.5 bg-amber-100 text-amber-700 text-xs font-bold rounded-full">Tomorrow</span>';
+
+  // Price dots
+  const price = '$$';
+
+  // Actions
+  let actions = '';
+  if (isUpcoming && statusKey !== 'cancelled') {
+    actions = `
+      <button onclick="openCancelModal('${b.id}','${(r.name||'').replace(/'/g,"\\'")}','${b.booking_date}','${b.booking_time}','${b.confirmation_code}')"
+        class="flex items-center gap-1.5 px-4 py-2 border border-red-200 text-red-600 hover:bg-red-50 hover:border-red-400 font-medium rounded-xl text-sm transition-all">
+        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+        Cancel
+      </button>`;
+  } else if (statusKey === 'completed' || statusKey === 'cancelled') {
+    actions = `
+      <button onclick="openRebookModal('${r.id}','${(r.name||'').replace(/'/g,"\\'")}','${r.cuisine||''}')"
+        class="flex items-center gap-1.5 px-4 py-2 bg-rust-500 hover:bg-rust-600 text-white font-medium rounded-xl text-sm transition-all shadow-md shadow-rust-500/20">
+        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4-4.64 4.36A9 9 0 0 1 3.51 15"/></svg>
+        Book again
+      </button>`;
+  }
+
+  return `
+  <div class="booking-card">
+    <div class="flex flex-col sm:flex-row">
+      <!-- Restaurant image -->
+      <div class="sm:w-40 h-40 sm:h-auto flex-shrink-0 relative overflow-hidden">
+        <img
+          src="${r.image_url || 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=300&fit=crop'}"
+          alt="${r.name || 'Restaurant'}"
+          class="w-full h-full object-cover"
+          loading="lazy"
+          onerror="this.src='https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=300&fit=crop'"
+        />
+        <!-- Status overlay on image -->
+        ${statusKey === 'cancelled' ? '<div class="absolute inset-0 bg-black/40 flex items-center justify-center"><span class="text-white text-xs font-bold uppercase tracking-widest">Cancelled</span></div>' : ''}
+      </div>
+
+      <!-- Booking details -->
+      <div class="flex-1 p-5 sm:p-6">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <div>
+            <h3 class="font-display text-lg font-bold text-stone-800 leading-tight">${r.name || 'Restaurant'}</h3>
+            <p class="text-stone-400 text-xs mt-0.5">${r.cuisine || ''} · ${r.city || ''}</p>
+          </div>
+          <span class="${statusClass}">${statusDot} ${statusLabels[statusKey] || b.status}</span>
+        </div>
+
+        <!-- Key details grid -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4">
+          <div class="flex items-center gap-2 text-sm text-stone-600">
+            <svg width="14" height="14" class="text-stone-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span class="truncate">${dateLabel}${dateBadge}</span>
+          </div>
+          <div class="flex items-center gap-2 text-sm text-stone-600">
+            <svg width="14" height="14" class="text-stone-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span>${b.booking_time}</span>
+          </div>
+          <div class="flex items-center gap-2 text-sm text-stone-600">
+            <svg width="14" height="14" class="text-stone-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <span>${b.party_size} guest${b.party_size > 1 ? 's' : ''}</span>
+          </div>
+        </div>
+
+        <!-- Confirmation code + special requests -->
+        <div class="flex flex-wrap items-center gap-3 mb-4">
+          <div class="flex items-center gap-1.5 bg-cream-50 border border-cream-200 rounded-lg px-3 py-1.5">
+            <svg width="12" height="12" fill="none" stroke="#a8907c" stroke-width="2" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            <span class="text-xs text-stone-500">Ref:</span>
+            <span class="font-mono text-xs font-bold text-rust-600">${b.confirmation_code}</span>
+          </div>
+          ${b.special_requests ? `
+          <div class="flex items-center gap-1.5 text-stone-400 text-xs">
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <span class="truncate max-w-xs">${b.special_requests}</span>
+          </div>` : ''}
+        </div>
+
+        <!-- Actions -->
+        <div class="flex flex-wrap items-center gap-2 pt-3 border-t border-cream-100">
+          ${actions}
+          ${r.phone ? `
+          <a href="tel:${r.phone}" class="flex items-center gap-1.5 px-4 py-2 border border-cream-200 hover:border-stone-300 text-stone-600 hover:text-stone-800 font-medium rounded-xl text-sm transition-all">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13 19.79 19.79 0 0 1 1.62 4.4 2 2 0 0 1 3.6 2.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.09 6.09l.95-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            Call
+          </a>` : ''}
+          <button onclick="copyCode('${b.confirmation_code}')"
+            class="flex items-center gap-1.5 px-4 py-2 border border-cream-200 hover:border-stone-300 text-stone-500 hover:text-stone-700 font-medium rounded-xl text-sm transition-all">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy ref
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ══ CANCEL MODAL ══
+function openCancelModal(id, restaurantName, date, time, code) {
+  cancelTarget = { id, restaurantName, date, time, code };
+  const dateLabel = new Date(date + 'T12:00').toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric', year:'numeric' });
+  document.getElementById('cancelDetails').innerHTML = `
+    <div class="flex justify-between text-sm"><span class="text-stone-500">Restaurant</span><span class="font-medium text-stone-800">${restaurantName}</span></div>
+    <div class="flex justify-between text-sm"><span class="text-stone-500">Date</span><span class="font-medium text-stone-800">${dateLabel}</span></div>
+    <div class="flex justify-between text-sm"><span class="text-stone-500">Time</span><span class="font-medium text-stone-800">${time}</span></div>
+    <div class="flex justify-between text-sm"><span class="text-stone-500">Ref</span><span class="font-mono font-bold text-rust-600">${code}</span></div>`;
+  document.getElementById('cancelReason').value = '';
+  document.getElementById('cancelError').classList.add('hidden');
+  const btn = document.getElementById('confirmCancelBtn');
+  btn.disabled    = false;
+  btn.textContent = 'Cancel reservation';
+  document.getElementById('cancelModal').classList.add('open');
+}
+
+function closeCancelModal() {
+  document.getElementById('cancelModal').classList.remove('open');
+  cancelTarget = null;
+}
+
+async function confirmCancel() {
+  if (!cancelTarget) return;
+  const btn    = document.getElementById('confirmCancelBtn');
+  const errEl  = document.getElementById('cancelError');
+  errEl.classList.add('hidden');
+  btn.disabled  = true;
+  btn.innerHTML = '<span class="spinner-sm mr-2"></span>Cancelling…';
+
+  try {
+    const { error } = await sb
+      .from('bookings')
+      .update({ status: 'cancelled', updated_at: new Date().toISOString() })
+      .eq('id', cancelTarget.id)
+      .eq('user_id', currentUser.id);
+
+    if (error) throw error;
+
+    closeCancelModal();
+    showToast('Reservation cancelled.', 'success');
+    await loadBookings();
+  } catch (err) {
+    errEl.textContent = 'Cancellation failed: ' + (err.message || 'Please try again.');
+    errEl.classList.remove('hidden');
+    btn.disabled    = false;
+    btn.textContent = 'Cancel reservation';
+  }
+}
+
+// ══ REBOOK MODAL ══
+function openRebookModal(restaurantId, name, cuisine) {
+  rebookTarget = { restaurantId, name, cuisine };
+  const today = new Date().toISOString().split('T')[0];
+  const tomorrow = new Date(Date.now() + 86400000).toISOString().split('T')[0];
+  document.getElementById('editDate').min   = today;
+  document.getElementById('editDate').value = tomorrow;
+  document.getElementById('editNotes').value = '';
+  document.getElementById('editError').classList.add('hidden');
+  document.getElementById('editDateErr').classList.add('hidden');
+  document.getElementById('editModalTitle').textContent    = 'Book again';
+  document.getElementById('editModalSubtitle').textContent = name;
+  const btn = document.getElementById('editSubmitBtn');
+  btn.disabled    = false;
+  btn.textContent = 'Confirm new booking';
+  document.getElementById('editModal').classList.add('open');
+}
+
+function closeEditModal() {
+  document.getElementById('editModal').classList.remove('open');
+  rebookTarget = null;
+}
+
+async function submitRebook() {
+  if (!rebookTarget || !currentUser) return;
+  const date  = document.getElementById('editDate').value;
+  const time  = document.getElementById('editTime').value;
+  const party = parseInt(document.getElementById('editParty').value);
+  const notes = document.getElementById('editNotes').value.trim();
+  const errEl = document.getElementById('editError');
+  const btn   = document.getElementById('editSubmitBtn');
+
+  document.getElementById('editDateErr').classList.add('hidden');
+  errEl.classList.add('hidden');
+
+  if (!date) {
+    document.getElementById('editDateErr').classList.remove('hidden');
+    return;
+  }
+
+  btn.disabled  = true;
+  btn.innerHTML = '<span class="spinner-sm mr-2"></span>Confirming…';
+
+  const code = 'RB' + Math.random().toString(36).substring(2, 8).toUpperCase();
+
+  try {
+    const { error } = await sb.from('bookings').insert({
+      user_id:           currentUser.id,
+      restaurant_id:     rebookTarget.restaurantId,
+      booking_date:      date,
+      booking_time:      time,
+      party_size:        party,
+      special_requests:  notes || null,
+      status:            'confirmed',
+      confirmation_code: code,
+    });
+    if (error) throw error;
+  } catch (err) {
+    errEl.textContent = 'Booking failed: ' + (err.message || 'Please try again.');
+    errEl.classList.remove('hidden');
+    btn.disabled    = false;
+    btn.textContent = 'Confirm new booking';
+    return;
+  }
+
+  closeEditModal();
+  const dateLabel = new Date(date + 'T12:00').toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric' });
+  document.getElementById('successDesc').textContent = `Your table at ${rebookTarget.name} is booked.`;
+  document.getElementById('successDetails').innerHTML = `
+    <div class="flex justify-between text-sm"><span class="text-stone-500">Restaurant</span><span class="font-medium text-stone-800">${rebookTarget.name}</span></div>
+    <div class="flex justify-between text-sm"><span class="text-stone-500">Date</span><span class="font-medium text-stone-800">${dateLabel}</span></div>
+    <div class="flex justify-between text-sm"><span class="text-stone-500">Time</span><span class="font-medium text-stone-800">${time}</span></div>
+    <div class="flex justify-between text-sm"><span class="text-stone-500">Guests</span><span class="font-medium text-stone-800">${party}</span></div>
+    <div class="flex justify-between text-sm border-t border-cream-200 pt-2 mt-1"><span class="text-stone-500">Confirmation</span><span class="font-mono font-bold text-rust-600">${code}</span></div>`;
+  rebookTarget = null;
+  document.getElementById('successModal').classList.add('open');
+}
+
+function closeSuccessModal() {
+  document.getElementById('successModal').classList.remove('open');
+}
+
+// ══ COPY CONFIRMATION CODE ══
+async function copyCode(code) {
+  try {
+    await navigator.clipboard.writeText(code);
+    showToast(`Copied ${code} to clipboard`, 'success');
+  } catch {
+    showToast(`Ref: ${code}`, 'info');
+  }
+}
+
+// ══ TOAST ══
+function showToast(msg, type = 'success') {
+  document.querySelector('.toast')?.remove();
+  const t  = document.createElement('div');
+  t.className = 'toast';
+  const bg = type === 'success' ? '#6b7d5b' : type === 'error' ? '#dc2626' : '#2a1f15';
+  t.style.cssText = `background:${bg};color:#fff`;
+  t.textContent   = msg;
+  document.body.appendChild(t);
+  setTimeout(() => {
+    t.style.opacity = '0';
+    t.style.transition = 'opacity 0.3s';
+    setTimeout(() => t.remove(), 300);
+  }, 3500);
+}
+
+// ══ CLOSE MODALS ON BACKDROP CLICK ══
+['cancelModal','editModal','successModal'].forEach(id => {
+  document.getElementById(id)?.addEventListener('click', e => {
+    if (e.target.id === id) {
+      document.getElementById(id).classList.remove('open');
+    }
+  });
+});
+
+// ══ AUTH STATE CHANGE ══
+sb.auth.onAuthStateChange(async (_event, session) => {
+  currentUser = session?.user ?? null;
+  updateNav();
+  if (currentUser) {
+    document.getElementById('authGate').classList.add('hidden');
+    document.getElementById('mainContent').classList.remove('hidden');
+    await loadBookings();
+  }
+});
+
+// ══ INIT ══
+document.addEventListener('DOMContentLoaded', async () => {
+  const authed = await initAuth();
+  if (authed) await loadBookings();
+});
+</script>
+</body>
+</html>
