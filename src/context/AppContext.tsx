@@ -32,18 +32,18 @@ function getAIResponse(text: string): string {
   if (lower.includes('fast') || lower.includes('jaldi') || lower.includes('quickly')) return AI_RESPONSES.fast;
   if (lower.includes('task') || lower.includes('kaam')) return AI_RESPONSES.task;
   if (lower.includes('earn') || lower.includes('paisa') || lower.includes('money') || lower.includes('kamai')) return AI_RESPONSES.earn;
-  if (lower.includes('motivat') || lower.includes('help') || lower.includes('dar') || lower.includes('nervous')) return AI_RESPONSES.motivation;
-  if (lower.includes('skill') || lower.includes('seekh') || lower.includes('learn')) return AI_RESPONSES.skill;
-  if (lower.includes('kya') || lower.includes('what') || lower.includes('how') || lower.includes('kaise')) return AI_RESPONSES.help;
+  if (lower.includes('motivat') || lower.includes('sad') || lower.includes('give up') || lower.includes('chhod')) return AI_RESPONSES.motivation;
+  if (lower.includes('skill') || lower.includes('konsa') || lower.includes('which')) return AI_RESPONSES.skill;
+  if (lower.includes('help') || lower.includes('kya') || lower.includes('what')) return AI_RESPONSES.help;
   return AI_RESPONSES.default;
 }
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
   const [onboardingData, setOnboardingDataState] = useState<OnboardingData>({
-    language: '',
+    language: 'Hindi',
     interests: [],
     goal: '',
-    experience: '',
+    experience: 'beginner',
     completed: false,
   });
   const [isOnboarded, setIsOnboarded] = useState(false);
@@ -51,7 +51,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     {
       id: '1',
       role: 'ai',
-      content: '👋 Namaste! Main hoon tumhara AI Coach!\n\nSkillForBharat mein aapka swagat hai! 🎉\n\nMujhse kuch bhi puchho – skills, tasks, earning tips – sab bataunga simple language mein!\n\nKya jaanna chahte ho? 👇',
+      content: '👋 Namaste! Main hoon tumhara SkillBot – SkillForBharat ka AI Coach!\n\nAaj kya seekhna chahte ho? Koi bhi sawaal puchho, main yahan hoon! 🚀',
       timestamp: new Date(),
     },
   ]);
@@ -80,7 +80,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         timestamp: new Date(),
       };
       setChatMessages(prev => [...prev, aiMsg]);
-    }, 1000 + Math.random() * 500);
+    }, 800 + Math.random() * 600);
   }, []);
 
   const addEarning = useCallback((amount: number) => {
@@ -92,22 +92,14 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <AppContext.Provider
-      value={{
-        onboardingData,
-        setOnboardingData,
-        isOnboarded,
-        setIsOnboarded,
-        chatMessages,
-        sendMessage,
-        currentSkillId,
-        setCurrentSkillId,
-        totalEarned,
-        addEarning,
-        completedDays,
-        completeDay,
-      }}
-    >
+    <AppContext.Provider value={{
+      onboardingData, setOnboardingData,
+      isOnboarded, setIsOnboarded,
+      chatMessages, sendMessage,
+      currentSkillId, setCurrentSkillId,
+      totalEarned, addEarning,
+      completedDays, completeDay,
+    }}>
       {children}
     </AppContext.Provider>
   );
@@ -115,6 +107,6 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
 export function useApp() {
   const ctx = useContext(AppContext);
-  if (!ctx) throw new Error('useApp must be used inside AppProvider');
+  if (!ctx) throw new Error('useApp must be used within AppProvider');
   return ctx;
 }

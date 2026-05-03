@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, BookOpen, MessageCircle, User, Menu, X, Zap } from 'lucide-react';
-import { cn } from '../lib/utils';
+import React, { useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Zap, Menu, X, LayoutDashboard, BookOpen, MessageCircle, User, LogOut, LogIn } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
-const NAV_ITEMS = [
+const NAV_LINKS = [
   { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { path: '/learn/video-editing', label: 'Seekho', icon: BookOpen },
   { path: '/chat', label: 'AI Coach', icon: MessageCircle },
@@ -11,92 +11,128 @@ const NAV_ITEMS = [
 ];
 
 export default function Navbar() {
-  const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+  const { user, signOut } = useAuth();
 
-  const isActive = (path: string) => location.pathname === path || location.pathname.startsWith('/learn') && path.startsWith('/learn');
+  const handleSignOut = async () => {
+    await signOut();
+    navigate('/');
+    setMenuOpen(false);
+  };
 
   return (
-    <>
-      {/* Desktop Navbar */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-brand-black/95 backdrop-blur-xl border-b border-brand-gray-mid">
-        <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-brand-yellow rounded-lg flex items-center justify-center">
-              <Zap className="w-5 h-5 text-brand-black" fill="currentColor" />
-            </div>
-            <span className="font-black text-lg text-white">
-              Skill<span className="text-brand-yellow">ForBharat</span>
-            </span>
-          </Link>
+    <nav className="sticky top-0 z-50 bg-brand-black/95 backdrop-blur border-b border-brand-gray-mid">
+      <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
+        {/* Logo */}
+        <Link to="/" className="flex items-center gap-2 flex-shrink-0">
+          <div className="w-8 h-8 bg-brand-yellow rounded-lg flex items-center justify-center">
+            <Zap className="w-4 h-4 text-brand-black" fill="currentColor" />
+          </div>
+          <span className="font-black text-white text-base">
+            Skill<span className="text-brand-yellow">ForBharat</span>
+          </span>
+        </Link>
 
+        {/* Desktop nav */}
+        {user && (
           <div className="hidden md:flex items-center gap-1">
-            {NAV_ITEMS.map(({ path, label, icon: Icon }) => (
+            {NAV_LINKS.map(({ path, label, icon: Icon }) => (
               <Link
                 key={path}
                 to={path}
-                className={cn(
-                  'flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all',
-                  isActive(path)
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
+                  pathname === path
                     ? 'bg-brand-yellow text-brand-black'
                     : 'text-gray-400 hover:text-white hover:bg-brand-gray-dark'
-                )}
+                }`}
               >
-                <Icon className="w-4 h-4" />
-                {label}
-              </Link>
-            ))}
-          </div>
-
-          <button
-            className="md:hidden text-white p-2"
-            onClick={() => setMenuOpen(!menuOpen)}
-            aria-label="Toggle menu"
-          >
-            {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
-        </div>
-
-        {menuOpen && (
-          <div className="md:hidden bg-brand-gray-dark border-t border-brand-gray-mid px-4 py-3 flex flex-col gap-2">
-            {NAV_ITEMS.map(({ path, label, icon: Icon }) => (
-              <Link
-                key={path}
-                to={path}
-                onClick={() => setMenuOpen(false)}
-                className={cn(
-                  'flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all',
-                  isActive(path)
-                    ? 'bg-brand-yellow text-brand-black'
-                    : 'text-gray-400 hover:text-white hover:bg-brand-gray-light'
-                )}
-              >
-                <Icon className="w-5 h-5" />
+                <Icon className="w-3.5 h-3.5" />
                 {label}
               </Link>
             ))}
           </div>
         )}
-      </nav>
 
-      {/* Mobile Bottom Navigation */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-brand-gray-dark border-t border-brand-gray-mid">
-        <div className="grid grid-cols-4 h-16">
-          {NAV_ITEMS.map(({ path, label, icon: Icon }) => (
+        {/* Right actions */}
+        <div className="flex items-center gap-2">
+          {user ? (
+            <>
+              <div className="hidden md:flex items-center gap-2 text-sm text-gray-400">
+                <div className="w-7 h-7 bg-brand-yellow/20 border border-brand-yellow/40 rounded-full flex items-center justify-center text-brand-yellow font-bold text-xs">
+                  {(user.user_metadata?.display_name as string)?.[0]?.toUpperCase() ?? user.email?.[0]?.toUpperCase() ?? 'U'}
+                </div>
+              </div>
+              <button
+                onClick={handleSignOut}
+                className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-gray-400 hover:text-white hover:bg-brand-gray-dark transition-all"
+              >
+                <LogOut className="w-3.5 h-3.5" />
+                Logout
+              </button>
+            </>
+          ) : (
             <Link
-              key={path}
-              to={path}
-              className={cn(
-                'flex flex-col items-center justify-center gap-1 transition-all',
-                isActive(path) ? 'text-brand-yellow' : 'text-gray-500'
-              )}
+              to="/login"
+              className="hidden md:flex items-center gap-1.5 px-4 py-1.5 bg-brand-yellow text-brand-black font-bold text-sm rounded-lg hover:bg-brand-yellow-dark transition-all"
             >
-              <Icon className="w-5 h-5" />
-              <span className="text-[10px] font-medium">{label}</span>
+              <LogIn className="w-3.5 h-3.5" />
+              Login
             </Link>
-          ))}
+          )}
+
+          {/* Mobile hamburger */}
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="md:hidden p-2 text-gray-400 hover:text-white"
+            aria-label="Toggle menu"
+          >
+            {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
         </div>
-      </nav>
-    </>
+      </div>
+
+      {/* Mobile menu */}
+      {menuOpen && (
+        <div className="md:hidden bg-brand-gray-dark border-t border-brand-gray-mid px-4 py-3 space-y-1">
+          {user ? (
+            <>
+              {NAV_LINKS.map(({ path, label, icon: Icon }) => (
+                <Link
+                  key={path}
+                  to={path}
+                  onClick={() => setMenuOpen(false)}
+                  className={`flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium transition-all ${
+                    pathname === path
+                      ? 'bg-brand-yellow text-brand-black'
+                      : 'text-gray-300 hover:bg-brand-gray-mid'
+                  }`}
+                >
+                  <Icon className="w-4 h-4" />
+                  {label}
+                </Link>
+              ))}
+              <button
+                onClick={handleSignOut}
+                className="w-full flex items-center gap-3 px-3 py-3 rounded-xl text-sm text-red-400 hover:bg-brand-gray-mid transition-all"
+              >
+                <LogOut className="w-4 h-4" />
+                Logout
+              </button>
+            </>
+          ) : (
+            <Link
+              to="/login"
+              onClick={() => setMenuOpen(false)}
+              className="flex items-center justify-center gap-2 px-4 py-3 bg-brand-yellow text-brand-black font-bold rounded-xl text-sm"
+            >
+              <LogIn className="w-4 h-4" />
+              Login / Signup
+            </Link>
+          )}
+        </div>
+      )}
+    </nav>
   );
 }
