@@ -1,316 +1,393 @@
-<!-- route: / -->
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23171717'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='Georgia,serif' font-size='18' font-style='italic' fill='%23E9B638'%3Ep%3C/text%3E%3C/svg%3E" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Plume — Social media on autopilot</title>
-    <meta name="description" content="Plume is the autonomous AI for social media. Connect your website and let Plume create, schedule and publish on-brand content — every day, automatically." />
-    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Inter:wght@400;500;600;700&family=Fragment+Mono&display=swap" rel="stylesheet" />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              canvas: '#F2EFE3', ink: '#171717', accent: '#E9B638',
-              cream: { 50: '#FAF9F2', 100: '#F2EFE3', 200: '#E8E3D2', 300: '#D8D1BA' },
-            },
-            fontFamily: {
-              serif: ['"EB Garamond"', 'Georgia', 'serif'],
-              sans: ['Inter', 'system-ui', 'sans-serif'],
-              mono: ['"Fragment Mono"', 'monospace'],
-            },
-          },
-        },
-      };
-    </script>
-    <style>
-      html, body { background: #F2EFE3; color: #171717; }
-      body { font-family: 'Inter', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
-      .font-serif { font-family: 'EB Garamond', Georgia, serif; }
-      @keyframes caret { 0%,100%{opacity:1} 50%{opacity:0} }
-      .caret { animation: caret 0.8s steps(2,start) infinite; }
-      @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
-      .float { animation: float 6s ease-in-out infinite; }
-    </style>
-  </head>
-  <body class="bg-canvas text-ink">
-    <div id="root">
-      <!-- Inline fallback (mirrors src/pages/HomePage.tsx) -->
-      <div class="min-h-screen bg-canvas">
-        <!-- Navbar -->
-        <header class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[min(96%,1100px)]">
-          <nav class="flex items-center justify-between px-5 py-3 rounded-2xl border border-black/5 bg-white/60 backdrop-blur-xl shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
-            <a href="#hero" class="flex items-center gap-2">
-              <span class="w-8 h-8 rounded-lg bg-ink flex items-center justify-center">
-                <span class="font-serif italic text-accent text-lg leading-none">p</span>
-              </span>
-              <span class="font-serif text-xl text-ink tracking-tightish">Plume</span>
-            </a>
-            <div class="hidden md:flex items-center gap-8 text-sm text-ink/70">
-              <a href="#how" class="hover:text-ink transition">How it works</a>
-              <a href="#pricing" class="hover:text-ink transition">Pricing</a>
-              <a href="#testimonials" class="hover:text-ink transition">Customers</a>
-              <a href="#contact" class="hover:text-ink transition">Get in touch</a>
-            </div>
-            <div class="flex items-center gap-2">
-              <a href="#login" class="hidden sm:inline-flex items-center px-5 py-2.5 rounded-xl bg-white border border-black/5 font-serif text-base text-ink hover:bg-cream-50 transition">Log in</a>
-              <a href="#start" class="inline-flex items-center px-5 py-2.5 rounded-xl bg-ink text-white font-serif text-base shadow-[0_2px_8px_rgba(0,0,0,0.12)] hover:bg-black transition">Get started</a>
-            </div>
-          </nav>
-        </header>
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RootShare — Neighborhood Garden Platform</title>
+  <meta name="description" content="Manage neighborhood garden plots, log harvests, swap seeds, and coordinate community workdays — all in one place." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fraunces:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            garden: { 50:'#f0fdf4',100:'#dcfce7',200:'#bbf7d0',300:'#86efac',400:'#4ade80',500:'#22c55e',600:'#16a34a',700:'#15803d',800:'#166534',900:'#14532d' },
+            soil: { 50:'#fdf8f0',100:'#faefd9',200:'#f4dcb0',300:'#ecc47c',400:'#e2a445',500:'#d4861e',600:'#b86814',700:'#994f12',800:'#7d3f14',900:'#673414' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', system-ui, sans-serif; background: #fdf8f0; }
+    .font-display { font-family: 'Fraunces', Georgia, serif; }
+    .hero-bg { background: linear-gradient(135deg, #14532d 0%, #15803d 40%, #166534 70%, #365314 100%); }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+    .float { animation: float 4s ease-in-out infinite; }
+  </style>
+</head>
+<body class="min-h-screen">
 
-        <!-- Hero -->
-        <section id="hero" class="relative pt-40 pb-28 px-6 overflow-hidden">
-          <!-- Decorative side images -->
-          <div class="hidden lg:block absolute left-0 top-32 w-[420px] h-[480px] opacity-90 pointer-events-none">
-            <img src="https://images.unsplash.com/photo-1611605698335-8b1569810432?w=900&h=1000&fit=crop" alt="" class="w-full h-full object-cover rounded-3xl" />
-          </div>
-          <div class="hidden lg:block absolute right-0 top-40 w-[400px] h-[460px] opacity-90 pointer-events-none">
-            <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?w=900&h=1000&fit=crop" alt="" class="w-full h-full object-cover rounded-3xl" />
-          </div>
+<!-- Navigation -->
+<nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-garden-100 shadow-sm">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 bg-garden-600 rounded-xl flex items-center justify-center">
+        <svg height="20" width="20" class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2a7 7 0 0 1 7 7c0 4-7 13-7 13S5 13 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5" fill="currentColor" stroke="none"/></svg>
+      </div>
+      <span class="font-display text-xl font-bold text-garden-900">RootShare</span>
+    </div>
+    <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
+      <a href="#features" class="hover:text-garden-700 transition-colors">Features</a>
+      <a href="#gardens" class="hover:text-garden-700 transition-colors">Gardens</a>
+      <a href="#marketplace" class="hover:text-garden-700 transition-colors">Seed Swap</a>
+      <a href="#community" class="hover:text-garden-700 transition-colors">Community</a>
+    </div>
+    <div class="flex items-center gap-3">
+      <a href="#" class="text-sm font-medium text-garden-700 hover:text-garden-900 transition-colors">Sign in</a>
+      <a href="#" class="px-4 py-2 bg-garden-600 text-white text-sm font-semibold rounded-xl hover:bg-garden-700 transition-colors shadow-sm">Get Started</a>
+    </div>
+  </div>
+</nav>
 
-          <div class="relative max-w-3xl mx-auto text-center">
-            <p class="font-mono text-[11px] tracking-[0.2em] uppercase text-ink/50 mb-8">Autonomous social · since 2024</p>
-            <h1 class="font-serif text-[clamp(48px,8vw,84px)] leading-[1.05] tracking-tightish text-ink">
-              Social media
-              <span class="block">
-                <span class="italic">for</span>
-                <span class="italic text-accent"> founders</span>
-                <span class="text-accent caret font-normal not-italic">|</span>
-              </span>
-            </h1>
-            <p class="font-serif italic text-xl md:text-2xl text-ink/60 mt-7 max-w-xl mx-auto leading-relaxed">
-              Reach more customers — without lifting a finger. Plume writes, designs and posts every day, in your voice.
-            </p>
-
-            <!-- URL capture card -->
-            <div class="mt-12 max-w-xl mx-auto">
-              <div class="bg-white/85 backdrop-blur-xl rounded-[18px] p-[7px] border border-white/60 shadow-[0_8px_32px_rgba(0,0,0,0.06)]">
-                <div class="flex flex-col sm:flex-row gap-1.5">
-                  <div class="flex-1 flex items-center gap-3 bg-cream-50/70 rounded-[13px] px-5 py-4 border border-black/5">
-                    <svg height="20" width="20" class="w-4 h-4 text-ink/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg>
-                    <input type="url" placeholder="www.yourcompany.com" class="flex-1 bg-transparent outline-none font-serif text-lg text-ink placeholder:text-ink/35 placeholder:italic" />
-                  </div>
-                  <button class="inline-flex items-center justify-center gap-2 bg-ink text-white px-7 py-4 rounded-[13px] font-serif text-base shadow-[0_2px_8px_rgba(0,0,0,0.12)] hover:bg-black transition">
-                    Get started
-                    <svg height="20" width="20" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-                  </button>
-                </div>
-              </div>
-              <p class="text-xs text-ink/40 mt-3 font-sans">Free 14-day trial. No credit card. Connects to LinkedIn, X, Instagram & TikTok.</p>
-            </div>
-
-            <!-- Logo strip -->
-            <div class="mt-20">
-              <p class="font-mono text-[10px] tracking-[0.25em] uppercase text-ink/40 mb-6">Trusted by 1,200+ teams</p>
-              <div class="flex flex-wrap items-center justify-center gap-x-12 gap-y-4 opacity-60">
-                <span class="font-serif italic text-2xl">Foldsen &amp; Co</span>
-                <span class="font-sans font-bold text-xl tracking-tight">norrøn</span>
-                <span class="font-serif text-2xl">Helmer</span>
-                <span class="font-mono text-lg">/skog</span>
-                <span class="font-serif italic text-2xl">Lindholm</span>
-                <span class="font-sans font-semibold text-xl">KILDE.</span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- How it works -->
-        <section id="how" class="py-28 px-6 bg-cream-50">
-          <div class="max-w-6xl mx-auto">
-            <div class="text-center mb-20">
-              <p class="font-mono text-[11px] tracking-[0.2em] uppercase text-ink/50 mb-4">How it works</p>
-              <h2 class="font-serif text-5xl md:text-6xl tracking-tightish text-ink leading-[1.05]">
-                Three steps. <span class="italic text-ink/60">Then it runs itself.</span>
-              </h2>
-            </div>
-            <div class="grid md:grid-cols-3 gap-6">
-              <article class="bg-white rounded-3xl p-10 border border-black/5">
-                <span class="font-serif italic text-accent text-5xl">01</span>
-                <h3 class="font-serif text-2xl mt-6 mb-3">Add your website</h3>
-                <p class="text-ink/65 leading-relaxed">Drop in your URL. Plume reads every page, learns your tone, products and visual identity in under two minutes.</p>
-              </article>
-              <article class="bg-white rounded-3xl p-10 border border-black/5">
-                <span class="font-serif italic text-accent text-5xl">02</span>
-                <h3 class="font-serif text-2xl mt-6 mb-3">Analysis &amp; production</h3>
-                <p class="text-ink/65 leading-relaxed">It studies your audience, the platforms that matter, and writes a month of on-brand posts — text, image and short-form video.</p>
-              </article>
-              <article class="bg-white rounded-3xl p-10 border border-black/5">
-                <span class="font-serif italic text-accent text-5xl">03</span>
-                <h3 class="font-serif text-2xl mt-6 mb-3">Automatic publishing</h3>
-                <p class="text-ink/65 leading-relaxed">Approve once or set it on autopilot. Plume schedules, publishes and learns from every reaction. You just keep working.</p>
-              </article>
-            </div>
-          </div>
-        </section>
-
-        <!-- Comparison -->
-        <section class="py-28 px-6">
-          <div class="max-w-5xl mx-auto">
-            <h2 class="font-serif text-5xl md:text-6xl tracking-tightish text-ink leading-[1.05] text-center mb-16 max-w-3xl mx-auto">
-              Traditional marketing is a full-time job.
-              <span class="italic text-ink/60"> Plume does it for you.</span>
-            </h2>
-            <div class="grid md:grid-cols-2 gap-6">
-              <div class="bg-cream-200/50 rounded-3xl p-10 border border-black/5">
-                <p class="font-mono text-[10px] tracking-[0.2em] uppercase text-ink/50 mb-5">Without Plume</p>
-                <ul class="space-y-4 text-ink/70">
-                  <li class="flex gap-3"><span class="text-ink/30">—</span><span>40+ hours every month writing captions</span></li>
-                  <li class="flex gap-3"><span class="text-ink/30">—</span><span>Freelancer invoices stacking up to €3,500/mo</span></li>
-                  <li class="flex gap-3"><span class="text-ink/30">—</span><span>Inconsistent posting, off-brand drift</span></li>
-                  <li class="flex gap-3"><span class="text-ink/30">—</span><span>Endless tabs: Buffer, Canva, ChatGPT, Notion</span></li>
-                  <li class="flex gap-3"><span class="text-ink/30">—</span><span>Founders posting at 11pm on a Sunday</span></li>
-                </ul>
-              </div>
-              <div class="bg-ink rounded-3xl p-10 text-white">
-                <p class="font-mono text-[10px] tracking-[0.2em] uppercase text-accent mb-5">With Plume</p>
-                <ul class="space-y-4 text-white/85">
-                  <li class="flex gap-3"><span class="text-accent">✓</span><span>0 hours. It runs in the background.</span></li>
-                  <li class="flex gap-3"><span class="text-accent">✓</span><span>One flat fee. Everything included.</span></li>
-                  <li class="flex gap-3"><span class="text-accent">✓</span><span>On-brand, every post, on every channel</span></li>
-                  <li class="flex gap-3"><span class="text-accent">✓</span><span>One dashboard. Approve in two taps.</span></li>
-                  <li class="flex gap-3"><span class="text-accent">✓</span><span>Sleep at 11pm. Plume already posted.</span></li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Testimonials -->
-        <section id="testimonials" class="py-28 px-6 bg-cream-50">
-          <div class="max-w-6xl mx-auto">
-            <div class="text-center mb-16">
-              <p class="font-mono text-[11px] tracking-[0.2em] uppercase text-ink/50 mb-4">Customers</p>
-              <h2 class="font-serif text-5xl md:text-6xl tracking-tightish text-ink leading-[1.05]">
-                Loved by small &amp; medium <span class="italic text-ink/60">enterprises.</span>
-              </h2>
-            </div>
-            <div class="grid md:grid-cols-3 gap-6">
-              <article class="bg-white rounded-3xl p-8 border border-black/5">
-                <p class="font-serif text-xl text-ink leading-snug">"We went from posting twice a month to four times a week. Inbound leads doubled in the first quarter."</p>
-                <div class="flex items-center gap-3 mt-8">
-                  <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=faces" alt="Marte Skogli" class="w-10 h-10 rounded-full object-cover" />
-                  <div>
-                    <div class="text-sm font-medium">Marte Skogli</div>
-                    <div class="text-xs text-ink/50">Founder, Foldsen &amp; Co</div>
-                  </div>
-                </div>
-              </article>
-              <article class="bg-white rounded-3xl p-8 border border-black/5">
-                <p class="font-serif text-xl text-ink leading-snug">"Cancelled our agency. Plume costs a tenth and the output is genuinely better. The voice is uncanny."</p>
-                <div class="flex items-center gap-3 mt-8">
-                  <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&h=80&fit=crop&crop=faces" alt="Henrik Voll" class="w-10 h-10 rounded-full object-cover" />
-                  <div>
-                    <div class="text-sm font-medium">Henrik Voll</div>
-                    <div class="text-xs text-ink/50">CEO, Norrøn Studio</div>
-                  </div>
-                </div>
-              </article>
-              <article class="bg-white rounded-3xl p-8 border border-black/5">
-                <p class="font-serif text-xl text-ink leading-snug">"Set it up on a Sunday morning. By Wednesday it had written 18 posts, scheduled 12, and started a thread that hit 40k views."</p>
-                <div class="flex items-center gap-3 mt-8">
-                  <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=faces" alt="Ingrid Lindholm" class="w-10 h-10 rounded-full object-cover" />
-                  <div>
-                    <div class="text-sm font-medium">Ingrid Lindholm</div>
-                    <div class="text-xs text-ink/50">Marketing, Lindholm Atelier</div>
-                  </div>
-                </div>
-              </article>
-            </div>
-          </div>
-        </section>
-
-        <!-- Pricing -->
-        <section id="pricing" class="py-28 px-6">
-          <div class="max-w-3xl mx-auto text-center">
-            <p class="font-mono text-[11px] tracking-[0.2em] uppercase text-ink/50 mb-4">Pricing</p>
-            <h2 class="font-serif text-5xl md:text-6xl tracking-tightish text-ink leading-[1.05]">
-              One price <span class="italic text-ink/60">for autopilot.</span>
-            </h2>
-            <p class="font-serif italic text-xl text-ink/60 mt-5">Everything included. No extra costs. Cancel anytime.</p>
-
-            <div class="mt-14 bg-white rounded-3xl border border-black/5 p-10 text-left shadow-[0_2px_24px_rgba(0,0,0,0.04)]">
-              <div class="flex items-baseline justify-between flex-wrap gap-4">
-                <div>
-                  <h3 class="font-serif text-3xl">Plume Autopilot</h3>
-                  <p class="text-ink/55 text-sm mt-1">For founders, agencies and SMBs that just want it done.</p>
-                </div>
-                <div class="text-right">
-                  <span class="font-serif text-6xl">€349</span>
-                  <span class="text-ink/50">/month</span>
-                </div>
-              </div>
-              <div class="mt-8 grid sm:grid-cols-2 gap-x-8 gap-y-3 text-ink/75">
-                <div class="flex gap-2"><span class="text-accent">✓</span> Unlimited posts on 4 channels</div>
-                <div class="flex gap-2"><span class="text-accent">✓</span> AI-generated images &amp; reels</div>
-                <div class="flex gap-2"><span class="text-accent">✓</span> Trained on your website &amp; brand</div>
-                <div class="flex gap-2"><span class="text-accent">✓</span> Performance analytics</div>
-                <div class="flex gap-2"><span class="text-accent">✓</span> Approval workflows</div>
-                <div class="flex gap-2"><span class="text-accent">✓</span> Slack &amp; email digest</div>
-                <div class="flex gap-2"><span class="text-accent">✓</span> Priority human support</div>
-                <div class="flex gap-2"><span class="text-accent">✓</span> 14-day free trial</div>
-              </div>
-              <a href="#start" class="mt-10 inline-flex w-full items-center justify-center gap-2 bg-ink text-white px-8 py-4 rounded-2xl font-serif text-lg hover:bg-black transition">
-                Start free trial →
-              </a>
-            </div>
-          </div>
-        </section>
-
-        <!-- CTA -->
-        <section class="py-28 px-6">
-          <div class="max-w-5xl mx-auto bg-ink rounded-[32px] p-12 md:p-20 text-center text-white relative overflow-hidden">
-            <div class="absolute -top-32 -right-32 w-96 h-96 rounded-full bg-accent/20 blur-3xl"></div>
-            <p class="font-mono text-[11px] tracking-[0.2em] uppercase text-accent mb-5 relative">Ready when you are</p>
-            <h2 class="font-serif text-5xl md:text-6xl leading-[1.05] tracking-tightish relative">
-              Stop posting. <span class="italic text-accent">Start growing.</span>
-            </h2>
-            <p class="font-serif italic text-xl text-white/65 mt-6 max-w-xl mx-auto relative">Connect your site in 90 seconds. The first post goes out tomorrow.</p>
-            <a href="#start" class="mt-10 inline-flex items-center gap-2 bg-accent text-ink px-8 py-4 rounded-2xl font-serif text-lg font-medium hover:bg-accent/90 transition relative">
-              Get started — free for 14 days
-            </a>
-          </div>
-        </section>
-
-        <!-- Footer -->
-        <footer class="border-t border-black/5 px-6 py-16 bg-cream-50">
-          <div class="max-w-6xl mx-auto grid md:grid-cols-4 gap-10">
-            <div class="md:col-span-2">
-              <a href="#hero" class="flex items-center gap-2">
-                <span class="w-8 h-8 rounded-lg bg-ink flex items-center justify-center">
-                  <span class="font-serif italic text-accent text-lg leading-none">p</span>
-                </span>
-                <span class="font-serif text-xl">Plume</span>
-              </a>
-              <p class="font-serif italic text-ink/55 mt-4 max-w-sm">The first autonomous AI for social media. Made in Oslo, used everywhere.</p>
-            </div>
+<!-- Hero -->
+<section class="hero-bg relative overflow-hidden pt-24 pb-32 px-6">
+  <div class="absolute inset-0 opacity-10">
+    <div class="absolute top-10 left-10 w-64 h-64 bg-garden-300 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-10 right-10 w-96 h-96 bg-soil-300 rounded-full blur-3xl"></div>
+  </div>
+  <div class="max-w-7xl mx-auto relative z-10">
+    <div class="grid md:grid-cols-2 gap-16 items-center">
+      <div>
+        <div class="inline-flex items-center gap-2 px-4 py-2 bg-garden-500/20 border border-garden-400/30 rounded-full text-garden-200 text-sm font-medium mb-8">
+          <svg height="20" width="20" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+          127 active community gardens
+        </div>
+        <h1 class="font-display text-5xl md:text-6xl font-bold text-white leading-tight mb-6">
+          Grow together,<br /><em class="text-garden-300 not-italic">harvest more</em>
+        </h1>
+        <p class="text-garden-100 text-lg leading-relaxed mb-10 max-w-lg">
+          RootShare brings your neighborhood garden community online — plot assignments, harvest tracking, seed swapping, and shared scheduling in one rooted platform.
+        </p>
+        <div class="flex flex-wrap gap-4">
+          <a href="#" class="px-7 py-3.5 bg-white text-garden-800 font-bold rounded-2xl hover:shadow-xl transition-all hover:-translate-y-0.5 text-sm">Join Your Garden</a>
+          <a href="#" class="px-7 py-3.5 border border-white/30 text-white font-semibold rounded-2xl hover:bg-white/10 transition-all text-sm">See How It Works</a>
+        </div>
+        <div class="mt-12 flex items-center gap-8 text-garden-200">
+          <div><span class="text-3xl font-bold text-white block">2,400+</span>Gardeners</div>
+          <div class="w-px h-10 bg-garden-500/40"></div>
+          <div><span class="text-3xl font-bold text-white block">840</span>Plots Active</div>
+          <div class="w-px h-10 bg-garden-500/40"></div>
+          <div><span class="text-3xl font-bold text-white block">15k</span>lbs Harvested</div>
+        </div>
+      </div>
+      <div class="relative hidden md:block">
+        <div class="float">
+          <img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=640&h=500&fit=crop" alt="Community garden" class="rounded-3xl shadow-2xl border-4 border-white/20 w-full" />
+        </div>
+        <div class="absolute -bottom-6 -left-6 bg-white rounded-2xl p-4 shadow-xl border border-garden-100">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-garden-100 rounded-full flex items-center justify-center text-xl">🥕</div>
             <div>
-              <p class="font-mono text-[10px] tracking-[0.2em] uppercase text-ink/50 mb-3">Product</p>
-              <ul class="space-y-2 text-ink/70 text-sm">
-                <li><a href="#how" class="hover:text-ink">How it works</a></li>
-                <li><a href="#pricing" class="hover:text-ink">Pricing</a></li>
-                <li><a href="#testimonials" class="hover:text-ink">Customers</a></li>
-              </ul>
+              <div class="text-xs text-gray-500">Today's harvest</div>
+              <div class="font-bold text-garden-800 text-sm">4.2 kg logged</div>
             </div>
+          </div>
+        </div>
+        <div class="absolute -top-4 -right-4 bg-white rounded-2xl p-4 shadow-xl border border-soil-100">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-soil-100 rounded-full flex items-center justify-center text-xl">🌱</div>
             <div>
-              <p class="font-mono text-[10px] tracking-[0.2em] uppercase text-ink/50 mb-3">Company</p>
-              <ul class="space-y-2 text-ink/70 text-sm">
-                <li><a href="#" class="hover:text-ink">About</a></li>
-                <li><a href="#" class="hover:text-ink">Careers</a></li>
-                <li><a href="#" class="hover:text-ink">Contact</a></li>
-              </ul>
+              <div class="text-xs text-gray-500">Seeds available</div>
+              <div class="font-bold text-soil-800 text-sm">38 varieties</div>
             </div>
           </div>
-          <div class="max-w-6xl mx-auto mt-12 pt-8 border-t border-black/5 flex flex-wrap justify-between gap-3 text-xs text-ink/50">
-            <p>© 2026 Plume AS. Built quietly in Oslo.</p>
-            <p class="font-mono">v1.0 · status: all systems go</p>
-          </div>
-        </footer>
+        </div>
       </div>
     </div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+  </div>
+</section>
+
+<!-- Features -->
+<section id="features" class="py-28 px-6 bg-white">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-16">
+      <span class="text-garden-600 text-sm font-semibold uppercase tracking-widest">Everything you need</span>
+      <h2 class="font-display text-4xl font-bold text-gray-900 mt-3 mb-4">One platform for your whole garden community</h2>
+      <p class="text-gray-500 max-w-2xl mx-auto">From allocating plots to coordinating watering schedules, RootShare handles the admin so you can focus on growing.</p>
+    </div>
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="p-7 rounded-2xl bg-garden-50 border border-garden-100 hover:shadow-lg transition-all hover:-translate-y-1 group">
+        <div class="w-12 h-12 bg-garden-600 rounded-xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+          <svg height="20" width="20" class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        </div>
+        <h3 class="font-bold text-gray-900 mb-2">Plot Management</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">Interactive garden map with plot assignments, member profiles, and plot history tracking.</p>
+      </div>
+      <div class="p-7 rounded-2xl bg-soil-50 border border-soil-100 hover:shadow-lg transition-all hover:-translate-y-1 group">
+        <div class="w-12 h-12 bg-soil-600 rounded-xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+          <svg height="20" width="20" class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/><circle cx="12" cy="12" r="4"/></svg>
+        </div>
+        <h3 class="font-bold text-gray-900 mb-2">Harvest Logging</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">Log every harvest with weight, photos, and notes. Track yields over seasons with beautiful charts.</p>
+      </div>
+      <div class="p-7 rounded-2xl bg-emerald-50 border border-emerald-100 hover:shadow-lg transition-all hover:-translate-y-1 group">
+        <div class="w-12 h-12 bg-emerald-600 rounded-xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+          <svg height="20" width="20" class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </div>
+        <h3 class="font-bold text-gray-900 mb-2">Seed Swap Market</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">Post seeds you have, find seeds you need. Trade with neighbors and build a resilient local seed library.</p>
+      </div>
+      <div class="p-7 rounded-2xl bg-amber-50 border border-amber-100 hover:shadow-lg transition-all hover:-translate-y-1 group">
+        <div class="w-12 h-12 bg-amber-500 rounded-xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+          <svg height="20" width="20" class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </div>
+        <h3 class="font-bold text-gray-900 mb-2">Shared Calendar</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">Coordinate watering days, community workdays, and events. Never miss your assigned watering slot.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Garden Grid Preview -->
+<section id="gardens" class="py-28 px-6 bg-garden-50">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-16">
+      <span class="text-garden-600 text-sm font-semibold uppercase tracking-widest">Featured Gardens</span>
+      <h2 class="font-display text-4xl font-bold text-gray-900 mt-3 mb-4">Gardens thriving near you</h2>
+    </div>
+    <div class="grid md:grid-cols-3 gap-8">
+      <div class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all hover:-translate-y-1 border border-garden-100">
+        <div class="relative">
+          <img src="https://images.unsplash.com/photo-1500651230702-0e2d8a49d4ad?w=600&h=300&fit=crop" alt="Riverside Community Garden" class="w-full h-48 object-cover" loading="lazy" />
+          <span class="absolute top-3 left-3 px-3 py-1 bg-garden-600 text-white text-xs font-bold rounded-full">24 plots</span>
+        </div>
+        <div class="p-6">
+          <h3 class="font-bold text-gray-900 text-lg mb-1">Riverside Community Garden</h3>
+          <p class="text-gray-500 text-sm mb-4">Oak Street, Northside · Est. 2018</p>
+          <div class="flex items-center justify-between text-sm">
+            <div class="flex -space-x-2">
+              <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=faces" alt="member" class="w-7 h-7 rounded-full border-2 border-white object-cover" />
+              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=faces" alt="member" class="w-7 h-7 rounded-full border-2 border-white object-cover" />
+              <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=faces" alt="member" class="w-7 h-7 rounded-full border-2 border-white object-cover" />
+              <div class="w-7 h-7 rounded-full border-2 border-white bg-garden-100 flex items-center justify-center text-xs font-bold text-garden-700">+21</div>
+            </div>
+            <span class="text-garden-600 font-semibold hover:underline cursor-pointer">View garden →</span>
+          </div>
+        </div>
+      </div>
+      <div class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all hover:-translate-y-1 border border-garden-100">
+        <div class="relative">
+          <img src="https://images.unsplash.com/photo-1589923158776-cb4485d99fd6?w=600&h=300&fit=crop" alt="Sunflower Collective" class="w-full h-48 object-cover" loading="lazy" />
+          <span class="absolute top-3 left-3 px-3 py-1 bg-soil-600 text-white text-xs font-bold rounded-full">16 plots</span>
+        </div>
+        <div class="p-6">
+          <h3 class="font-bold text-gray-900 text-lg mb-1">Sunflower Collective</h3>
+          <p class="text-gray-500 text-sm mb-4">Elmwood Ave, Westbridge · Est. 2021</p>
+          <div class="flex items-center justify-between text-sm">
+            <div class="flex -space-x-2">
+              <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=80&h=80&fit=crop&crop=faces" alt="member" class="w-7 h-7 rounded-full border-2 border-white object-cover" />
+              <img src="https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?w=80&h=80&fit=crop&crop=faces" alt="member" class="w-7 h-7 rounded-full border-2 border-white object-cover" />
+              <div class="w-7 h-7 rounded-full border-2 border-white bg-soil-100 flex items-center justify-center text-xs font-bold text-soil-700">+14</div>
+            </div>
+            <span class="text-garden-600 font-semibold hover:underline cursor-pointer">View garden →</span>
+          </div>
+        </div>
+      </div>
+      <div class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all hover:-translate-y-1 border border-garden-100">
+        <div class="relative">
+          <img src="https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?w=600&h=300&fit=crop" alt="Green Roots Co-op" class="w-full h-48 object-cover" loading="lazy" />
+          <span class="absolute top-3 left-3 px-3 py-1 bg-emerald-700 text-white text-xs font-bold rounded-full">32 plots</span>
+        </div>
+        <div class="p-6">
+          <h3 class="font-bold text-gray-900 text-lg mb-1">Green Roots Co-op</h3>
+          <p class="text-gray-500 text-sm mb-4">Park Lane, Eastdale · Est. 2015</p>
+          <div class="flex items-center justify-between text-sm">
+            <div class="flex -space-x-2">
+              <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=faces" alt="member" class="w-7 h-7 rounded-full border-2 border-white object-cover" />
+              <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=80&h=80&fit=crop&crop=faces" alt="member" class="w-7 h-7 rounded-full border-2 border-white object-cover" />
+              <img src="https://images.unsplash.com/photo-1463453091185-61582044d556?w=80&h=80&fit=crop&crop=faces" alt="member" class="w-7 h-7 rounded-full border-2 border-white object-cover" />
+              <div class="w-7 h-7 rounded-full border-2 border-white bg-emerald-100 flex items-center justify-center text-xs font-bold text-emerald-700">+29</div>
+            </div>
+            <span class="text-garden-600 font-semibold hover:underline cursor-pointer">View garden →</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Seed Marketplace preview -->
+<section id="marketplace" class="py-28 px-6 bg-white">
+  <div class="max-w-7xl mx-auto">
+    <div class="grid md:grid-cols-2 gap-16 items-center">
+      <div>
+        <span class="text-soil-600 text-sm font-semibold uppercase tracking-widest">Seed Swap Marketplace</span>
+        <h2 class="font-display text-4xl font-bold text-gray-900 mt-3 mb-6">Trade seeds, build community resilience</h2>
+        <p class="text-gray-500 leading-relaxed mb-8">List seeds you have in abundance, request varieties you want to try. Build a living seed library that keeps your neighborhood garden diverse and resilient year after year.</p>
+        <div class="space-y-4">
+          <div class="flex items-center gap-4 p-4 rounded-xl bg-soil-50 border border-soil-100">
+            <span class="text-2xl">🍅</span>
+            <div class="flex-1"><div class="font-semibold text-gray-800">San Marzano Tomato</div><div class="text-xs text-gray-500">Maria K. · Riverside Garden</div></div>
+            <span class="px-3 py-1 bg-garden-100 text-garden-700 text-xs font-bold rounded-full">Available</span>
+          </div>
+          <div class="flex items-center gap-4 p-4 rounded-xl bg-soil-50 border border-soil-100">
+            <span class="text-2xl">🌿</span>
+            <div class="flex-1"><div class="font-semibold text-gray-800">Sweet Basil (Genovese)</div><div class="text-xs text-gray-500">James T. · Sunflower Collective</div></div>
+            <span class="px-3 py-1 bg-garden-100 text-garden-700 text-xs font-bold rounded-full">Available</span>
+          </div>
+          <div class="flex items-center gap-4 p-4 rounded-xl bg-amber-50 border border-amber-100">
+            <span class="text-2xl">🥒</span>
+            <div class="flex-1"><div class="font-semibold text-gray-800">Armenian Cucumber</div><div class="text-xs text-gray-500">Priya N. · Green Roots Co-op</div></div>
+            <span class="px-3 py-1 bg-amber-100 text-amber-700 text-xs font-bold rounded-full">Wanted</span>
+          </div>
+        </div>
+        <a href="#" class="inline-block mt-8 px-6 py-3 bg-soil-600 text-white font-semibold rounded-xl hover:bg-soil-700 transition-colors shadow-sm">Browse Seed Swap →</a>
+      </div>
+      <div>
+        <img src="https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?w=600&h=500&fit=crop" alt="Seed swap" class="rounded-3xl shadow-xl w-full object-cover" loading="lazy" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Calendar preview -->
+<section class="py-28 px-6 bg-garden-900">
+  <div class="max-w-7xl mx-auto text-center">
+    <span class="text-garden-400 text-sm font-semibold uppercase tracking-widest">Shared Calendar</span>
+    <h2 class="font-display text-4xl font-bold text-white mt-3 mb-6">Everyone knows what to do, and when</h2>
+    <p class="text-garden-200 max-w-2xl mx-auto mb-14">Assign watering slots, schedule community workdays, track planting windows, and send automatic reminders. No more confused group chats.</p>
+    <div class="grid md:grid-cols-3 gap-6 text-left">
+      <div class="p-6 bg-white/10 backdrop-blur border border-white/10 rounded-2xl">
+        <div class="w-10 h-10 bg-garden-500/30 rounded-xl flex items-center justify-center mb-4">
+          <svg height="20" width="20" class="w-5 h-5 text-garden-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <h3 class="font-bold text-white mb-2">Watering Rotations</h3>
+        <p class="text-garden-300 text-sm">Assign watering schedules per plot section. Members get push reminders on their day.</p>
+      </div>
+      <div class="p-6 bg-white/10 backdrop-blur border border-white/10 rounded-2xl">
+        <div class="w-10 h-10 bg-soil-500/30 rounded-xl flex items-center justify-center mb-4">
+          <svg height="20" width="20" class="w-5 h-5 text-soil-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <h3 class="font-bold text-white mb-2">Community Workdays</h3>
+        <p class="text-garden-300 text-sm">Plan group sessions for composting, bed prep, tool maintenance, and shared planting.</p>
+      </div>
+      <div class="p-6 bg-white/10 backdrop-blur border border-white/10 rounded-2xl">
+        <div class="w-10 h-10 bg-amber-500/30 rounded-xl flex items-center justify-center mb-4">
+          <svg height="20" width="20" class="w-5 h-5 text-amber-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </div>
+        <h3 class="font-bold text-white mb-2">Planting Windows</h3>
+        <p class="text-garden-300 text-sm">Frost dates, sowing windows, and harvest forecasts tailored to your local climate zone.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials -->
+<section id="community" class="py-28 px-6 bg-garden-50">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-16">
+      <span class="text-garden-600 text-sm font-semibold uppercase tracking-widest">Community Stories</span>
+      <h2 class="font-display text-4xl font-bold text-gray-900 mt-3">Hear from our gardeners</h2>
+    </div>
+    <div class="grid md:grid-cols-3 gap-8">
+      <div class="p-8 bg-white rounded-2xl shadow-md border border-garden-100">
+        <div class="flex items-center gap-1 text-amber-400 mb-4">★★★★★</div>
+        <p class="text-gray-600 leading-relaxed mb-6">"Before RootShare, our plot assignments lived in a shared spreadsheet that everyone kept breaking. Now it's a joy to check in and see who's growing what next to me."</p>
+        <div class="flex items-center gap-3">
+          <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=faces" alt="Maria K." class="w-11 h-11 rounded-full object-cover" loading="lazy" />
+          <div><div class="font-semibold text-gray-900">Maria Kowalski</div><div class="text-xs text-gray-400">Riverside Community Garden</div></div>
+        </div>
+      </div>
+      <div class="p-8 bg-white rounded-2xl shadow-md border border-garden-100">
+        <div class="flex items-center gap-1 text-amber-400 mb-4">★★★★★</div>
+        <p class="text-gray-600 leading-relaxed mb-6">"The seed swap marketplace is incredible. I traded my excess kale seeds for heirloom pepper varieties I'd never have found at a nursery. It builds real relationships."</p>
+        <div class="flex items-center gap-3">
+          <img src="https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?w=80&h=80&fit=crop&crop=faces" alt="James T." class="w-11 h-11 rounded-full object-cover" loading="lazy" />
+          <div><div class="font-semibold text-gray-900">James Thornton</div><div class="text-xs text-gray-400">Sunflower Collective</div></div>
+        </div>
+      </div>
+      <div class="p-8 bg-white rounded-2xl shadow-md border border-garden-100">
+        <div class="flex items-center gap-1 text-amber-400 mb-4">★★★★★</div>
+        <p class="text-gray-600 leading-relaxed mb-6">"As garden coordinator, the shared calendar alone saves me hours every week. Watering rotations run themselves and turnout at workdays has doubled since we started sending reminders."</p>
+        <div class="flex items-center gap-3">
+          <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=80&h=80&fit=crop&crop=faces" alt="Priya N." class="w-11 h-11 rounded-full object-cover" loading="lazy" />
+          <div><div class="font-semibold text-gray-900">Priya Nair</div><div class="text-xs text-gray-400">Green Roots Co-op · Coordinator</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="py-24 px-6 bg-white">
+  <div class="max-w-3xl mx-auto text-center">
+    <h2 class="font-display text-4xl font-bold text-gray-900 mb-6">Ready to root your community?</h2>
+    <p class="text-gray-500 text-lg mb-10">Start free — no credit card, no garden too small. Get your plot assignments, harvest logs, and seed swap running in under 10 minutes.</p>
+    <a href="#" class="inline-block px-10 py-4 bg-garden-600 text-white font-bold rounded-2xl hover:bg-garden-700 transition-all hover:shadow-xl hover:-translate-y-0.5 text-base shadow-md">Start Your Garden — It's Free</a>
+    <p class="text-gray-400 text-sm mt-4">Join 2,400+ gardeners already growing together</p>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-garden-900 text-garden-200 py-16 px-6">
+  <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-12">
+    <div>
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-8 h-8 bg-garden-500 rounded-lg flex items-center justify-center">
+          <svg height="20" width="20" class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2a7 7 0 0 1 7 7c0 4-7 13-7 13S5 13 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5" fill="currentColor" stroke="none"/></svg>
+        </div>
+        <span class="font-display font-bold text-white">RootShare</span>
+      </div>
+      <p class="text-garden-400 text-sm leading-relaxed">Growing communities one plot at a time since 2022.</p>
+    </div>
+    <div>
+      <h4 class="font-semibold text-white mb-4 text-sm">Platform</h4>
+      <ul class="space-y-2 text-sm text-garden-400">
+        <li><a href="#" class="hover:text-white transition-colors">Plot Management</a></li>
+        <li><a href="#" class="hover:text-white transition-colors">Harvest Logs</a></li>
+        <li><a href="#" class="hover:text-white transition-colors">Seed Marketplace</a></li>
+        <li><a href="#" class="hover:text-white transition-colors">Garden Calendar</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 class="font-semibold text-white mb-4 text-sm">Community</h4>
+      <ul class="space-y-2 text-sm text-garden-400">
+        <li><a href="#" class="hover:text-white transition-colors">Find a Garden</a></li>
+        <li><a href="#" class="hover:text-white transition-colors">Start a Garden</a></li>
+        <li><a href="#" class="hover:text-white transition-colors">Success Stories</a></li>
+        <li><a href="#" class="hover:text-white transition-colors">Newsletter</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 class="font-semibold text-white mb-4 text-sm">Company</h4>
+      <ul class="space-y-2 text-sm text-garden-400">
+        <li><a href="#" class="hover:text-white transition-colors">About</a></li>
+        <li><a href="#" class="hover:text-white transition-colors">Blog</a></li>
+        <li><a href="#" class="hover:text-white transition-colors">Privacy Policy</a></li>
+        <li><a href="#" class="hover:text-white transition-colors">Terms of Service</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="max-w-7xl mx-auto mt-12 pt-8 border-t border-garden-800 text-center text-garden-500 text-sm">
+    © 2024 RootShare. All rights reserved. Made with 🌱 for community gardens everywhere.
+  </div>
+</footer>
+
+<script>
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+</script>
+<script type="module" src="/src/main.tsx"></script>
+</body>
 </html>
