@@ -1,49 +1,39 @@
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import {
-  CircleDot,
-  Sparkles,
-  ListTodo,
-  BarChart3,
-  PenLine,
-  Zap,
-  Check,
-} from 'lucide-react';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 
 const features = [
   {
-    icon: CircleDot,
+    icon: '◎',
     title: 'Leads, organized',
     body: 'Kanban or table — switch on the fly. Filter by status, source, value, or follow-up date.',
   },
   {
-    icon: Sparkles,
+    icon: '✦',
     title: 'AI follow-ups',
     body: 'Pick a tone — professional, friendly, sales, short — and ship a polished follow-up in seconds.',
   },
   {
-    icon: ListTodo,
+    icon: '◐',
     title: 'Tasks & reminders',
     body: 'Never drop a deal again. Priorities, due dates, overdue alerts — surfaced where you work.',
   },
   {
-    icon: BarChart3,
+    icon: '▤',
     title: 'Pipeline analytics',
     body: 'Conversion rate, source breakdown, revenue projection — calculated live from your real data.',
   },
   {
-    icon: PenLine,
+    icon: '✎',
     title: 'Notes & timeline',
     body: 'Every interaction in one place. Internal comments, status changes, AI drafts — fully searchable.',
   },
   {
-    icon: Zap,
+    icon: '⚡',
     title: 'Built to grow with you',
-    body: 'Solo today, team tomorrow. Add seats, roles, and shared pipelines whenever you’re ready.',
+    body: 'Solo today, team tomorrow. Add seats, roles, and shared pipelines whenever you\u2019re ready.',
   },
-] as const;
+];
 
 const steps = [
   {
@@ -61,28 +51,23 @@ const steps = [
     title: 'Let AI handle the words',
     body: 'Generate, edit, send. Every follow-up sounds like you wrote it — because you did, faster.',
   },
-] as const;
+];
 
-const plans = [
+const tiers = [
   {
     name: 'Solo',
-    description: 'For founders flying solo.',
+    blurb: 'For founders flying solo.',
     price: '$0',
-    cadence: '/forever',
+    period: '/forever',
     cta: 'Start free',
     highlight: false,
-    features: [
-      'Up to 100 leads',
-      'Kanban & table views',
-      '25 AI drafts / month',
-      'Tasks & reminders',
-    ],
+    features: ['Up to 100 leads', 'Kanban & table views', '25 AI drafts / month', 'Tasks & reminders'],
   },
   {
     name: 'Studio',
-    description: 'For growing service businesses.',
+    blurb: 'For growing service businesses.',
     price: '$29',
-    cadence: '/month',
+    period: '/month',
     cta: 'Start 14-day trial',
     highlight: true,
     features: [
@@ -95,9 +80,9 @@ const plans = [
   },
   {
     name: 'Team',
-    description: 'For agencies & shared pipelines.',
+    blurb: 'For agencies & shared pipelines.',
     price: '$79',
-    cadence: '/month',
+    period: '/month',
     cta: 'Start trial',
     highlight: false,
     features: [
@@ -108,12 +93,12 @@ const plans = [
       'Custom fields & API',
     ],
   },
-] as const;
+];
 
 const testimonials = [
   {
     quote:
-      'Closed three deals my second week using LeadPilot. The AI follow-ups sound like me but ten minutes faster.',
+      '"Closed three deals my second week using LeadPilot. The AI follow-ups sound like me but ten minutes faster."',
     name: 'Sarah Chen',
     role: 'Founder · Northbound Studio',
     avatar:
@@ -121,7 +106,7 @@ const testimonials = [
   },
   {
     quote:
-      'Switched from a spreadsheet and a HubSpot trial. LeadPilot is the only one that didn’t make me hate Mondays.',
+      '"Switched from a spreadsheet and a HubSpot trial. LeadPilot is the only one that didn\u2019t make me hate Mondays."',
     name: 'Marcus Patel',
     role: 'Owner · Halo Roofing Co.',
     avatar:
@@ -129,372 +114,329 @@ const testimonials = [
   },
   {
     quote:
-      'My follow-up rate went from "whenever I remember" to 100%. Pipeline is up 38% in two months.',
+      '"My follow-up rate went from \u2018whenever I remember\u2019 to 100%. Pipeline is up 38% in two months."',
     name: 'Priya Shah',
     role: 'Consultant · Slatehouse Advisory',
     avatar:
       'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=faces',
   },
-] as const;
+];
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white text-ink">
       <Navbar />
 
-      {/* HERO */}
-      <section className="relative overflow-hidden border-b border-line">
-        <div className="absolute inset-0 grid-bg opacity-60" />
-        <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-accent/10 rounded-full blur-3xl" />
-        <div className="relative max-w-7xl mx-auto px-6 pt-20 pb-24 lg:pt-28 lg:pb-32 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent-soft text-accent text-xs font-semibold mb-8"
-          >
-            <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-            New · AI follow-up generator is live
-          </motion.div>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.05 }}
-            className="text-5xl md:text-7xl font-black tracking-tight leading-[1.05] max-w-4xl mx-auto text-balance"
-          >
-            The CRM small businesses
-            <br />
-            <span className="bg-gradient-to-r from-accent to-indigo-400 bg-clip-text text-transparent">
-              actually use.
-            </span>
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="mt-6 text-lg md:text-xl text-ink-muted max-w-2xl mx-auto leading-relaxed"
-          >
-            Capture leads, track deals, and let AI write your follow-ups. LeadPilot is the
-            lightweight CRM built for service businesses that need to close more — without the
-            spreadsheet chaos.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.15 }}
-            className="mt-10 flex flex-col sm:flex-row gap-3 justify-center"
-          >
-            <Link
-              to="/signup"
-              className="inline-flex items-center justify-center gap-2 bg-ink text-white font-semibold px-7 py-3.5 rounded-full hover:bg-ink-soft shadow-glow transition-all"
-            >
-              Start free — no card
-            </Link>
-            <a
-              href="#demo"
-              className="inline-flex items-center justify-center gap-2 bg-white border border-line text-ink font-semibold px-7 py-3.5 rounded-full hover:border-ink/30 transition-all"
-            >
-              Book a demo →
-            </a>
-          </motion.div>
-
-          <p className="mt-6 text-xs text-ink-muted">
-            Free forever for solo founders · No credit card · 2-minute setup
-          </p>
-
-          {/* Hero product card */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.25 }}
-            className="mt-16 max-w-5xl mx-auto"
-          >
-            <div className="bg-white border border-line rounded-3xl shadow-card p-2">
-              <div className="bg-[#FAFAFB] rounded-2xl p-6 md:p-8">
-                <div className="grid md:grid-cols-3 gap-4 text-left">
-                  <KpiCard label="Total leads" value="1,284" delta="↑ 12.4% this week" tone="emerald" />
-                  <KpiCard label="Pipeline value" value="$184k" delta="↑ $24k this month" tone="emerald" />
-                  <KpiCard
-                    label="Conversion rate"
-                    value="28.7%"
-                    delta="+3.1pt vs last month"
-                    tone="accent"
-                  />
-                </div>
-                <div className="mt-4 grid md:grid-cols-4 gap-3">
-                  <KanbanCol title="New · 24" items={['Sarah Chen — Acme Co', 'Marcus Patel — Halo']} />
-                  <KanbanCol title="Contacted · 18" items={['Lena Rodriguez', 'Theo Nakamura']} />
-                  <KanbanCol
-                    title="Qualified · 11"
-                    items={['Priya Shah · $12k', 'Daniel Voss']}
-                    highlightFirst
-                  />
-                  <KanbanCol
-                    title="Won · 7"
-                    items={['Atlas Studio · $34k', 'Northbound · $9k']}
-                    won
-                  />
-                </div>
-              </div>
+      <main>
+        {/* HERO */}
+        <section className="relative overflow-hidden border-b border-line">
+          <div className="absolute inset-0 grid-bg opacity-60" />
+          <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-accent/10 rounded-full blur-3xl" />
+          <div className="relative max-w-7xl mx-auto px-6 pt-20 pb-24 lg:pt-28 lg:pb-32 text-center">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent-soft text-accent text-xs font-semibold mb-8">
+              <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+              New · AI follow-up generator is live
             </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* FEATURES */}
-      <section id="features" className="py-24 lg:py-32 border-b border-line">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="max-w-2xl">
-            <div className="text-xs font-bold uppercase tracking-widest text-accent mb-3">
-              Everything you need
-            </div>
-            <h2 className="text-4xl md:text-5xl font-black tracking-tight">
-              A CRM that fits in your week, not the other way around.
-            </h2>
-            <p className="mt-4 text-lg text-ink-muted leading-relaxed">
-              Built for service businesses — from agencies and consultants to local studios and
-              contractors.
+            <h1 className="text-5xl md:text-7xl font-black tracking-tight leading-[1.05] max-w-4xl mx-auto text-balance">
+              The CRM small businesses
+              <br />
+              <span className="bg-gradient-to-r from-accent to-indigo-400 bg-clip-text text-transparent">
+                actually use.
+              </span>
+            </h1>
+            <p className="mt-6 text-lg md:text-xl text-ink-muted max-w-2xl mx-auto leading-relaxed">
+              Capture leads, track deals, and let AI write your follow-ups. LeadPilot is the
+              lightweight CRM built for service businesses that need to close more — without the
+              spreadsheet chaos.
             </p>
-          </div>
-          <div className="mt-16 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {features.map((f) => (
-              <motion.div
-                key={f.title}
-                whileHover={{ y: -4 }}
-                transition={{ duration: 0.2 }}
-                className="bg-white border border-line rounded-2xl p-7 hover:shadow-card transition-shadow"
+            <div className="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
+              <Link
+                to="/signup"
+                className="inline-flex items-center justify-center gap-2 bg-ink text-white font-semibold px-7 py-3.5 rounded-full hover:bg-ink-soft shadow-glow transition-colors"
               >
-                <div className="w-11 h-11 rounded-xl bg-accent-soft text-accent grid place-items-center mb-5">
-                  <f.icon size={20} />
-                </div>
-                <h3 className="font-bold text-lg mb-2">{f.title}</h3>
-                <p className="text-sm text-ink-muted leading-relaxed">{f.body}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* HOW IT WORKS */}
-      <section id="how" className="py-24 lg:py-32 border-b border-line bg-[#FAFAFB]">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="max-w-2xl mb-16">
-            <div className="text-xs font-bold uppercase tracking-widest text-accent mb-3">
-              How it works
+                Start free — no card
+              </Link>
+              <a
+                href="#demo"
+                className="inline-flex items-center justify-center gap-2 bg-white border border-line text-ink font-semibold px-7 py-3.5 rounded-full hover:border-ink/30 transition-colors"
+              >
+                Book a demo →
+              </a>
             </div>
-            <h2 className="text-4xl md:text-5xl font-black tracking-tight">
-              Three steps. Same afternoon.
-            </h2>
-          </div>
-          <div className="grid md:grid-cols-3 gap-6">
-            {steps.map((s) => (
-              <div key={s.n} className="bg-white border border-line rounded-2xl p-8">
-                <div className="text-5xl font-black text-accent/20 mb-4">{s.n}</div>
-                <h3 className="font-bold text-xl mb-2">{s.title}</h3>
-                <p className="text-sm text-ink-muted leading-relaxed">{s.body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* PRICING */}
-      <section id="pricing" className="py-24 lg:py-32 border-b border-line">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <div className="text-xs font-bold uppercase tracking-widest text-accent mb-3">
-              Pricing
-            </div>
-            <h2 className="text-4xl md:text-5xl font-black tracking-tight">
-              Simple, honest, scales when you do.
-            </h2>
-            <p className="mt-4 text-lg text-ink-muted">
-              Start free forever. Upgrade when you outgrow the limits.
+            <p className="mt-6 text-xs text-ink-muted">
+              Free forever for solo founders · No credit card · 2-minute setup
             </p>
-          </div>
-          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {plans.map((p) => (
-              <div
-                key={p.name}
-                className={
-                  p.highlight
-                    ? 'bg-ink text-white rounded-2xl p-8 shadow-glow relative ring-2 ring-accent'
-                    : 'bg-white border border-line rounded-2xl p-8'
-                }
-              >
-                {p.highlight && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-accent text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-                    Most popular
+
+            {/* Hero product card */}
+            <div className="mt-16 max-w-5xl mx-auto">
+              <div className="bg-white border border-line rounded-3xl shadow-card p-2">
+                <div className="bg-[#FAFAFB] rounded-2xl p-6 md:p-8">
+                  <div className="grid md:grid-cols-3 gap-4 text-left">
+                    <div className="bg-white rounded-xl border border-line p-5">
+                      <div className="text-xs text-ink-muted font-medium uppercase tracking-wider">
+                        Total leads
+                      </div>
+                      <div className="mt-2 text-3xl font-black">1,284</div>
+                      <div className="mt-1 text-xs font-semibold text-emerald-600">
+                        ↑ 12.4% this week
+                      </div>
+                    </div>
+                    <div className="bg-white rounded-xl border border-line p-5">
+                      <div className="text-xs text-ink-muted font-medium uppercase tracking-wider">
+                        Pipeline value
+                      </div>
+                      <div className="mt-2 text-3xl font-black">$184k</div>
+                      <div className="mt-1 text-xs font-semibold text-emerald-600">
+                        ↑ $24k this month
+                      </div>
+                    </div>
+                    <div className="bg-white rounded-xl border border-line p-5">
+                      <div className="text-xs text-ink-muted font-medium uppercase tracking-wider">
+                        Conversion rate
+                      </div>
+                      <div className="mt-2 text-3xl font-black">28.7%</div>
+                      <div className="mt-1 text-xs font-semibold text-accent">
+                        +3.1pt vs last month
+                      </div>
+                    </div>
                   </div>
-                )}
-                <div className={p.highlight ? 'text-sm font-bold mb-1' : 'text-sm font-bold text-ink mb-1'}>
-                  {p.name}
+                  <div className="mt-4 grid md:grid-cols-4 gap-3">
+                    <div className="bg-white rounded-lg border border-line p-3 text-xs">
+                      <div className="font-semibold text-ink-muted uppercase tracking-wider mb-2">
+                        New · 24
+                      </div>
+                      <div className="space-y-1.5">
+                        <div className="bg-[#FAFAFB] rounded p-2 font-medium">Sarah Chen — Acme Co</div>
+                        <div className="bg-[#FAFAFB] rounded p-2 font-medium">Marcus Patel — Halo</div>
+                      </div>
+                    </div>
+                    <div className="bg-white rounded-lg border border-line p-3 text-xs">
+                      <div className="font-semibold text-ink-muted uppercase tracking-wider mb-2">
+                        Contacted · 18
+                      </div>
+                      <div className="space-y-1.5">
+                        <div className="bg-[#FAFAFB] rounded p-2 font-medium">Lena Rodriguez</div>
+                        <div className="bg-[#FAFAFB] rounded p-2 font-medium">Theo Nakamura</div>
+                      </div>
+                    </div>
+                    <div className="bg-white rounded-lg border border-line p-3 text-xs">
+                      <div className="font-semibold text-ink-muted uppercase tracking-wider mb-2">
+                        Qualified · 11
+                      </div>
+                      <div className="space-y-1.5">
+                        <div className="bg-accent-soft rounded p-2 font-medium text-accent">
+                          Priya Shah · $12k
+                        </div>
+                        <div className="bg-[#FAFAFB] rounded p-2 font-medium">Daniel Voss</div>
+                      </div>
+                    </div>
+                    <div className="bg-white rounded-lg border border-line p-3 text-xs">
+                      <div className="font-semibold text-ink-muted uppercase tracking-wider mb-2">
+                        Won · 7
+                      </div>
+                      <div className="space-y-1.5">
+                        <div className="bg-emerald-50 rounded p-2 font-medium text-emerald-700">
+                          Atlas Studio · $34k
+                        </div>
+                        <div className="bg-emerald-50 rounded p-2 font-medium text-emerald-700">
+                          Northbound · $9k
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div className={p.highlight ? 'text-xs text-white/60 mb-6' : 'text-xs text-ink-muted mb-6'}>
-                  {p.description}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* FEATURES */}
+        <section id="features" className="py-24 lg:py-32 border-b border-line">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="max-w-2xl">
+              <div className="text-xs font-bold uppercase tracking-widest text-accent mb-3">
+                Everything you need
+              </div>
+              <h2 className="text-4xl md:text-5xl font-black tracking-tight">
+                A CRM that fits in your week, not the other way around.
+              </h2>
+              <p className="mt-4 text-lg text-ink-muted leading-relaxed">
+                Built for service businesses — from agencies and consultants to local studios and
+                contractors.
+              </p>
+            </div>
+            <div className="mt-16 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {features.map((f) => (
+                <div
+                  key={f.title}
+                  className="bg-white border border-line rounded-2xl p-7 hover:shadow-card hover:-translate-y-0.5 transition-all"
+                >
+                  <div className="w-11 h-11 rounded-xl bg-accent-soft text-accent grid place-items-center text-lg font-bold mb-5">
+                    {f.icon}
+                  </div>
+                  <h3 className="font-bold text-lg mb-2">{f.title}</h3>
+                  <p className="text-sm text-ink-muted leading-relaxed">{f.body}</p>
                 </div>
-                <div className="flex items-baseline gap-1 mb-6">
-                  <span className="text-5xl font-black">{p.price}</span>
-                  <span className={p.highlight ? 'text-sm text-white/60' : 'text-sm text-ink-muted'}>
-                    {p.cadence}
-                  </span>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* HOW IT WORKS */}
+        <section id="how" className="py-24 lg:py-32 border-b border-line bg-[#FAFAFB]">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="max-w-2xl mb-16">
+              <div className="text-xs font-bold uppercase tracking-widest text-accent mb-3">
+                How it works
+              </div>
+              <h2 className="text-4xl md:text-5xl font-black tracking-tight">
+                Three steps. Same afternoon.
+              </h2>
+            </div>
+            <div className="grid md:grid-cols-3 gap-6">
+              {steps.map((s) => (
+                <div key={s.n} className="bg-white border border-line rounded-2xl p-8">
+                  <div className="text-5xl font-black text-accent/20 mb-4">{s.n}</div>
+                  <h3 className="font-bold text-xl mb-2">{s.title}</h3>
+                  <p className="text-sm text-ink-muted leading-relaxed">{s.body}</p>
                 </div>
-                <Link
-                  to="/signup"
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* PRICING */}
+        <section id="pricing" className="py-24 lg:py-32 border-b border-line">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="text-center max-w-2xl mx-auto mb-16">
+              <div className="text-xs font-bold uppercase tracking-widest text-accent mb-3">
+                Pricing
+              </div>
+              <h2 className="text-4xl md:text-5xl font-black tracking-tight">
+                Simple, honest, scales when you do.
+              </h2>
+              <p className="mt-4 text-lg text-ink-muted">
+                Start free forever. Upgrade when you outgrow the limits.
+              </p>
+            </div>
+            <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+              {tiers.map((t) => (
+                <div
+                  key={t.name}
                   className={
-                    p.highlight
-                      ? 'block text-center w-full bg-accent text-white font-semibold py-3 rounded-full hover:bg-accent-hover mb-6 transition-colors'
-                      : 'block text-center w-full bg-white border border-line text-ink font-semibold py-3 rounded-full hover:border-ink/30 mb-6 transition-colors'
+                    t.highlight
+                      ? 'bg-ink text-white rounded-2xl p-8 shadow-glow relative ring-2 ring-accent'
+                      : 'bg-white border border-line rounded-2xl p-8'
                   }
                 >
-                  {p.cta}
-                </Link>
-                <ul className="space-y-3 text-sm">
-                  {p.features.map((feat) => (
-                    <li key={feat} className="flex gap-2 items-start">
-                      <Check size={16} className="text-accent shrink-0 mt-0.5" />
-                      <span>{feat}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* TESTIMONIALS */}
-      <section id="testimonials" className="py-24 lg:py-32 border-b border-line bg-[#FAFAFB]">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="max-w-2xl mb-16">
-            <div className="text-xs font-bold uppercase tracking-widest text-accent mb-3">
-              Customers
-            </div>
-            <h2 className="text-4xl md:text-5xl font-black tracking-tight">
-              Loved by 2,400+ small business owners.
-            </h2>
-          </div>
-          <div className="grid md:grid-cols-3 gap-6">
-            {testimonials.map((t) => (
-              <figure key={t.name} className="bg-white border border-line rounded-2xl p-7">
-                <blockquote className="text-base leading-relaxed text-ink">
-                  "{t.quote}"
-                </blockquote>
-                <figcaption className="mt-6 flex items-center gap-3">
-                  <img
-                    src={t.avatar}
-                    alt={t.name}
-                    className="w-10 h-10 rounded-full object-cover"
-                    loading="lazy"
-                  />
-                  <div>
-                    <div className="font-semibold text-sm">{t.name}</div>
-                    <div className="text-xs text-ink-muted">{t.role}</div>
+                  {t.highlight && (
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-accent text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                      Most popular
+                    </div>
+                  )}
+                  <div className={t.highlight ? 'text-sm font-bold mb-1' : 'text-sm font-bold text-ink mb-1'}>
+                    {t.name}
                   </div>
-                </figcaption>
-              </figure>
-            ))}
+                  <div className={t.highlight ? 'text-xs text-white/60 mb-6' : 'text-xs text-ink-muted mb-6'}>
+                    {t.blurb}
+                  </div>
+                  <div className="flex items-baseline gap-1 mb-6">
+                    <span className="text-5xl font-black">{t.price}</span>
+                    <span className={t.highlight ? 'text-sm text-white/60' : 'text-sm text-ink-muted'}>
+                      {t.period}
+                    </span>
+                  </div>
+                  <Link
+                    to="/signup"
+                    className={
+                      t.highlight
+                        ? 'block text-center w-full bg-accent text-white font-semibold py-3 rounded-full hover:bg-accent-hover mb-6 transition-colors'
+                        : 'block text-center w-full bg-white border border-line text-ink font-semibold py-3 rounded-full hover:border-ink/30 mb-6 transition-colors'
+                    }
+                  >
+                    {t.cta}
+                  </Link>
+                  <ul className="space-y-3 text-sm">
+                    {t.features.map((feat) => (
+                      <li key={feat} className="flex gap-2">
+                        <span className="text-accent">✓</span> {feat}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* CTA */}
-      <section className="py-24 lg:py-32" id="demo">
-        <div className="max-w-5xl mx-auto px-6">
-          <div className="bg-ink text-white rounded-3xl p-12 lg:p-20 text-center relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-accent/20 via-transparent to-transparent" />
-            <div className="relative">
-              <h2 className="text-4xl md:text-6xl font-black tracking-tight">
-                Stop losing leads
-                <br />
-                to a sticky note.
+        {/* TESTIMONIALS */}
+        <section id="testimonials" className="py-24 lg:py-32 border-b border-line bg-[#FAFAFB]">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="max-w-2xl mb-16">
+              <div className="text-xs font-bold uppercase tracking-widest text-accent mb-3">
+                Customers
+              </div>
+              <h2 className="text-4xl md:text-5xl font-black tracking-tight">
+                Loved by 2,400+ small business owners.
               </h2>
-              <p className="mt-5 text-lg text-white/70 max-w-xl mx-auto">
-                Set up your pipeline in 2 minutes. Free forever for solo founders.
-              </p>
-              <div className="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
-                <Link
-                  to="/signup"
-                  className="inline-flex items-center justify-center bg-white text-ink font-semibold px-7 py-3.5 rounded-full hover:bg-white/90 transition-colors"
-                >
-                  Start free
-                </Link>
-                <a
-                  href="#"
-                  className="inline-flex items-center justify-center bg-white/10 border border-white/20 text-white font-semibold px-7 py-3.5 rounded-full hover:bg-white/20 transition-colors"
-                >
-                  Book a demo →
-                </a>
+            </div>
+            <div className="grid md:grid-cols-3 gap-6">
+              {testimonials.map((t) => (
+                <figure key={t.name} className="bg-white border border-line rounded-2xl p-7">
+                  <blockquote className="text-base leading-relaxed text-ink">{t.quote}</blockquote>
+                  <figcaption className="mt-6 flex items-center gap-3">
+                    <img
+                      src={t.avatar}
+                      alt={t.name}
+                      className="w-10 h-10 rounded-full object-cover"
+                      loading="lazy"
+                    />
+                    <div>
+                      <div className="font-semibold text-sm">{t.name}</div>
+                      <div className="text-xs text-ink-muted">{t.role}</div>
+                    </div>
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* CTA */}
+        <section id="demo" className="py-24 lg:py-32">
+          <div className="max-w-5xl mx-auto px-6">
+            <div className="bg-ink text-white rounded-3xl p-12 lg:p-20 text-center relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-accent/20 via-transparent to-transparent" />
+              <div className="relative">
+                <h2 className="text-4xl md:text-6xl font-black tracking-tight">
+                  Stop losing leads
+                  <br />
+                  to a sticky note.
+                </h2>
+                <p className="mt-5 text-lg text-white/70 max-w-xl mx-auto">
+                  Set up your pipeline in 2 minutes. Free forever for solo founders.
+                </p>
+                <div className="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
+                  <Link
+                    to="/signup"
+                    className="inline-flex items-center justify-center bg-white text-ink font-semibold px-7 py-3.5 rounded-full hover:bg-white/90 transition-colors"
+                  >
+                    Start free
+                  </Link>
+                  <a
+                    href="#"
+                    className="inline-flex items-center justify-center bg-white/10 border border-white/20 text-white font-semibold px-7 py-3.5 rounded-full hover:bg-white/20 transition-colors"
+                  >
+                    Book a demo →
+                  </a>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </main>
 
       <Footer />
-    </div>
-  );
-}
-
-function KpiCard({
-  label,
-  value,
-  delta,
-  tone,
-}: {
-  label: string;
-  value: string;
-  delta: string;
-  tone: 'emerald' | 'accent';
-}) {
-  return (
-    <div className="bg-white rounded-xl border border-line p-5">
-      <div className="text-xs text-ink-muted font-medium uppercase tracking-wider">{label}</div>
-      <div className="mt-2 text-3xl font-black">{value}</div>
-      <div
-        className={
-          tone === 'emerald'
-            ? 'mt-1 text-xs font-semibold text-emerald-600'
-            : 'mt-1 text-xs font-semibold text-accent'
-        }
-      >
-        {delta}
-      </div>
-    </div>
-  );
-}
-
-function KanbanCol({
-  title,
-  items,
-  highlightFirst,
-  won,
-}: {
-  title: string;
-  items: string[];
-  highlightFirst?: boolean;
-  won?: boolean;
-}) {
-  return (
-    <div className="bg-white rounded-lg border border-line p-3 text-xs">
-      <div className="font-semibold text-ink-muted uppercase tracking-wider mb-2">{title}</div>
-      <div className="space-y-1.5">
-        {items.map((item, i) => {
-          const cls = won
-            ? 'bg-emerald-50 rounded p-2 font-medium text-emerald-700'
-            : highlightFirst && i === 0
-              ? 'bg-accent-soft rounded p-2 font-medium text-accent'
-              : 'bg-[#FAFAFB] rounded p-2 font-medium';
-          return (
-            <div key={item} className={cls}>
-              {item}
-            </div>
-          );
-        })}
-      </div>
     </div>
   );
 }

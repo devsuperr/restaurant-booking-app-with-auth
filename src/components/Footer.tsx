@@ -16,29 +16,61 @@ export default function Footer() {
             </Link>
             <p className="mt-3 text-sm text-ink-muted">The CRM small businesses actually use.</p>
           </div>
-          <FooterCol
-            title="Product"
-            links={[
-              { href: '#features', label: 'Features' },
-              { href: '#pricing', label: 'Pricing' },
-              { href: '#how', label: 'How it works' },
-            ]}
-          />
-          <FooterCol
-            title="Company"
-            links={[
-              { href: '#', label: 'About' },
-              { href: '#', label: 'Customers' },
-              { href: '#', label: 'Contact' },
-            ]}
-          />
-          <FooterCol
-            title="Legal"
-            links={[
-              { href: '#', label: 'Privacy' },
-              { href: '#', label: 'Terms' },
-            ]}
-          />
+          <div>
+            <div className="text-xs font-bold uppercase tracking-widest text-ink-muted mb-3">Product</div>
+            <ul className="space-y-2 text-sm">
+              <li>
+                <a href="#features" className="text-ink/70 hover:text-ink">
+                  Features
+                </a>
+              </li>
+              <li>
+                <a href="#pricing" className="text-ink/70 hover:text-ink">
+                  Pricing
+                </a>
+              </li>
+              <li>
+                <a href="#how" className="text-ink/70 hover:text-ink">
+                  How it works
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <div className="text-xs font-bold uppercase tracking-widest text-ink-muted mb-3">Company</div>
+            <ul className="space-y-2 text-sm">
+              <li>
+                <a href="#" className="text-ink/70 hover:text-ink">
+                  About
+                </a>
+              </li>
+              <li>
+                <a href="#" className="text-ink/70 hover:text-ink">
+                  Customers
+                </a>
+              </li>
+              <li>
+                <a href="#" className="text-ink/70 hover:text-ink">
+                  Contact
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <div className="text-xs font-bold uppercase tracking-widest text-ink-muted mb-3">Legal</div>
+            <ul className="space-y-2 text-sm">
+              <li>
+                <a href="#" className="text-ink/70 hover:text-ink">
+                  Privacy
+                </a>
+              </li>
+              <li>
+                <a href="#" className="text-ink/70 hover:text-ink">
+                  Terms
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
         <div className="mt-12 pt-8 border-t border-line text-xs text-ink-muted flex flex-col sm:flex-row justify-between gap-3">
           <div>© 2026 LeadPilot AI. All rights reserved.</div>
@@ -46,22 +78,5 @@ export default function Footer() {
         </div>
       </div>
     </footer>
-  );
-}
-
-function FooterCol({ title, links }: { title: string; links: { href: string; label: string }[] }) {
-  return (
-    <div>
-      <div className="text-xs font-bold uppercase tracking-widest text-ink-muted mb-3">{title}</div>
-      <ul className="space-y-2 text-sm">
-        {links.map((l) => (
-          <li key={l.label}>
-            <a href={l.href} className="text-ink/70 hover:text-ink transition-colors">
-              {l.label}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </div>
   );
 }
