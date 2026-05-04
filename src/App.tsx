@@ -1,27 +1,24 @@
 import { Routes, Route } from 'react-router-dom';
-import Layout from './components/Layout';
+import LandingPage from './pages/LandingPage';
+import LoginPage from './pages/LoginPage';
+import SignupPage from './pages/SignupPage';
 import DashboardPage from './pages/DashboardPage';
-import AppliancesPage from './pages/AppliancesPage';
-import ApplianceDetailPage from './pages/ApplianceDetailPage';
-import WarrantiesPage from './pages/WarrantiesPage';
-import MaintenancePage from './pages/MaintenancePage';
-import SearchPage from './pages/SearchPage';
-import RemindersPage from './pages/RemindersPage';
+import ProjectsPage from './pages/ProjectsPage';
+import GoalsPage from './pages/GoalsPage';
+import InsightsPage from './pages/InsightsPage';
 import NotFound from './pages/NotFound';
 
 export default function App() {
   return (
-    <Layout>
-      <Routes>
-        <Route path="/" element={<DashboardPage />} />
-        <Route path="/appliances" element={<AppliancesPage />} />
-        <Route path="/appliances/:id" element={<ApplianceDetailPage />} />
-        <Route path="/warranties" element={<WarrantiesPage />} />
-        <Route path="/maintenance" element={<MaintenancePage />} />
-        <Route path="/search" element={<SearchPage />} />
-        <Route path="/reminders" element={<RemindersPage />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </Layout>
+    <Routes>
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/signup" element={<SignupPage />} />
+      <Route path="/dashboard" element={<DashboardPage />} />
+      <Route path="/projects" element={<ProjectsPage />} />
+      <Route path="/goals" element={<GoalsPage />} />
+      <Route path="/insights" element={<InsightsPage />} />
+      <Route path="*" element={<NotFound />} />
+    </Routes>
   );
 }
