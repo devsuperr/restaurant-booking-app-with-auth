@@ -1,133 +1,71 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { Zap, Mail, Lock, Eye, EyeOff, AlertCircle, ArrowRight } from 'lucide-react';
-import { useAuth } from '../context/AuthContext';
+import AuthLayout from '@/components/AuthLayout';
+import { useAuth } from '@/lib/store';
+import { useToast } from '@/components/ui/Toast';
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const { signIn } = useAuth();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
+  const { login } = useAuth();
+  const toast = useToast();
+  const [email, setEmail] = useState('demo@northwind.studio');
+  const [password, setPassword] = useState('demo1234');
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
+    const eMap: Record<string, string> = {};
+    if (!/^\S+@\S+\.\S+$/.test(email)) eMap.email = 'Enter a valid email';
+    if (!password) eMap.password = 'Password is required';
+    setErrors(eMap);
+    if (Object.keys(eMap).length) return;
+
     setLoading(true);
-    const { error: authError } = await signIn(email, password);
-    setLoading(false);
-    if (authError) {
-      setError('Email ya password galat hai. Dobara try karo! 🙏');
-    } else {
+    try {
+      await new Promise((r) => setTimeout(r, 400));
+      login(email, password);
+      toast.success('Welcome back!');
       navigate('/dashboard');
+    } catch {
+      toast.error('Login failed', 'Check your credentials and try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-brand-black flex flex-col items-center justify-center px-4 py-16">
-      {/* Brand */}
-      <Link to="/" className="flex items-center gap-2 mb-8">
-        <div className="w-9 h-9 bg-brand-yellow rounded-xl flex items-center justify-center">
-          <Zap className="w-5 h-5 text-brand-black" fill="currentColor" />
+    <AuthLayout
+      title="Welcome back"
+      description="Log in to your LeadPilot workspace."
+      footer={
+        <>
+          Don't have an account?{' '}
+          <Link to="/signup" className="font-medium text-brand-600 hover:text-brand-700">Sign up free</Link>
+        </>
+      }
+    >
+      <div className="mb-4 px-3 py-2 rounded-lg bg-brand-50 border border-brand-100 text-xs text-brand-700">
+        <strong>Demo mode:</strong> any email + password works. We've pre-filled credentials for you.
+      </div>
+      <form onSubmit={onSubmit} noValidate className="space-y-4">
+        <div>
+          <label className="label" htmlFor="email">Email</label>
+          <input id="email" type="email" className="input" value={email} onChange={(e) => setEmail(e.target.value)} aria-invalid={!!errors.email} />
+          {errors.email && <p className="mt-1 text-xs text-red-600">{errors.email}</p>}
         </div>
-        <span className="font-black text-white text-xl">Skill<span className="text-brand-yellow">ForBharat</span></span>
-      </Link>
-
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-md"
-      >
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-black text-white mb-2">Wapas Aao! 👋</h1>
-          <p className="text-gray-400">Login karo aur seekhna shuru karo</p>
+        <div>
+          <div className="flex items-center justify-between">
+            <label className="label !mb-0" htmlFor="password">Password</label>
+            <Link to="/forgot-password" className="text-xs font-medium text-brand-600 hover:text-brand-700">Forgot?</Link>
+          </div>
+          <input id="password" type="password" className="input mt-1.5" value={password} onChange={(e) => setPassword(e.target.value)} aria-invalid={!!errors.password} />
+          {errors.password && <p className="mt-1 text-xs text-red-600">{errors.password}</p>}
         </div>
-
-        <div className="card-dark p-7">
-          {error && (
-            <div className="flex items-center gap-2 bg-red-500/10 border border-red-500/30 text-red-400 rounded-xl px-4 py-3 mb-5 text-sm">
-              <AlertCircle className="w-4 h-4 flex-shrink-0" />
-              {error}
-            </div>
-          )}
-
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1.5" htmlFor="email">
-                Email Address
-              </label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
-                <input
-                  id="email"
-                  type="email"
-                  required
-                  value={email}
-                  onChange={e => setEmail(e.target.value)}
-                  placeholder="tumhara@email.com"
-                  className="w-full bg-brand-gray-mid border border-brand-gray-light text-white placeholder-gray-600 rounded-xl pl-10 pr-4 py-3 text-sm focus:outline-none focus:border-brand-yellow transition-colors"
-                />
-              </div>
-            </div>
-
-            <div>
-              <div className="flex items-center justify-between mb-1.5">
-                <label className="block text-sm font-medium text-gray-300" htmlFor="password">
-                  Password
-                </label>
-                <Link to="/forgot-password" className="text-xs text-brand-yellow hover:underline">
-                  Bhool gaye?
-                </Link>
-              </div>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
-                <input
-                  id="password"
-                  type={showPassword ? 'text' : 'password'}
-                  required
-                  value={password}
-                  onChange={e => setPassword(e.target.value)}
-                  placeholder="Apna password dalो"
-                  className="w-full bg-brand-gray-mid border border-brand-gray-light text-white placeholder-gray-600 rounded-xl pl-10 pr-10 py-3 text-sm focus:outline-none focus:border-brand-yellow transition-colors"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300"
-                  aria-label={showPassword ? 'Hide password' : 'Show password'}
-                >
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                </button>
-              </div>
-            </div>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full flex items-center justify-center gap-2 bg-brand-yellow text-brand-black font-black py-3.5 rounded-xl hover:bg-brand-yellow-dark transition-all disabled:opacity-50 disabled:cursor-not-allowed text-base yellow-glow-sm mt-2"
-            >
-              {loading ? (
-                <div className="w-5 h-5 border-2 border-brand-black border-t-transparent rounded-full animate-spin" />
-              ) : (
-                <>
-                  Login Karo
-                  <ArrowRight className="w-4 h-4" />
-                </>
-              )}
-            </button>
-          </form>
-
-          <p className="text-center text-gray-400 text-sm mt-5">
-            Account nahi hai?{' '}
-            <Link to="/signup" className="text-brand-yellow font-semibold hover:underline">
-              FREE mein banao
-            </Link>
-          </p>
-        </div>
-      </motion.div>
-    </div>
+        <button type="submit" disabled={loading} className="btn-primary w-full !py-3">
+          {loading ? 'Logging in…' : 'Log in'}
+        </button>
+      </form>
+    </AuthLayout>
   );
 }
