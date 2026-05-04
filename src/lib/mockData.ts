@@ -1,120 +1,167 @@
-export type Platform = 'Upwork' | 'Toptal' | 'Fiverr' | 'Direct' | 'LinkedIn' | 'Contra';
-export type SkillType = 'React Dev' | 'Full-Stack' | 'UX Design' | 'Strategy' | 'Data Analysis' | 'Mobile Dev' | 'DevOps' | 'Copywriting';
-
-export interface RateEntry {
+export interface PracticeSession {
   id: string;
-  clientName: string;
-  platform: Platform;
-  skillType: SkillType;
-  rate: number;
-  previousRate: number | null;
-  hoursLogged: number;
   date: string;
-  projectName: string;
+  instrument: string;
+  skillFocus: string;
+  duration: number; // minutes
+  mood: 1 | 2 | 3 | 4 | 5;
   notes: string;
-  currency: 'USD';
 }
 
-export interface Client {
+export interface GroupMember {
   id: string;
   name: string;
-  industry: string;
-  country: string;
-  platform: Platform;
-  totalEarned: number;
-  avgRate: number;
-  hoursWorked: number;
-  projectCount: number;
-  lastEngaged: string;
-  status: 'active' | 'inactive' | 'paused';
   avatar: string;
-}
-
-export interface Goal {
-  id: string;
-  skillType: SkillType;
-  currentRate: number;
-  targetRate: number;
-  deadline: string;
-  platform: Platform;
-  notes: string;
-  createdAt: string;
-}
-
-export interface Project {
-  id: string;
-  name: string;
-  clientName: string;
-  platform: Platform;
-  skillType: SkillType;
-  rate: number;
+  instrument: string;
+  streak: number;
   totalHours: number;
-  totalEarned: number;
-  startDate: string;
-  endDate: string | null;
-  status: 'active' | 'completed' | 'paused';
-  description: string;
+  thisWeek: number;
+  badges: string[];
 }
 
-export const rateEntries: RateEntry[] = [
-  { id: '1', clientName: 'Stripe Inc.', platform: 'Toptal', skillType: 'React Dev', rate: 185, previousRate: 175, hoursLogged: 40, date: '2025-06-12', projectName: 'Payment SDK Revamp', notes: 'Rate negotiated after sprint delivery', currency: 'USD' },
-  { id: '2', clientName: 'Notion Labs', platform: 'Direct', skillType: 'UX Design', rate: 160, previousRate: 140, hoursLogged: 32, date: '2025-06-10', projectName: 'Editor Redesign v3', notes: 'Long-term engagement bumped rate', currency: 'USD' },
-  { id: '3', clientName: 'Vercel Corp', platform: 'Upwork', skillType: 'Full-Stack', rate: 145, previousRate: 145, hoursLogged: 60, date: '2025-06-08', projectName: 'CI/CD Dashboard', notes: 'Steady engagement, rate unchanged', currency: 'USD' },
-  { id: '4', clientName: 'Figma LLC', platform: 'Direct', skillType: 'Strategy', rate: 220, previousRate: 190, hoursLogged: 20, date: '2025-06-05', projectName: 'Product Roadmap Advisory', notes: 'Premium strategy retainer', currency: 'USD' },
-  { id: '5', clientName: 'Linear HQ', platform: 'Toptal', skillType: 'React Dev', rate: 180, previousRate: 160, hoursLogged: 50, date: '2025-05-28', projectName: 'Issue Tracker Rewrite', notes: 'Delivered ahead of schedule', currency: 'USD' },
-  { id: '6', clientName: 'Loom Inc.', platform: 'Contra', skillType: 'Mobile Dev', rate: 155, previousRate: 130, hoursLogged: 45, date: '2025-05-20', projectName: 'iOS Screen Recorder', notes: 'New platform, strong negotiation', currency: 'USD' },
-  { id: '7', clientName: 'Coda.io', platform: 'LinkedIn', skillType: 'Data Analysis', rate: 120, previousRate: 110, hoursLogged: 35, date: '2025-05-15', projectName: 'User Analytics Audit', notes: 'First engagement via LinkedIn', currency: 'USD' },
-  { id: '8', clientName: 'Framer Ltd.', platform: 'Direct', skillType: 'UX Design', rate: 175, previousRate: 155, hoursLogged: 55, date: '2025-05-10', projectName: 'Motion Design System', notes: 'Premium direct client', currency: 'USD' },
-  { id: '9', clientName: 'Railway.app', platform: 'Upwork', skillType: 'DevOps', rate: 135, previousRate: 120, hoursLogged: 28, date: '2025-04-30', projectName: 'K8s Migration', notes: 'Niche skill premium', currency: 'USD' },
-  { id: '10', clientName: 'Ghost CMS', platform: 'Fiverr', skillType: 'Copywriting', rate: 95, previousRate: 85, hoursLogged: 15, date: '2025-04-22', projectName: 'Blog Content Strategy', notes: 'Fast turnaround rate', currency: 'USD' },
+export interface Milestone {
+  id: string;
+  memberId: string;
+  memberName: string;
+  memberAvatar: string;
+  title: string;
+  description: string;
+  badge: string;
+  date: string;
+  reactions: { emoji: string; count: number }[];
+}
+
+export const INSTRUMENTS = [
+  'Piano', 'Guitar', 'Violin', 'Cello', 'Drums', 'Bass',
+  'Trumpet', 'Saxophone', 'Flute', 'Voice', 'Ukulele', 'Banjo',
 ];
 
-export const clients: Client[] = [
-  { id: '1', name: 'Stripe Inc.', industry: 'Fintech', country: 'USA', platform: 'Toptal', totalEarned: 28400, avgRate: 180, hoursWorked: 158, projectCount: 3, lastEngaged: '2025-06-12', status: 'active', avatar: 'https://images.unsplash.com/photo-1560472355-536de3962603?w=80&h=80&fit=crop&crop=faces' },
-  { id: '2', name: 'Notion Labs', industry: 'Productivity', country: 'USA', platform: 'Direct', totalEarned: 18560, avgRate: 150, hoursWorked: 124, projectCount: 2, lastEngaged: '2025-06-10', status: 'active', avatar: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=80&h=80&fit=crop&crop=faces' },
-  { id: '3', name: 'Vercel Corp', industry: 'Infrastructure', country: 'USA', platform: 'Upwork', totalEarned: 15660, avgRate: 141, hoursWorked: 111, projectCount: 4, lastEngaged: '2025-06-08', status: 'active', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=faces' },
-  { id: '4', name: 'Figma LLC', industry: 'Design Tools', country: 'USA', platform: 'Direct', totalEarned: 22000, avgRate: 215, hoursWorked: 102, projectCount: 2, lastEngaged: '2025-06-05', status: 'active', avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=80&h=80&fit=crop&crop=faces' },
-  { id: '5', name: 'Linear HQ', industry: 'Project Mgmt', country: 'Canada', platform: 'Toptal', totalEarned: 14400, avgRate: 170, hoursWorked: 85, projectCount: 2, lastEngaged: '2025-05-28', status: 'active', avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=80&h=80&fit=crop&crop=faces' },
-  { id: '6', name: 'Loom Inc.', industry: 'Video Tech', country: 'USA', platform: 'Contra', totalEarned: 8620, avgRate: 145, hoursWorked: 59, projectCount: 1, lastEngaged: '2025-05-20', status: 'paused', avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=faces' },
-  { id: '7', name: 'Coda.io', industry: 'Productivity', country: 'USA', platform: 'LinkedIn', totalEarned: 5250, avgRate: 115, hoursWorked: 46, projectCount: 1, lastEngaged: '2025-05-15', status: 'inactive', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=faces' },
-  { id: '8', name: 'Framer Ltd.', industry: 'Design Tools', country: 'Netherlands', platform: 'Direct', totalEarned: 18480, avgRate: 162, hoursWorked: 114, projectCount: 3, lastEngaged: '2025-05-10', status: 'active', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&h=80&fit=crop&crop=faces' },
+export const SKILL_FOCUSES = [
+  'Technique', 'Scales & Arpeggios', 'Repertoire', 'Sight-Reading',
+  'Ear Training', 'Improvisation', 'Music Theory', 'Rhythm & Timing',
+  'Expression & Dynamics', 'Memorization',
 ];
 
-export const goals: Goal[] = [
-  { id: '1', skillType: 'React Dev', currentRate: 185, targetRate: 250, deadline: '2025-12-31', platform: 'Toptal', notes: 'Focus on senior-level enterprise clients', createdAt: '2025-01-15' },
-  { id: '2', skillType: 'UX Design', currentRate: 160, targetRate: 195, deadline: '2025-09-30', platform: 'Direct', notes: 'Specialize in SaaS product design', createdAt: '2025-02-01' },
-  { id: '3', skillType: 'Strategy', currentRate: 220, targetRate: 240, deadline: '2025-08-01', platform: 'Direct', notes: 'Almost at goal — target advisory roles', createdAt: '2025-01-10' },
-  { id: '4', skillType: 'Full-Stack', currentRate: 145, targetRate: 180, deadline: '2025-10-31', platform: 'Upwork', notes: 'Build portfolio of complex architectures', createdAt: '2025-03-01' },
-  { id: '5', skillType: 'Mobile Dev', currentRate: 155, targetRate: 200, deadline: '2025-12-15', platform: 'Contra', notes: 'Obtain iOS certifications', createdAt: '2025-02-20' },
+export const mockSessions: PracticeSession[] = [
+  { id: '1',  date: '2025-06-15', instrument: 'Piano',  skillFocus: 'Scales & Arpeggios', duration: 45,  mood: 4, notes: 'Worked on B-flat major scales, hands together at 100bpm.' },
+  { id: '2',  date: '2025-06-14', instrument: 'Piano',  skillFocus: 'Repertoire',          duration: 60,  mood: 5, notes: 'Chopin Nocturne Op.9 No.2 — finally nailed the ornamentation in bar 6.' },
+  { id: '3',  date: '2025-06-13', instrument: 'Guitar', skillFocus: 'Technique',           duration: 30,  mood: 3, notes: 'Fingerpicking patterns, C CAGED position.' },
+  { id: '4',  date: '2025-06-12', instrument: 'Piano',  skillFocus: 'Sight-Reading',       duration: 25,  mood: 4, notes: 'ABRSM Grade 7 pieces. Getting faster.' },
+  { id: '5',  date: '2025-06-11', instrument: 'Guitar', skillFocus: 'Improvisation',       duration: 40,  mood: 5, notes: 'Pentatonic over blues backing track. Great flow today.' },
+  { id: '6',  date: '2025-06-10', instrument: 'Piano',  skillFocus: 'Technique',           duration: 50,  mood: 3, notes: 'Hanon exercises 1–10, ugh.' },
+  { id: '7',  date: '2025-06-09', instrument: 'Piano',  skillFocus: 'Repertoire',          duration: 75,  mood: 5, notes: 'Full run-through of Beethoven Sonata. Best session in weeks.' },
+  { id: '8',  date: '2025-06-08', instrument: 'Guitar', skillFocus: 'Ear Training',        duration: 20,  mood: 4, notes: 'Interval recognition, 80% accuracy.' },
+  { id: '9',  date: '2025-06-07', instrument: 'Piano',  skillFocus: 'Music Theory',        duration: 35,  mood: 4, notes: 'Voice leading principles, 4-part harmony.' },
+  { id: '10', date: '2025-06-06', instrument: 'Guitar', skillFocus: 'Repertoire',          duration: 55,  mood: 4, notes: 'Fingerstyle arrangement of Blackbird.' },
+  { id: '11', date: '2025-06-05', instrument: 'Piano',  skillFocus: 'Scales & Arpeggios', duration: 30,  mood: 2, notes: 'Tired after work. Short session.' },
+  { id: '12', date: '2025-06-04', instrument: 'Piano',  skillFocus: 'Expression & Dynamics', duration: 60, mood: 5, notes: 'Focused on pedaling and dynamics in slow practice.' },
+  { id: '13', date: '2025-06-03', instrument: 'Guitar', skillFocus: 'Rhythm & Timing',    duration: 30,  mood: 3, notes: 'Metronome work at 80bpm, syncopation.' },
+  { id: '14', date: '2025-06-02', instrument: 'Piano',  skillFocus: 'Repertoire',          duration: 90,  mood: 5, notes: 'Prep for recital. Ran program start-to-finish twice.' },
+  { id: '15', date: '2025-06-01', instrument: 'Piano',  skillFocus: 'Technique',           duration: 45,  mood: 4, notes: 'Chromatic exercises, left hand focus.' },
 ];
 
-export const projects: Project[] = [
-  { id: '1', name: 'Payment SDK Revamp', clientName: 'Stripe Inc.', platform: 'Toptal', skillType: 'React Dev', rate: 185, totalHours: 160, totalEarned: 29600, startDate: '2025-04-01', endDate: null, status: 'active', description: 'Full rewrite of Stripe Elements v3 with React 18 concurrent features and accessibility overhaul.' },
-  { id: '2', name: 'Editor Redesign v3', clientName: 'Notion Labs', platform: 'Direct', skillType: 'UX Design', rate: 160, totalHours: 120, totalEarned: 19200, startDate: '2025-03-15', endDate: null, status: 'active', description: 'Third iteration of the Notion block editor interface with improved mobile experience.' },
-  { id: '3', name: 'CI/CD Dashboard', clientName: 'Vercel Corp', platform: 'Upwork', skillType: 'Full-Stack', rate: 145, totalHours: 200, totalEarned: 29000, startDate: '2025-01-10', endDate: '2025-05-30', status: 'completed', description: 'Internal deployment monitoring dashboard with real-time build logs and team notifications.' },
-  { id: '4', name: 'Product Roadmap Advisory', clientName: 'Figma LLC', platform: 'Direct', skillType: 'Strategy', rate: 220, totalHours: 80, totalEarned: 17600, startDate: '2025-02-01', endDate: null, status: 'active', description: 'Ongoing product strategy retainer covering competitive analysis, roadmap prioritization, and GTM.' },
-  { id: '5', name: 'Issue Tracker Rewrite', clientName: 'Linear HQ', platform: 'Toptal', skillType: 'React Dev', rate: 180, totalHours: 300, totalEarned: 54000, startDate: '2024-11-01', endDate: '2025-04-30', status: 'completed', description: 'Complete frontend rewrite of Linear's issue tracking UI with new filtering engine.' },
-  { id: '6', name: 'iOS Screen Recorder', clientName: 'Loom Inc.', platform: 'Contra', skillType: 'Mobile Dev', rate: 155, totalHours: 140, totalEarned: 21700, startDate: '2025-03-01', endDate: null, status: 'paused', description: 'Native iOS screen recording module with real-time compression and Loom cloud upload.' },
-  { id: '7', name: 'User Analytics Audit', clientName: 'Coda.io', platform: 'LinkedIn', skillType: 'Data Analysis', rate: 120, totalHours: 60, totalEarned: 7200, startDate: '2025-04-15', endDate: '2025-05-20', status: 'completed', description: 'Deep-dive analysis of Coda user retention metrics and A/B test result interpretation.' },
-  { id: '8', name: 'Motion Design System', clientName: 'Framer Ltd.', platform: 'Direct', skillType: 'UX Design', rate: 175, totalHours: 180, totalEarned: 31500, startDate: '2025-02-15', endDate: null, status: 'active', description: 'Comprehensive animation system for Framer's component library with Lottie integration.' },
+export const mockGroupMembers: GroupMember[] = [
+  {
+    id: '1', name: 'You (Alex Chen)', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=faces',
+    instrument: 'Piano + Guitar', streak: 18, totalHours: 312, thisWeek: 4.5,
+    badges: ['🔥 18-Day Streak', '🏆 100h Club', '⭐ Theory Master'],
+  },
+  {
+    id: '2', name: 'Mia Okonkwo', avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=80&h=80&fit=crop&crop=faces',
+    instrument: 'Violin', streak: 24, totalHours: 540, thisWeek: 6.2,
+    badges: ['🔥 24-Day Streak', '🏆 500h Legend', '🎻 Strings Pro'],
+  },
+  {
+    id: '3', name: 'Jordan Kim', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&h=80&fit=crop&crop=faces',
+    instrument: 'Drums', streak: 7, totalHours: 89, thisWeek: 2.0,
+    badges: ['🥁 Rhythm King'],
+  },
+  {
+    id: '4', name: 'Priya Mehta', avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=faces',
+    instrument: 'Saxophone', streak: 12, totalHours: 230, thisWeek: 3.8,
+    badges: ['🔥 12-Day Streak', '🎷 Jazz Devotee'],
+  },
+  {
+    id: '5', name: 'Luca Romano', avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=faces',
+    instrument: 'Classical Guitar', streak: 31, totalHours: 780, thisWeek: 7.5,
+    badges: ['🔥 31-Day Streak', '🏆 500h Legend', '🎸 Fingerstyle Guru', '⭐ All-Rounder'],
+  },
 ];
 
-export const earningsByMonth = [
-  { month: 'Jan', upwork: 3200, toptal: 5800, direct: 2100, contra: 800, linkedin: 400, fiverr: 600 },
-  { month: 'Feb', upwork: 3600, toptal: 6200, direct: 2800, contra: 900, linkedin: 500, fiverr: 700 },
-  { month: 'Mar', upwork: 4100, toptal: 7100, direct: 3200, contra: 1100, linkedin: 600, fiverr: 500 },
-  { month: 'Apr', upwork: 4500, toptal: 7800, direct: 3800, contra: 1200, linkedin: 700, fiverr: 800 },
-  { month: 'May', upwork: 4800, toptal: 8400, direct: 4100, contra: 1400, linkedin: 600, fiverr: 600 },
-  { month: 'Jun', upwork: 5200, toptal: 9100, direct: 4600, contra: 1600, linkedin: 700, fiverr: 700 },
+export const mockMilestones: Milestone[] = [
+  {
+    id: '1', memberId: '5', memberName: 'Luca Romano',
+    memberAvatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=faces',
+    title: '31-Day Streak! 🔥', badge: '🔥',
+    description: 'Just hit 31 consecutive days of practice. Never missed a day in June. The accountability pod kept me honest on the tough days — thank you all!',
+    date: '2025-06-15',
+    reactions: [{ emoji: '🔥', count: 12 }, { emoji: '👏', count: 8 }, { emoji: '🎸', count: 5 }],
+  },
+  {
+    id: '2', memberId: '2', memberName: 'Mia Okonkwo',
+    memberAvatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=80&h=80&fit=crop&crop=faces',
+    title: '500 Total Hours Milestone 🏆', badge: '🏆',
+    description: 'Crossed 500 logged hours today! From 30-minute beginner sessions to 2-hour deep dives. The consistency charts helped me see exactly where I needed to push harder.',
+    date: '2025-06-13',
+    reactions: [{ emoji: '🏆', count: 15 }, { emoji: '😱', count: 10 }, { emoji: '🎻', count: 7 }],
+  },
+  {
+    id: '3', memberId: '1', memberName: 'You (Alex Chen)',
+    memberAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=faces',
+    title: 'Recital Ready ⭐', badge: '⭐',
+    description: 'Finally performed my full recital program from start to finish with no stops. Six months of Cadence logs led to this moment. Chopin Nocturne is ready!',
+    date: '2025-06-10',
+    reactions: [{ emoji: '⭐', count: 11 }, { emoji: '🎹', count: 9 }, { emoji: '💪', count: 6 }],
+  },
+  {
+    id: '4', memberId: '4', memberName: 'Priya Mehta',
+    memberAvatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=faces',
+    title: '12-Day Streak 🔥', badge: '🔥',
+    description: 'Back on track after a rough May. The daily nudges from Cadence and seeing the group\'s activity really pulled me back in. Day 12 and counting!',
+    date: '2025-06-09',
+    reactions: [{ emoji: '🔥', count: 8 }, { emoji: '💚', count: 6 }],
+  },
 ];
 
-export const ratesBySkill = [
-  { skill: 'Strategy', avgRate: 220, entries: 8, topRate: 240 },
-  { skill: 'React Dev', avgRate: 182, entries: 24, topRate: 200 },
-  { skill: 'UX Design', avgRate: 163, entries: 18, topRate: 185 },
-  { skill: 'Mobile Dev', avgRate: 155, entries: 10, topRate: 175 },
-  { skill: 'Full-Stack', avgRate: 144, entries: 15, topRate: 165 },
-  { skill: 'DevOps', avgRate: 135, entries: 7, topRate: 150 },
-  { skill: 'Data Analysis', avgRate: 118, entries: 6, topRate: 130 },
-  { skill: 'Copywriting', avgRate: 95, entries: 4, topRate: 110 },
+// Weekly practice data for charts
+export const weeklyData = [
+  { day: 'Mon', minutes: 45, sessions: 1 },
+  { day: 'Tue', minutes: 60, sessions: 1 },
+  { day: 'Wed', minutes: 0,  sessions: 0 },
+  { day: 'Thu', minutes: 75, sessions: 1 },
+  { day: 'Fri', minutes: 30, sessions: 1 },
+  { day: 'Sat', minutes: 90, sessions: 2 },
+  { day: 'Sun', minutes: 50, sessions: 1 },
 ];
+
+export const monthlyData = [
+  { week: 'Week 1', Piano: 210, Guitar: 90  },
+  { week: 'Week 2', Piano: 195, Guitar: 120 },
+  { week: 'Week 3', Piano: 240, Guitar: 60  },
+  { week: 'Week 4', Piano: 300, Guitar: 150 },
+];
+
+export const skillData = [
+  { name: 'Repertoire',    value: 38, color: '#22c55e' },
+  { name: 'Technique',     value: 22, color: '#86efac' },
+  { name: 'Scales/Arps',   value: 15, color: '#fbbf24' },
+  { name: 'Sight-Reading', value: 10, color: '#818cf8' },
+  { name: 'Improvisation', value: 9,  color: '#f472b6' },
+  { name: 'Theory',        value: 6,  color: '#67e8f9' },
+];
+
+// Generate heatmap data for past 12 weeks (84 days)
+export function generateHeatmapData() {
+  const today = new Date('2025-06-15');
+  const data: { date: string; minutes: number; level: 0 | 1 | 2 | 3 | 4 }[] = [];
+  for (let i = 83; i >= 0; i--) {
+    const d = new Date(today);
+    d.setDate(d.getDate() - i);
+    const dateStr = d.toISOString().split('T')[0];
+    const skip = Math.random() < 0.2;
+    const minutes = skip ? 0 : Math.floor(Math.random() * 90 + 20);
+    const level = minutes === 0 ? 0 : minutes < 30 ? 1 : minutes < 60 ? 2 : minutes < 75 ? 3 : 4;
+    data.push({ date: dateStr, minutes, level: level as 0 | 1 | 2 | 3 | 4 });
+  }
+  return data;
+}
