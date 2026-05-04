@@ -1,38 +1,29 @@
 # Project blueprint
 
 ## Project brief
-LeadPilot AI — AI-powered lead management & follow-up SaaS for small service businesses.
-Premium modern SaaS feel (Linear / Attio / Notion / HubSpot quality), white/black palette + indigo accent (#4F46E5). Full-stack: marketing site, auth, dashboard, leads kanban + table, contact detail, tasks, AI follow-up generator, settings. Database: users, companies, leads, lead_notes, tasks, ai_messages, activity_logs, subscription_plans.
+LeadPilot AI — a complete SaaS product for AI-powered lead management and follow-up for small service businesses. Includes landing site, auth flow, dashboard, leads CRUD with kanban + table, lead detail timeline, follow-up tasks, AI follow-up generator (mock first, OpenAI/Claude later), and settings. Visual style: premium SaaS, white/black with violet accent, Linear/Attio/Notion quality.
 
 ## Built so far
-- Phase 1 (frontend foundation + landing):
-  - Vite + React + TS scaffold (package.json, vite.config.ts, tsconfig*, tailwind.config.ts, postcss.config.js)
-  - `index.html` with full inline-fallback landing (so studio iframe shows real content without bundle)
-  - `src/main.tsx`, `src/App.tsx` with `/` + catch-all NotFound
-  - `src/index.css` with design tokens (ink/accent/line palette, Inter font)
-  - `src/lib/utils.ts` (cn, formatCurrency, formatRelativeDate), `src/lib/supabase.ts` (lazy client + isSupabaseReady flag)
-  - `src/components/Navbar.tsx` (sticky + scroll state + mobile menu) and `src/components/Footer.tsx`
-  - `src/pages/HomePage.tsx` — hero w/ animated KPI + kanban preview, features grid (6), how-it-works (3 steps), pricing (3 tiers), testimonials (3), dark CTA, footer
-  - `src/pages/NotFound.tsx` — friendly fallback for unbuilt routes
+- Phase 1 (frontend landing): Vite + React + TS scaffold, HomePage with hero / product preview / features grid (6) / how-it-works (4 steps) / AI demo card / pricing (3 tiers) / testimonials / CTA / footer. Navbar with mobile menu. Brand identity: ink-* + accent-* (violet) palette, Inter/Geist display.
+- Files: package.json, vite.config.ts, tsconfig*, tailwind.config.ts (custom ink + accent palettes), postcss, src/main.tsx, src/App.tsx (with NotFound catch-all), src/pages/HomePage.tsx, src/pages/NotFound.tsx, src/components/Navbar.tsx, src/components/Footer.tsx, src/lib/{supabase,utils}.ts, src/index.css, index.html (with full inline-fallback mirroring HomePage).
 
 ## Pending
-- Auth phase: Login / Signup / ForgotPassword / Profile pages, Supabase auth wiring, AuthContext, ProtectedRoute, auth-callback, branded form pages, schema.sql with profiles + companies (signup creates company)
-- Database phase: full schema.sql (companies, leads, lead_notes, tasks, ai_messages, activity_logs, subscription_plans) + RLS scoped by company_id, edge functions api-leads / api-tasks / api-ai
-- App shell: sidebar + topbar layout for /app/* routes
-- Dashboard page: KPI cards, recent activity, upcoming follow-ups, lead source chart (recharts)
-- Leads module: kanban view (drag-drop status update), table view, filters (status/source/date), search, create/edit/delete lead modal
-- Contact detail page: full lead profile, notes timeline, tasks, status update, internal comments
-- Tasks module: list + calendar-style view, priorities, overdue highlight
-- AI Follow-up generator: lead picker + tone selector + mock generator (template-based, ready to swap for OpenAI/Anthropic via studio-ai-proxy)
-- Settings: company profile, team members placeholder, notification prefs, plan placeholder
-- Polish: toast notifications, confirm-delete modal, loading skeletons, beautiful empty states, seed/demo data
+- Phase 2: Database schema (users, companies, leads, lead_notes, tasks, ai_messages, activity_logs, subscription_plans) + RLS + edge functions for leads / tasks / ai-messages CRUD + seed data
+- Phase 3: Auth (signup, login, forgot-password) with branded auth pages, profiles trigger, protected routes
+- Phase 4: Dashboard page (KPI cards, recent activity, upcoming follow-ups, lead source chart with Recharts)
+- Phase 5: Leads module (table view + kanban view with drag, create/edit/delete modals, filters)
+- Phase 6: Lead detail page (notes timeline, tasks, AI messages, status updates)
+- Phase 7: Follow-up tasks (calendar/list view, priority, status)
+- Phase 8: AI follow-up generator (mock generator first; edge function with provider abstraction for OpenAI/Anthropic later)
+- Phase 9: Settings (company profile, team placeholder, notifications, subscription placeholder)
+- Phase 10: Stripe billing wiring for the 3 plans
 
 ## Architecture
-- Tailwind palette: ink (near-black) + accent indigo `#4F46E5` + soft line `#ECECEF` on white canvas. Inter font, rounded-2xl cards, soft shadow-card + shadow-glow for hero CTA.
-- React Router v6 with future `/app/*` private routes (TBD); currently only `/` is wired.
-- Supabase client is lazy: `isSupabaseReady` is false until env vars are set, so the app renders fine pre-backend.
-- Design tokens duplicated between `tailwind.config.ts` (build-time, used by React) and `index.html` inline `tailwind.config` script (runtime CDN, used by studio iframe fallback) — both must stay in sync when palette changes.
-- AI module will route through `studio-ai-proxy` by default with a mock/template fallback if no proxy is reachable, so the feature works in zero-config previews.
+- Vite + React 18 + TS, React Router 6, TanStack Query, Tailwind 3 with custom ink/accent palettes
+- Animations via framer-motion (used sparingly), icons via lucide-react, charts via recharts (deferred until dashboard phase)
+- Supabase for DB + auth + edge functions (not yet wired — frontend only this phase)
+- Folder structure: src/pages/* for routes, src/components/* for shared, src/lib/* for clients/utilities. Feature folders (src/features/leads, etc.) to be added in phase 5.
+- Mock-AI strategy: edge function with provider switch — defaults to local mock generator that templates from lead data; switches to OpenAI or Anthropic when API key present in Supabase secrets.
 
 ## Last session
-2026-05-03 — Phase 1 shipped: full Vite scaffold + polished LeadPilot AI landing page (hero, features, how-it-works, pricing, testimonials, CTA, footer) with inline-fallback HTML mirroring the React version.
+2026-05-04 — Phase 1 shipped: landing page (hero + product preview + 6 features + 4-step how-it-works + AI demo card + 3-tier pricing + 3 testimonials + CTA + footer) with full inline-HTML fallback in index.html. Brand: white/black/violet, ink + accent palettes locked in.

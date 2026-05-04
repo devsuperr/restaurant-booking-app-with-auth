@@ -1,25 +1,25 @@
 import { useNavigate } from 'react-router-dom';
+import { ArrowLeft } from 'lucide-react';
 
 export default function NotFound() {
   const navigate = useNavigate();
   return (
-    <div className="min-h-screen grid place-items-center px-6">
+    <div className="min-h-screen flex items-center justify-center bg-white px-6">
       <div className="text-center max-w-md">
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent-soft text-accent text-xs font-semibold mb-6">
-          <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-ink-200 text-xs font-medium text-ink-500 mb-6">
+          <span className="w-1.5 h-1.5 rounded-full bg-accent-500" />
           Coming soon
         </div>
-        <h1 className="text-4xl font-black tracking-tight mb-3">Page not built yet</h1>
-        <p className="text-ink-muted leading-relaxed mb-8">
-          This route hasn't been generated. The dashboard, leads module, and other pages will land
-          in the next phase of the build.
+        <h1 className="text-4xl font-bold text-ink-900 mb-3 tracking-tight">Page not built yet</h1>
+        <p className="text-ink-500 mb-8">
+          This route is on the roadmap but hasn't shipped in the current build. Head back to the home page to keep exploring.
         </p>
         <button
-          type="button"
           onClick={() => navigate('/')}
-          className="inline-flex items-center gap-2 bg-ink text-white font-semibold px-6 py-3 rounded-full hover:bg-ink-soft transition-colors"
+          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-ink-900 text-white text-sm font-medium hover:bg-ink-800 transition"
         >
-          ← Back to home
+          <ArrowLeft className="w-4 h-4" />
+          Back to home
         </button>
       </div>
     </div>

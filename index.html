@@ -1,377 +1,278 @@
 <!-- route: / -->
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>LeadPilot AI — AI-powered lead management & follow-ups for small businesses</title>
-    <meta name="description" content="Capture leads, track deals, automate follow-ups, and grow revenue with AI. The CRM small service businesses actually use." />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              ink: { DEFAULT: '#0A0A0B', soft: '#1A1A1D', muted: '#5A5A63' },
-              accent: { DEFAULT: '#4F46E5', hover: '#4338CA', soft: '#EEF0FF' },
-              line: '#ECECEF',
-            },
-            fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
-            boxShadow: {
-              card: '0 1px 2px rgba(10,10,11,0.04), 0 8px 24px -12px rgba(10,10,11,0.08)',
-              glow: '0 20px 60px -20px rgba(79,70,229,0.45)',
-            },
-          },
-        },
-      };
-    </script>
-    <style>
-      html, body { font-family: 'Inter', system-ui, sans-serif; background: #fff; color: #0A0A0B; -webkit-font-smoothing: antialiased; }
-      .grid-bg { background-image: radial-gradient(circle at 1px 1px, #ECECEF 1px, transparent 0); background-size: 24px 24px; }
-    </style>
-  </head>
-  <body class="bg-white text-ink antialiased">
-    <div id="root">
-      <!-- Inline fallback (rendered when no JS bundle is loaded — studio iframe). React replaces on mount. -->
-      <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-line">
-        <nav class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <a href="/" class="flex items-center gap-2 font-bold text-lg">
-            <span class="w-8 h-8 rounded-lg bg-ink text-white grid place-items-center text-sm font-black">L</span>
-            <span>LeadPilot<span class="text-accent">.</span></span>
-          </a>
-          <div class="hidden md:flex items-center gap-8 text-sm font-medium text-ink/70">
-            <a href="#features" class="hover:text-ink">Features</a>
-            <a href="#how" class="hover:text-ink">How it works</a>
-            <a href="#pricing" class="hover:text-ink">Pricing</a>
-            <a href="#testimonials" class="hover:text-ink">Customers</a>
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LeadPilot AI — AI-Powered Lead Management</title>
+  <meta name="description" content="Capture leads, automate follow-ups, and close more deals with AI-powered lead management built for small businesses." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+          colors: { primary: { 500: '#6366f1', 600: '#4f46e5', 700: '#4338ca' } }
+        }
+      }
+    }
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', system-ui, sans-serif; background: #ffffff; color: #0f0f0f; }
+    .gradient-text { background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a78bfa 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero-glow { background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(99,102,241,0.12) 0%, transparent 70%); }
+    .card-hover { transition: all 0.2s ease; }
+    .card-hover:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.12); }
+  </style>
+</head>
+<body>
+  <div id="root">
+    <!-- NAV -->
+    <nav style="position:sticky;top:0;z-index:50;background:rgba(255,255,255,0.9);backdrop-filter:blur(12px);border-bottom:1px solid #f1f5f9;">
+      <div style="max-width:1200px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:64px;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div style="width:32px;height:32px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:8px;display:flex;align-items:center;justify-content:center;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
           </div>
-          <div class="flex items-center gap-3">
-            <a href="/login" class="hidden sm:inline text-sm font-medium text-ink/70 hover:text-ink">Sign in</a>
-            <a href="/signup" class="inline-flex items-center gap-1.5 bg-ink text-white text-sm font-semibold px-4 py-2 rounded-full hover:bg-ink-soft">Start free →</a>
-          </div>
-        </nav>
-      </header>
+          <span style="font-weight:700;font-size:18px;color:#0f0f0f;">LeadPilot AI</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <a href="/login" style="padding:8px 16px;font-size:14px;font-weight:500;color:#374151;text-decoration:none;border-radius:8px;">Log in</a>
+          <a href="/signup" style="padding:8px 18px;font-size:14px;font-weight:600;color:white;background:linear-gradient(135deg,#6366f1,#4f46e5);border-radius:8px;text-decoration:none;">Start Free</a>
+        </div>
+      </div>
+    </nav>
 
-      <main>
-        <!-- HERO -->
-        <section class="relative overflow-hidden border-b border-line">
-          <div class="absolute inset-0 grid-bg opacity-60"></div>
-          <div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-accent/10 rounded-full blur-3xl"></div>
-          <div class="relative max-w-7xl mx-auto px-6 pt-20 pb-24 lg:pt-28 lg:pb-32 text-center">
-            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent-soft text-accent text-xs font-semibold mb-8">
-              <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
-              New · AI follow-up generator is live
-            </div>
-            <h1 class="text-5xl md:text-7xl font-black tracking-tight leading-[1.05] max-w-4xl mx-auto">
-              The CRM small businesses<br/>
-              <span class="bg-gradient-to-r from-accent to-indigo-400 bg-clip-text text-transparent">actually use.</span>
-            </h1>
-            <p class="mt-6 text-lg md:text-xl text-ink-muted max-w-2xl mx-auto leading-relaxed">
-              Capture leads, track deals, and let AI write your follow-ups. LeadPilot is the lightweight CRM built for service businesses that need to close more — without the spreadsheet chaos.
-            </p>
-            <div class="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
-              <a href="/signup" class="inline-flex items-center justify-center gap-2 bg-ink text-white font-semibold px-7 py-3.5 rounded-full hover:bg-ink-soft shadow-glow">
-                Start free — no card
-              </a>
-              <a href="#demo" class="inline-flex items-center justify-center gap-2 bg-white border border-line text-ink font-semibold px-7 py-3.5 rounded-full hover:border-ink/30">
-                Book a demo →
-              </a>
-            </div>
-            <p class="mt-6 text-xs text-ink-muted">Free forever for solo founders · No credit card · 2-minute setup</p>
+    <!-- HERO -->
+    <section class="hero-glow" style="padding:96px 24px 80px;text-align:center;">
+      <div style="max-width:800px;margin:0 auto;">
+        <div style="display:inline-flex;align-items:center;gap:6px;background:#eef2ff;border:1px solid #c7d2fe;border-radius:100px;padding:4px 14px;margin-bottom:24px;">
+          <span style="width:6px;height:6px;background:#6366f1;border-radius:50%;display:inline-block;"></span>
+          <span style="font-size:13px;font-weight:500;color:#4f46e5;">AI-Powered Lead Management</span>
+        </div>
+        <h1 style="font-size:clamp(40px,6vw,72px);font-weight:800;line-height:1.08;letter-spacing:-0.03em;margin-bottom:24px;">
+          Close More Deals with<br><span class="gradient-text">AI Follow-ups</span>
+        </h1>
+        <p style="font-size:18px;color:#6b7280;line-height:1.6;max-width:560px;margin:0 auto 40px;">
+          LeadPilot AI captures your leads, tracks every conversation, and generates perfect follow-up emails automatically — so you never miss a deal.
+        </p>
+        <div style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;">
+          <a href="/signup" style="padding:14px 28px;font-size:15px;font-weight:600;color:white;background:linear-gradient(135deg,#6366f1,#4f46e5);border-radius:10px;text-decoration:none;box-shadow:0 4px 20px rgba(99,102,241,0.4);">Start Free — No Credit Card</a>
+          <a href="/dashboard" style="padding:14px 28px;font-size:15px;font-weight:600;color:#374151;background:white;border:1.5px solid #e5e7eb;border-radius:10px;text-decoration:none;">View Demo Dashboard →</a>
+        </div>
+        <p style="margin-top:16px;font-size:13px;color:#9ca3af;">Trusted by 2,400+ service businesses</p>
+      </div>
+    </section>
 
-            <!-- Hero product card -->
-            <div class="mt-16 max-w-5xl mx-auto">
-              <div class="bg-white border border-line rounded-3xl shadow-card p-2">
-                <div class="bg-[#FAFAFB] rounded-2xl p-6 md:p-8">
-                  <div class="grid md:grid-cols-3 gap-4 text-left">
-                    <div class="bg-white rounded-xl border border-line p-5">
-                      <div class="text-xs text-ink-muted font-medium uppercase tracking-wider">Total leads</div>
-                      <div class="mt-2 text-3xl font-black">1,284</div>
-                      <div class="mt-1 text-xs font-semibold text-emerald-600">↑ 12.4% this week</div>
-                    </div>
-                    <div class="bg-white rounded-xl border border-line p-5">
-                      <div class="text-xs text-ink-muted font-medium uppercase tracking-wider">Pipeline value</div>
-                      <div class="mt-2 text-3xl font-black">$184k</div>
-                      <div class="mt-1 text-xs font-semibold text-emerald-600">↑ $24k this month</div>
-                    </div>
-                    <div class="bg-white rounded-xl border border-line p-5">
-                      <div class="text-xs text-ink-muted font-medium uppercase tracking-wider">Conversion rate</div>
-                      <div class="mt-2 text-3xl font-black">28.7%</div>
-                      <div class="mt-1 text-xs font-semibold text-accent">+3.1pt vs last month</div>
-                    </div>
-                  </div>
-                  <div class="mt-4 grid md:grid-cols-4 gap-3">
-                    <div class="bg-white rounded-lg border border-line p-3 text-xs">
-                      <div class="font-semibold text-ink-muted uppercase tracking-wider mb-2">New · 24</div>
-                      <div class="space-y-1.5">
-                        <div class="bg-[#FAFAFB] rounded p-2 font-medium">Sarah Chen — Acme Co</div>
-                        <div class="bg-[#FAFAFB] rounded p-2 font-medium">Marcus Patel — Halo</div>
-                      </div>
-                    </div>
-                    <div class="bg-white rounded-lg border border-line p-3 text-xs">
-                      <div class="font-semibold text-ink-muted uppercase tracking-wider mb-2">Contacted · 18</div>
-                      <div class="space-y-1.5">
-                        <div class="bg-[#FAFAFB] rounded p-2 font-medium">Lena Rodriguez</div>
-                        <div class="bg-[#FAFAFB] rounded p-2 font-medium">Theo Nakamura</div>
-                      </div>
-                    </div>
-                    <div class="bg-white rounded-lg border border-line p-3 text-xs">
-                      <div class="font-semibold text-ink-muted uppercase tracking-wider mb-2">Qualified · 11</div>
-                      <div class="space-y-1.5">
-                        <div class="bg-accent-soft rounded p-2 font-medium text-accent">Priya Shah · $12k</div>
-                        <div class="bg-[#FAFAFB] rounded p-2 font-medium">Daniel Voss</div>
-                      </div>
-                    </div>
-                    <div class="bg-white rounded-lg border border-line p-3 text-xs">
-                      <div class="font-semibold text-ink-muted uppercase tracking-wider mb-2">Won · 7</div>
-                      <div class="space-y-1.5">
-                        <div class="bg-emerald-50 rounded p-2 font-medium text-emerald-700">Atlas Studio · $34k</div>
-                        <div class="bg-emerald-50 rounded p-2 font-medium text-emerald-700">Northbound · $9k</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+    <!-- STATS BAR -->
+    <section style="background:#f8fafc;border-top:1px solid #e5e7eb;border-bottom:1px solid #e5e7eb;padding:32px 24px;">
+      <div style="max-width:900px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:32px;text-align:center;">
+        <div><div style="font-size:32px;font-weight:800;color:#0f0f0f;">2,400+</div><div style="font-size:14px;color:#6b7280;margin-top:4px;">Businesses</div></div>
+        <div><div style="font-size:32px;font-weight:800;color:#0f0f0f;">94%</div><div style="font-size:14px;color:#6b7280;margin-top:4px;">Follow-up rate</div></div>
+        <div><div style="font-size:32px;font-weight:800;color:#0f0f0f;">3.2×</div><div style="font-size:14px;color:#6b7280;margin-top:4px;">More conversions</div></div>
+        <div><div style="font-size:32px;font-weight:800;color:#0f0f0f;">$8.4M</div><div style="font-size:14px;color:#6b7280;margin-top:4px;">Pipeline tracked</div></div>
+      </div>
+    </section>
 
-        <!-- FEATURES -->
-        <section id="features" class="py-24 lg:py-32 border-b border-line">
-          <div class="max-w-7xl mx-auto px-6">
-            <div class="max-w-2xl">
-              <div class="text-xs font-bold uppercase tracking-widest text-accent mb-3">Everything you need</div>
-              <h2 class="text-4xl md:text-5xl font-black tracking-tight">A CRM that fits in your week, not the other way around.</h2>
-              <p class="mt-4 text-lg text-ink-muted leading-relaxed">Built for service businesses — from agencies and consultants to local studios and contractors.</p>
-            </div>
-            <div class="mt-16 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <div class="group bg-white border border-line rounded-2xl p-7 hover:shadow-card hover:-translate-y-0.5 transition-all">
-                <div class="w-11 h-11 rounded-xl bg-accent-soft text-accent grid place-items-center text-lg font-bold mb-5">◎</div>
-                <h3 class="font-bold text-lg mb-2">Leads, organized</h3>
-                <p class="text-sm text-ink-muted leading-relaxed">Kanban or table — switch on the fly. Filter by status, source, value, or follow-up date.</p>
-              </div>
-              <div class="bg-white border border-line rounded-2xl p-7 hover:shadow-card hover:-translate-y-0.5 transition-all">
-                <div class="w-11 h-11 rounded-xl bg-accent-soft text-accent grid place-items-center text-lg font-bold mb-5">✦</div>
-                <h3 class="font-bold text-lg mb-2">AI follow-ups</h3>
-                <p class="text-sm text-ink-muted leading-relaxed">Pick a tone — professional, friendly, sales, short — and ship a polished follow-up in seconds.</p>
-              </div>
-              <div class="bg-white border border-line rounded-2xl p-7 hover:shadow-card hover:-translate-y-0.5 transition-all">
-                <div class="w-11 h-11 rounded-xl bg-accent-soft text-accent grid place-items-center text-lg font-bold mb-5">◐</div>
-                <h3 class="font-bold text-lg mb-2">Tasks & reminders</h3>
-                <p class="text-sm text-ink-muted leading-relaxed">Never drop a deal again. Priorities, due dates, overdue alerts — surfaced where you work.</p>
-              </div>
-              <div class="bg-white border border-line rounded-2xl p-7 hover:shadow-card hover:-translate-y-0.5 transition-all">
-                <div class="w-11 h-11 rounded-xl bg-accent-soft text-accent grid place-items-center text-lg font-bold mb-5">▤</div>
-                <h3 class="font-bold text-lg mb-2">Pipeline analytics</h3>
-                <p class="text-sm text-ink-muted leading-relaxed">Conversion rate, source breakdown, revenue projection — calculated live from your real data.</p>
-              </div>
-              <div class="bg-white border border-line rounded-2xl p-7 hover:shadow-card hover:-translate-y-0.5 transition-all">
-                <div class="w-11 h-11 rounded-xl bg-accent-soft text-accent grid place-items-center text-lg font-bold mb-5">✎</div>
-                <h3 class="font-bold text-lg mb-2">Notes & timeline</h3>
-                <p class="text-sm text-ink-muted leading-relaxed">Every interaction in one place. Internal comments, status changes, AI drafts — fully searchable.</p>
-              </div>
-              <div class="bg-white border border-line rounded-2xl p-7 hover:shadow-card hover:-translate-y-0.5 transition-all">
-                <div class="w-11 h-11 rounded-xl bg-accent-soft text-accent grid place-items-center text-lg font-bold mb-5">⚡</div>
-                <h3 class="font-bold text-lg mb-2">Built to grow with you</h3>
-                <p class="text-sm text-ink-muted leading-relaxed">Solo today, team tomorrow. Add seats, roles, and shared pipelines whenever you're ready.</p>
-              </div>
-            </div>
+    <!-- FEATURES -->
+    <section style="padding:96px 24px;max-width:1200px;margin:0 auto;">
+      <div style="text-align:center;margin-bottom:64px;">
+        <h2 style="font-size:40px;font-weight:800;letter-spacing:-0.02em;margin-bottom:16px;">Everything You Need to Win Deals</h2>
+        <p style="font-size:17px;color:#6b7280;max-width:500px;margin:0 auto;">A complete lead management system with AI built right in.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
+        <div class="card-hover" style="background:white;border:1px solid #f1f5f9;border-radius:16px;padding:32px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+          <div style="width:44px;height:44px;background:#eef2ff;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           </div>
-        </section>
+          <h3 style="font-size:17px;font-weight:700;margin-bottom:8px;">Lead Capture & CRM</h3>
+          <p style="font-size:14px;color:#6b7280;line-height:1.6;">Capture leads from any source, manage contacts, and track every deal through your pipeline with a beautiful Kanban view.</p>
+        </div>
+        <div class="card-hover" style="background:white;border:1px solid #f1f5f9;border-radius:16px;padding:32px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+          <div style="width:44px;height:44px;background:#fdf4ff;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          </div>
+          <h3 style="font-size:17px;font-weight:700;margin-bottom:8px;">AI Follow-up Generator</h3>
+          <p style="font-size:14px;color:#6b7280;line-height:1.6;">Select a lead, choose a tone, and let AI write the perfect follow-up email in seconds. Professional, friendly, or sales-driven.</p>
+        </div>
+        <div class="card-hover" style="background:white;border:1px solid #f1f5f9;border-radius:16px;padding:32px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+          <div style="width:44px;height:44px;background:#f0fdf4;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </div>
+          <h3 style="font-size:17px;font-weight:700;margin-bottom:8px;">Task & Follow-up Tracker</h3>
+          <p style="font-size:14px;color:#6b7280;line-height:1.6;">Never forget a follow-up again. Create tasks linked to leads, set priorities, and get reminded before deadlines slip.</p>
+        </div>
+        <div class="card-hover" style="background:white;border:1px solid #f1f5f9;border-radius:16px;padding:32px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+          <div style="width:44px;height:44px;background:#fff7ed;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          </div>
+          <h3 style="font-size:17px;font-weight:700;margin-bottom:8px;">Analytics Dashboard</h3>
+          <p style="font-size:14px;color:#6b7280;line-height:1.6;">Real-time view of your pipeline value, lead sources, conversion rates, and team performance — all in one clean dashboard.</p>
+        </div>
+        <div class="card-hover" style="background:white;border:1px solid #f1f5f9;border-radius:16px;padding:32px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+          <div style="width:44px;height:44px;background:#fef2f2;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <h3 style="font-size:17px;font-weight:700;margin-bottom:8px;">Contact Timeline</h3>
+          <p style="font-size:14px;color:#6b7280;line-height:1.6;">See the complete history of every lead — notes, status changes, tasks, and AI messages — in a beautiful timeline view.</p>
+        </div>
+        <div class="card-hover" style="background:white;border:1px solid #f1f5f9;border-radius:16px;padding:32px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+          <div style="width:44px;height:44px;background:#f0f9ff;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h3 style="font-size:17px;font-weight:700;margin-bottom:8px;">Team & Settings</h3>
+          <p style="font-size:14px;color:#6b7280;line-height:1.6;">Manage your company profile, team members, and notification preferences from one central settings hub.</p>
+        </div>
+      </div>
+    </section>
 
-        <!-- HOW IT WORKS -->
-        <section id="how" class="py-24 lg:py-32 border-b border-line bg-[#FAFAFB]">
-          <div class="max-w-7xl mx-auto px-6">
-            <div class="max-w-2xl mb-16">
-              <div class="text-xs font-bold uppercase tracking-widest text-accent mb-3">How it works</div>
-              <h2 class="text-4xl md:text-5xl font-black tracking-tight">Three steps. Same afternoon.</h2>
-            </div>
-            <div class="grid md:grid-cols-3 gap-6">
-              <div class="bg-white border border-line rounded-2xl p-8">
-                <div class="text-5xl font-black text-accent/20 mb-4">01</div>
-                <h3 class="font-bold text-xl mb-2">Import your leads</h3>
-                <p class="text-sm text-ink-muted leading-relaxed">Paste a spreadsheet, forward emails, or add manually. We auto-detect duplicates and clean it up.</p>
-              </div>
-              <div class="bg-white border border-line rounded-2xl p-8">
-                <div class="text-5xl font-black text-accent/20 mb-4">02</div>
-                <h3 class="font-bold text-xl mb-2">Move them through your pipeline</h3>
-                <p class="text-sm text-ink-muted leading-relaxed">Drag-and-drop kanban. Set follow-up dates. Add notes. Tag deal value. Done.</p>
-              </div>
-              <div class="bg-white border border-line rounded-2xl p-8">
-                <div class="text-5xl font-black text-accent/20 mb-4">03</div>
-                <h3 class="font-bold text-xl mb-2">Let AI handle the words</h3>
-                <p class="text-sm text-ink-muted leading-relaxed">Generate, edit, send. Every follow-up sounds like you wrote it — because you did, faster.</p>
-              </div>
-            </div>
+    <!-- HOW IT WORKS -->
+    <section style="background:#f8fafc;padding:96px 24px;">
+      <div style="max-width:900px;margin:0 auto;text-align:center;">
+        <h2 style="font-size:40px;font-weight:800;letter-spacing:-0.02em;margin-bottom:16px;">How LeadPilot Works</h2>
+        <p style="font-size:17px;color:#6b7280;margin-bottom:64px;">From first contact to closed deal in four simple steps.</p>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:32px;">
+          <div style="text-align:center;">
+            <div style="width:52px;height:52px;background:linear-gradient(135deg,#6366f1,#4f46e5);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;color:white;font-size:20px;font-weight:800;">1</div>
+            <h3 style="font-weight:700;margin-bottom:8px;">Capture</h3>
+            <p style="font-size:14px;color:#6b7280;line-height:1.5;">Add leads manually or import from any source</p>
           </div>
-        </section>
-
-        <!-- PRICING -->
-        <section id="pricing" class="py-24 lg:py-32 border-b border-line">
-          <div class="max-w-7xl mx-auto px-6">
-            <div class="text-center max-w-2xl mx-auto mb-16">
-              <div class="text-xs font-bold uppercase tracking-widest text-accent mb-3">Pricing</div>
-              <h2 class="text-4xl md:text-5xl font-black tracking-tight">Simple, honest, scales when you do.</h2>
-              <p class="mt-4 text-lg text-ink-muted">Start free forever. Upgrade when you outgrow the limits.</p>
-            </div>
-            <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-              <div class="bg-white border border-line rounded-2xl p-8">
-                <div class="text-sm font-bold text-ink mb-1">Solo</div>
-                <div class="text-xs text-ink-muted mb-6">For founders flying solo.</div>
-                <div class="flex items-baseline gap-1 mb-6">
-                  <span class="text-5xl font-black">$0</span>
-                  <span class="text-sm text-ink-muted">/forever</span>
-                </div>
-                <a href="/signup" class="block text-center w-full bg-white border border-line text-ink font-semibold py-3 rounded-full hover:border-ink/30 mb-6">Start free</a>
-                <ul class="space-y-3 text-sm">
-                  <li class="flex gap-2"><span class="text-accent">✓</span> Up to 100 leads</li>
-                  <li class="flex gap-2"><span class="text-accent">✓</span> Kanban & table views</li>
-                  <li class="flex gap-2"><span class="text-accent">✓</span> 25 AI drafts / month</li>
-                  <li class="flex gap-2"><span class="text-accent">✓</span> Tasks & reminders</li>
-                </ul>
-              </div>
-              <div class="bg-ink text-white rounded-2xl p-8 shadow-glow relative ring-2 ring-accent">
-                <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-accent text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Most popular</div>
-                <div class="text-sm font-bold mb-1">Studio</div>
-                <div class="text-xs text-white/60 mb-6">For growing service businesses.</div>
-                <div class="flex items-baseline gap-1 mb-6">
-                  <span class="text-5xl font-black">$29</span>
-                  <span class="text-sm text-white/60">/month</span>
-                </div>
-                <a href="/signup" class="block text-center w-full bg-accent text-white font-semibold py-3 rounded-full hover:bg-accent-hover mb-6">Start 14-day trial</a>
-                <ul class="space-y-3 text-sm">
-                  <li class="flex gap-2"><span class="text-accent">✓</span> Unlimited leads</li>
-                  <li class="flex gap-2"><span class="text-accent">✓</span> 500 AI drafts / month</li>
-                  <li class="flex gap-2"><span class="text-accent">✓</span> Pipeline analytics</li>
-                  <li class="flex gap-2"><span class="text-accent">✓</span> Email follow-up automation</li>
-                  <li class="flex gap-2"><span class="text-accent">✓</span> Priority support</li>
-                </ul>
-              </div>
-              <div class="bg-white border border-line rounded-2xl p-8">
-                <div class="text-sm font-bold text-ink mb-1">Team</div>
-                <div class="text-xs text-ink-muted mb-6">For agencies & shared pipelines.</div>
-                <div class="flex items-baseline gap-1 mb-6">
-                  <span class="text-5xl font-black">$79</span>
-                  <span class="text-sm text-ink-muted">/month</span>
-                </div>
-                <a href="/signup" class="block text-center w-full bg-white border border-line text-ink font-semibold py-3 rounded-full hover:border-ink/30 mb-6">Start trial</a>
-                <ul class="space-y-3 text-sm">
-                  <li class="flex gap-2"><span class="text-accent">✓</span> Everything in Studio</li>
-                  <li class="flex gap-2"><span class="text-accent">✓</span> Up to 10 team seats</li>
-                  <li class="flex gap-2"><span class="text-accent">✓</span> Unlimited AI drafts</li>
-                  <li class="flex gap-2"><span class="text-accent">✓</span> Roles & permissions</li>
-                  <li class="flex gap-2"><span class="text-accent">✓</span> Custom fields & API</li>
-                </ul>
-              </div>
-            </div>
+          <div style="text-align:center;">
+            <div style="width:52px;height:52px;background:linear-gradient(135deg,#8b5cf6,#7c3aed);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;color:white;font-size:20px;font-weight:800;">2</div>
+            <h3 style="font-weight:700;margin-bottom:8px;">Track</h3>
+            <p style="font-size:14px;color:#6b7280;line-height:1.5;">Move leads through your pipeline stages</p>
           </div>
-        </section>
-
-        <!-- TESTIMONIALS -->
-        <section id="testimonials" class="py-24 lg:py-32 border-b border-line bg-[#FAFAFB]">
-          <div class="max-w-7xl mx-auto px-6">
-            <div class="max-w-2xl mb-16">
-              <div class="text-xs font-bold uppercase tracking-widest text-accent mb-3">Customers</div>
-              <h2 class="text-4xl md:text-5xl font-black tracking-tight">Loved by 2,400+ small business owners.</h2>
-            </div>
-            <div class="grid md:grid-cols-3 gap-6">
-              <figure class="bg-white border border-line rounded-2xl p-7">
-                <blockquote class="text-base leading-relaxed text-ink">"Closed three deals my second week using LeadPilot. The AI follow-ups sound like me but ten minutes faster."</blockquote>
-                <figcaption class="mt-6 flex items-center gap-3">
-                  <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=faces" alt="Sarah Chen" class="w-10 h-10 rounded-full object-cover" loading="lazy" />
-                  <div>
-                    <div class="font-semibold text-sm">Sarah Chen</div>
-                    <div class="text-xs text-ink-muted">Founder · Northbound Studio</div>
-                  </div>
-                </figcaption>
-              </figure>
-              <figure class="bg-white border border-line rounded-2xl p-7">
-                <blockquote class="text-base leading-relaxed text-ink">"Switched from a spreadsheet and a HubSpot trial. LeadPilot is the only one that didn't make me hate Mondays."</blockquote>
-                <figcaption class="mt-6 flex items-center gap-3">
-                  <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=faces" alt="Marcus Patel" class="w-10 h-10 rounded-full object-cover" loading="lazy" />
-                  <div>
-                    <div class="font-semibold text-sm">Marcus Patel</div>
-                    <div class="text-xs text-ink-muted">Owner · Halo Roofing Co.</div>
-                  </div>
-                </figcaption>
-              </figure>
-              <figure class="bg-white border border-line rounded-2xl p-7">
-                <blockquote class="text-base leading-relaxed text-ink">"My follow-up rate went from 'whenever I remember' to 100%. Pipeline is up 38% in two months."</blockquote>
-                <figcaption class="mt-6 flex items-center gap-3">
-                  <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=faces" alt="Priya Shah" class="w-10 h-10 rounded-full object-cover" loading="lazy" />
-                  <div>
-                    <div class="font-semibold text-sm">Priya Shah</div>
-                    <div class="text-xs text-ink-muted">Consultant · Slatehouse Advisory</div>
-                  </div>
-                </figcaption>
-              </figure>
-            </div>
+          <div style="text-align:center;">
+            <div style="width:52px;height:52px;background:linear-gradient(135deg,#a78bfa,#8b5cf6);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;color:white;font-size:20px;font-weight:800;">3</div>
+            <h3 style="font-weight:700;margin-bottom:8px;">Follow Up</h3>
+            <p style="font-size:14px;color:#6b7280;line-height:1.5;">AI writes perfect follow-ups based on lead context</p>
           </div>
-        </section>
-
-        <!-- CTA -->
-        <section class="py-24 lg:py-32">
-          <div class="max-w-5xl mx-auto px-6">
-            <div class="bg-ink text-white rounded-3xl p-12 lg:p-20 text-center relative overflow-hidden">
-              <div class="absolute inset-0 bg-gradient-to-br from-accent/20 via-transparent to-transparent"></div>
-              <div class="relative">
-                <h2 class="text-4xl md:text-6xl font-black tracking-tight">Stop losing leads<br/>to a sticky note.</h2>
-                <p class="mt-5 text-lg text-white/70 max-w-xl mx-auto">Set up your pipeline in 2 minutes. Free forever for solo founders.</p>
-                <div class="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
-                  <a href="/signup" class="inline-flex items-center justify-center bg-white text-ink font-semibold px-7 py-3.5 rounded-full hover:bg-white/90">Start free</a>
-                  <a href="#demo" class="inline-flex items-center justify-center bg-white/10 border border-white/20 text-white font-semibold px-7 py-3.5 rounded-full hover:bg-white/20">Book a demo →</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      </main>
-
-      <footer class="border-t border-line py-12">
-        <div class="max-w-7xl mx-auto px-6">
-          <div class="grid md:grid-cols-4 gap-8">
-            <div>
-              <a href="/" class="flex items-center gap-2 font-bold text-lg">
-                <span class="w-8 h-8 rounded-lg bg-ink text-white grid place-items-center text-sm font-black">L</span>
-                <span>LeadPilot<span class="text-accent">.</span></span>
-              </a>
-              <p class="mt-3 text-sm text-ink-muted">The CRM small businesses actually use.</p>
-            </div>
-            <div>
-              <div class="text-xs font-bold uppercase tracking-widest text-ink-muted mb-3">Product</div>
-              <ul class="space-y-2 text-sm">
-                <li><a href="#features" class="text-ink/70 hover:text-ink">Features</a></li>
-                <li><a href="#pricing" class="text-ink/70 hover:text-ink">Pricing</a></li>
-                <li><a href="#how" class="text-ink/70 hover:text-ink">How it works</a></li>
-              </ul>
-            </div>
-            <div>
-              <div class="text-xs font-bold uppercase tracking-widest text-ink-muted mb-3">Company</div>
-              <ul class="space-y-2 text-sm">
-                <li><a href="#" class="text-ink/70 hover:text-ink">About</a></li>
-                <li><a href="#" class="text-ink/70 hover:text-ink">Customers</a></li>
-                <li><a href="#" class="text-ink/70 hover:text-ink">Contact</a></li>
-              </ul>
-            </div>
-            <div>
-              <div class="text-xs font-bold uppercase tracking-widest text-ink-muted mb-3">Legal</div>
-              <ul class="space-y-2 text-sm">
-                <li><a href="#" class="text-ink/70 hover:text-ink">Privacy</a></li>
-                <li><a href="#" class="text-ink/70 hover:text-ink">Terms</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="mt-12 pt-8 border-t border-line text-xs text-ink-muted flex flex-col sm:flex-row justify-between gap-3">
-            <div>© 2026 LeadPilot AI. All rights reserved.</div>
-            <div>Made for small businesses that close.</div>
+          <div style="text-align:center;">
+            <div style="width:52px;height:52px;background:linear-gradient(135deg,#22c55e,#16a34a);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;color:white;font-size:20px;font-weight:800;">4</div>
+            <h3 style="font-weight:700;margin-bottom:8px;">Close</h3>
+            <p style="font-size:14px;color:#6b7280;line-height:1.5;">Mark deals won and track your revenue growth</p>
           </div>
         </div>
-      </footer>
-    </div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+      </div>
+    </section>
+
+    <!-- PRICING -->
+    <section style="padding:96px 24px;max-width:1100px;margin:0 auto;">
+      <div style="text-align:center;margin-bottom:64px;">
+        <h2 style="font-size:40px;font-weight:800;letter-spacing:-0.02em;margin-bottom:16px;">Simple, Transparent Pricing</h2>
+        <p style="font-size:17px;color:#6b7280;">Start free, scale as you grow.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;align-items:start;">
+        <div style="background:white;border:1.5px solid #e5e7eb;border-radius:16px;padding:36px;">
+          <div style="font-size:13px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px;">Starter</div>
+          <div style="font-size:42px;font-weight:800;margin-bottom:4px;">$0<span style="font-size:16px;font-weight:400;color:#6b7280;">/mo</span></div>
+          <p style="font-size:14px;color:#6b7280;margin-bottom:28px;">Perfect for solo freelancers</p>
+          <ul style="list-style:none;margin-bottom:32px;">
+            <li style="display:flex;gap:8px;align-items:center;padding:6px 0;font-size:14px;"><span style="color:#22c55e;">✓</span> Up to 50 leads</li>
+            <li style="display:flex;gap:8px;align-items:center;padding:6px 0;font-size:14px;"><span style="color:#22c55e;">✓</span> 10 AI messages/month</li>
+            <li style="display:flex;gap:8px;align-items:center;padding:6px 0;font-size:14px;"><span style="color:#22c55e;">✓</span> Basic dashboard</li>
+            <li style="display:flex;gap:8px;align-items:center;padding:6px 0;font-size:14px;color:#d1d5db;"><span>✗</span> Team members</li>
+          </ul>
+          <a href="/signup" style="display:block;text-align:center;padding:12px;font-weight:600;color:#374151;background:#f9fafb;border:1.5px solid #e5e7eb;border-radius:10px;text-decoration:none;font-size:14px;">Get Started Free</a>
+        </div>
+        <div style="background:linear-gradient(135deg,#6366f1,#4f46e5);border-radius:16px;padding:36px;position:relative;box-shadow:0 8px 40px rgba(99,102,241,0.35);">
+          <div style="position:absolute;top:-12px;right:20px;background:#f59e0b;color:white;font-size:11px;font-weight:700;padding:4px 12px;border-radius:100px;text-transform:uppercase;letter-spacing:0.05em;">Most Popular</div>
+          <div style="font-size:13px;font-weight:600;color:rgba(255,255,255,0.7);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px;">Growth</div>
+          <div style="font-size:42px;font-weight:800;color:white;margin-bottom:4px;">$49<span style="font-size:16px;font-weight:400;color:rgba(255,255,255,0.7);">/mo</span></div>
+          <p style="font-size:14px;color:rgba(255,255,255,0.7);margin-bottom:28px;">For growing service businesses</p>
+          <ul style="list-style:none;margin-bottom:32px;">
+            <li style="display:flex;gap:8px;align-items:center;padding:6px 0;font-size:14px;color:white;"><span style="color:#86efac;">✓</span> Unlimited leads</li>
+            <li style="display:flex;gap:8px;align-items:center;padding:6px 0;font-size:14px;color:white;"><span style="color:#86efac;">✓</span> 500 AI messages/month</li>
+            <li style="display:flex;gap:8px;align-items:center;padding:6px 0;font-size:14px;color:white;"><span style="color:#86efac;">✓</span> Full analytics</li>
+            <li style="display:flex;gap:8px;align-items:center;padding:6px 0;font-size:14px;color:white;"><span style="color:#86efac;">✓</span> 3 team members</li>
+          </ul>
+          <a href="/signup" style="display:block;text-align:center;padding:12px;font-weight:700;color:#4f46e5;background:white;border-radius:10px;text-decoration:none;font-size:14px;">Start 14-Day Free Trial</a>
+        </div>
+        <div style="background:white;border:1.5px solid #e5e7eb;border-radius:16px;padding:36px;">
+          <div style="font-size:13px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px;">Agency</div>
+          <div style="font-size:42px;font-weight:800;margin-bottom:4px;">$149<span style="font-size:16px;font-weight:400;color:#6b7280;">/mo</span></div>
+          <p style="font-size:14px;color:#6b7280;margin-bottom:28px;">For agencies &amp; large teams</p>
+          <ul style="list-style:none;margin-bottom:32px;">
+            <li style="display:flex;gap:8px;align-items:center;padding:6px 0;font-size:14px;"><span style="color:#22c55e;">✓</span> Unlimited everything</li>
+            <li style="display:flex;gap:8px;align-items:center;padding:6px 0;font-size:14px;"><span style="color:#22c55e;">✓</span> Unlimited AI messages</li>
+            <li style="display:flex;gap:8px;align-items:center;padding:6px 0;font-size:14px;"><span style="color:#22c55e;">✓</span> Custom branding</li>
+            <li style="display:flex;gap:8px;align-items:center;padding:6px 0;font-size:14px;"><span style="color:#22c55e;">✓</span> Unlimited team members</li>
+          </ul>
+          <a href="/signup" style="display:block;text-align:center;padding:12px;font-weight:600;color:#374151;background:#f9fafb;border:1.5px solid #e5e7eb;border-radius:10px;text-decoration:none;font-size:14px;">Contact Sales</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section style="background:#f8fafc;padding:96px 24px;">
+      <div style="max-width:1100px;margin:0 auto;">
+        <div style="text-align:center;margin-bottom:64px;">
+          <h2 style="font-size:40px;font-weight:800;letter-spacing:-0.02em;margin-bottom:16px;">Loved by Service Businesses</h2>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
+          <div style="background:white;border:1px solid #f1f5f9;border-radius:16px;padding:32px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+            <div style="display:flex;gap:4px;margin-bottom:16px;">★★★★★</div>
+            <p style="font-size:15px;color:#374151;line-height:1.6;margin-bottom:20px;">"LeadPilot transformed how I run my consulting business. The AI follow-ups saved me 5 hours a week and my conversion rate jumped 40%."</p>
+            <div style="display:flex;align-items:center;gap:12px;">
+              <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=faces" alt="Sarah Chen" style="width:40px;height:40px;border-radius:50%;object-fit:cover;" />
+              <div><div style="font-weight:600;font-size:14px;">Sarah Chen</div><div style="font-size:12px;color:#6b7280;">Business Consultant, NYC</div></div>
+            </div>
+          </div>
+          <div style="background:white;border:1px solid #f1f5f9;border-radius:16px;padding:32px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+            <div style="display:flex;gap:4px;margin-bottom:16px;">★★★★★</div>
+            <p style="font-size:15px;color:#374151;line-height:1.6;margin-bottom:20px;">"Finally a CRM that doesn't feel like enterprise bloatware. Clean, fast, and the AI feature is genuinely useful — not just a gimmick."</p>
+            <div style="display:flex;align-items:center;gap:12px;">
+              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=faces" alt="Marcus Patel" style="width:40px;height:40px;border-radius:50%;object-fit:cover;" />
+              <div><div style="font-weight:600;font-size:14px;">Marcus Patel</div><div style="font-size:12px;color:#6b7280;">Marketing Agency Owner</div></div>
+            </div>
+          </div>
+          <div style="background:white;border:1px solid #f1f5f9;border-radius:16px;padding:32px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+            <div style="display:flex;gap:4px;margin-bottom:16px;">★★★★★</div>
+            <p style="font-size:15px;color:#374151;line-height:1.6;margin-bottom:20px;">"I went from losing track of leads in spreadsheets to having a full pipeline view. Closed 3 new contracts in my first month using LeadPilot."</p>
+            <div style="display:flex;align-items:center;gap:12px;">
+              <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=faces" alt="Emma Rodriguez" style="width:40px;height:40px;border-radius:50%;object-fit:cover;" />
+              <div><div style="font-weight:600;font-size:14px;">Emma Rodriguez</div><div style="font-size:12px;color:#6b7280;">Freelance Designer</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section style="padding:96px 24px;text-align:center;background:linear-gradient(135deg,#0f0f0f 0%,#1a1a2e 100%);">
+      <div style="max-width:600px;margin:0 auto;">
+        <h2 style="font-size:48px;font-weight:800;color:white;letter-spacing:-0.02em;margin-bottom:16px;">Start Growing Your Business Today</h2>
+        <p style="font-size:17px;color:rgba(255,255,255,0.6);margin-bottom:40px;">Join 2,400+ businesses using LeadPilot AI to close more deals.</p>
+        <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;">
+          <a href="/signup" style="padding:14px 32px;font-size:15px;font-weight:700;color:#4f46e5;background:white;border-radius:10px;text-decoration:none;">Start for Free</a>
+          <a href="/dashboard" style="padding:14px 32px;font-size:15px;font-weight:600;color:white;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:10px;text-decoration:none;">Book a Demo</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer style="background:#0a0a0a;padding:48px 24px;border-top:1px solid rgba(255,255,255,0.06);">
+      <div style="max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div style="width:28px;height:28px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:7px;display:flex;align-items:center;justify-content:center;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          </div>
+          <span style="font-weight:700;color:white;font-size:16px;">LeadPilot AI</span>
+        </div>
+        <p style="color:rgba(255,255,255,0.4);font-size:13px;">© 2024 LeadPilot AI. All rights reserved.</p>
+        <div style="display:flex;gap:24px;">
+          <a href="#" style="color:rgba(255,255,255,0.4);font-size:13px;text-decoration:none;">Privacy</a>
+          <a href="#" style="color:rgba(255,255,255,0.4);font-size:13px;text-decoration:none;">Terms</a>
+          <a href="#" style="color:rgba(255,255,255,0.4);font-size:13px;text-decoration:none;">Support</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script type="module" src="/src/main.tsx"></script>
+</body>
 </html>

@@ -1,18 +1,17 @@
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
-import { cn } from '../lib/utils';
+import { cn } from '@/lib/utils';
 
 const navLinks = [
   { href: '#features', label: 'Features' },
-  { href: '#how', label: 'How it works' },
+  { href: '#how-it-works', label: 'How it works' },
   { href: '#pricing', label: 'Pricing' },
   { href: '#testimonials', label: 'Customers' },
 ];
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -24,63 +23,75 @@ export default function Navbar() {
   return (
     <header
       className={cn(
-        'sticky top-0 z-50 transition-colors',
-        scrolled ? 'bg-white/85 backdrop-blur-xl border-b border-line' : 'bg-white/0 border-b border-transparent',
+        'fixed top-0 inset-x-0 z-50 transition-all duration-300',
+        scrolled ? 'bg-white/80 backdrop-blur-xl border-b border-ink-100' : 'bg-transparent',
       )}
     >
-      <nav className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2 font-bold text-lg">
-          <span className="w-8 h-8 rounded-lg bg-ink text-white grid place-items-center text-sm font-black">L</span>
-          <span>
-            LeadPilot<span className="text-accent">.</span>
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 h-16 flex items-center justify-between">
+        <a href="/" className="flex items-center gap-2.5 group">
+          <span className="relative w-8 h-8 rounded-lg bg-ink-900 flex items-center justify-center overflow-hidden">
+            <span className="absolute inset-0 bg-gradient-to-br from-accent-500 via-accent-600 to-ink-900 opacity-90" />
+            <svg viewBox="0 0 24 24" className="relative w-4 h-4 text-white" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M3 11l18-8-8 18-2-8-8-2z" />
+            </svg>
           </span>
-        </Link>
+          <span className="font-display font-bold text-[17px] tracking-tight text-ink-900">
+            LeadPilot<span className="text-accent-600">.ai</span>
+          </span>
+        </a>
 
-        <div className="hidden md:flex items-center gap-8 text-sm font-medium text-ink/70">
+        <nav className="hidden md:flex items-center gap-8">
           {navLinks.map((l) => (
-            <a key={l.href} href={l.href} className="hover:text-ink transition-colors">
+            <a
+              key={l.href}
+              href={l.href}
+              className="text-sm font-medium text-ink-600 hover:text-ink-900 transition-colors"
+            >
               {l.label}
             </a>
           ))}
+        </nav>
+
+        <div className="hidden md:flex items-center gap-2">
+          <a href="#login" className="px-4 py-2 text-sm font-medium text-ink-700 hover:text-ink-900 transition">
+            Sign in
+          </a>
+          <a
+            href="#signup"
+            className="px-4 py-2 rounded-full bg-ink-900 text-white text-sm font-medium hover:bg-ink-800 transition shadow-soft"
+          >
+            Start free
+          </a>
         </div>
 
-        <div className="flex items-center gap-3">
-          <Link to="/login" className="hidden sm:inline text-sm font-medium text-ink/70 hover:text-ink">
-            Sign in
-          </Link>
-          <Link
-            to="/signup"
-            className="inline-flex items-center gap-1.5 bg-ink text-white text-sm font-semibold px-4 py-2 rounded-full hover:bg-ink-soft transition-colors"
-          >
-            Start free →
-          </Link>
-          <button
-            type="button"
-            onClick={() => setOpen((v) => !v)}
-            aria-label="Toggle menu"
-            className="md:hidden w-9 h-9 grid place-items-center rounded-lg border border-line"
-          >
-            {open ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
-          </button>
-        </div>
-      </nav>
+        <button
+          onClick={() => setOpen((v) => !v)}
+          className="md:hidden p-2 -mr-2 text-ink-700"
+          aria-label="Toggle menu"
+        >
+          {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+        </button>
+      </div>
 
       {open && (
-        <div className="md:hidden border-t border-line bg-white">
-          <div className="px-6 py-4 flex flex-col gap-3 text-sm font-medium">
+        <div className="md:hidden border-t border-ink-100 bg-white">
+          <div className="px-6 py-4 flex flex-col gap-1">
             {navLinks.map((l) => (
               <a
                 key={l.href}
                 href={l.href}
                 onClick={() => setOpen(false)}
-                className="py-2 text-ink/80 hover:text-ink"
+                className="py-2.5 text-sm font-medium text-ink-700"
               >
                 {l.label}
               </a>
             ))}
-            <Link to="/login" onClick={() => setOpen(false)} className="py-2 text-ink/80 hover:text-ink">
-              Sign in
-            </Link>
+            <div className="pt-3 mt-2 border-t border-ink-100 flex flex-col gap-2">
+              <a href="#login" className="py-2.5 text-sm font-medium text-ink-700">Sign in</a>
+              <a href="#signup" className="px-4 py-2.5 rounded-full bg-ink-900 text-white text-sm font-medium text-center">
+                Start free
+              </a>
+            </div>
           </div>
         </div>
       )}

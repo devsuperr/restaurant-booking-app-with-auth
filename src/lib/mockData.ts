@@ -1,112 +1,324 @@
-export interface Skill {
-  id: string;
-  title: string;
-  category: string;
-  avgEarning: number;
-  duration: string;
-  level: string;
-  emoji: string;
-  enrolled: number;
-  rating: number;
-}
+import { Lead, LeadNote, Task, AIMessage, ActivityLog } from './types';
 
-export interface DayTask {
-  day: number;
-  title: string;
-  description: string;
-  videoTitle: string;
-  assignment: string;
-  earning: number;
-  completed: boolean;
-  xp: number;
-}
-
-export interface GigTask {
-  id: string;
-  title: string;
-  category: string;
-  earning: number;
-  duration: string;
-  difficulty: string;
-  emoji: string;
-  postedBy: string;
-}
-
-export interface ChatMessage {
-  id: string;
-  role: 'user' | 'ai';
-  content: string;
-  timestamp: Date;
-}
-
-export interface Badge {
-  id: string;
-  title: string;
-  description: string;
-  emoji: string;
-  earned: boolean;
-  earnedDate?: string;
-}
-
-export const TOP_SKILLS: Skill[] = [
-  { id: 'video-editing', title: 'Video Editing', category: 'Digital', avgEarning: 25000, duration: '7 days', level: 'Beginner', emoji: '🎬', enrolled: 12847, rating: 4.8 },
-  { id: 'freelance-writing', title: 'Freelance Writing', category: 'Content', avgEarning: 18000, duration: '7 days', level: 'Beginner', emoji: '✍️', enrolled: 9234, rating: 4.7 },
-  { id: 'social-media', title: 'Social Media Management', category: 'Digital Marketing', avgEarning: 22000, duration: '7 days', level: 'Beginner', emoji: '📱', enrolled: 15621, rating: 4.9 },
-  { id: 'data-entry', title: 'Data Entry & Excel', category: 'Office', avgEarning: 12000, duration: '7 days', level: 'Beginner', emoji: '📊', enrolled: 8432, rating: 4.6 },
-  { id: 'graphic-design', title: 'Graphic Design (Canva)', category: 'Design', avgEarning: 28000, duration: '7 days', level: 'Beginner', emoji: '🎨', enrolled: 11203, rating: 4.8 },
-  { id: 'electrical-work', title: 'Home Electrical Services', category: 'Trade Skill', avgEarning: 35000, duration: '7 days', level: 'Intermediate', emoji: '⚡', enrolled: 6781, rating: 4.7 },
+export const mockLeads: Lead[] = [
+  {
+    id: 'lead-001',
+    name: 'Sarah Chen',
+    email: 'sarah.chen@techwave.io',
+    phone: '+1 (415) 552-8821',
+    company: 'TechWave Solutions',
+    source: 'Referral',
+    status: 'Qualified',
+    dealValue: 12500,
+    notes: 'Interested in our Pro plan. Has a team of 15. Budget approved for Q1.',
+    nextFollowUp: '2024-12-28',
+    createdAt: '2024-12-10T08:30:00Z',
+    updatedAt: '2024-12-18T14:20:00Z',
+    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=faces',
+  },
+  {
+    id: 'lead-002',
+    name: 'Marcus Patel',
+    email: 'marcus@brightforge.com',
+    phone: '+1 (212) 339-4401',
+    company: 'BrightForge Agency',
+    source: 'Website',
+    status: 'Proposal Sent',
+    dealValue: 8200,
+    notes: 'Marketing agency looking for lead tracking. Demo call went well.',
+    nextFollowUp: '2024-12-26',
+    createdAt: '2024-12-05T10:15:00Z',
+    updatedAt: '2024-12-20T11:00:00Z',
+    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=faces',
+  },
+  {
+    id: 'lead-003',
+    name: 'Olivia Reynolds',
+    email: 'o.reynolds@summitco.com',
+    phone: '+1 (303) 771-2290',
+    company: 'Summit Consulting',
+    source: 'Cold Outreach',
+    status: 'New',
+    dealValue: 5000,
+    notes: 'Reached out via LinkedIn. Expressed interest in automation features.',
+    nextFollowUp: '2024-12-27',
+    createdAt: '2024-12-19T09:00:00Z',
+    updatedAt: '2024-12-19T09:00:00Z',
+    avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=faces',
+  },
+  {
+    id: 'lead-004',
+    name: 'James Whitfield',
+    email: 'j.whitfield@nexalabs.io',
+    phone: '+1 (650) 882-1134',
+    company: 'Nexa Labs',
+    source: 'Event',
+    status: 'Won',
+    dealValue: 18900,
+    notes: 'Met at SaaS Summit 2024. Signed contract Dec 15.',
+    nextFollowUp: null,
+    createdAt: '2024-11-28T13:45:00Z',
+    updatedAt: '2024-12-15T16:30:00Z',
+    avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=faces',
+  },
+  {
+    id: 'lead-005',
+    name: 'Priya Sharma',
+    email: 'priya.s@blossomhr.com',
+    phone: '+1 (512) 443-9908',
+    company: 'Blossom HR',
+    source: 'Social Media',
+    status: 'Contacted',
+    dealValue: 6500,
+    notes: 'Saw our LinkedIn post. Scheduled discovery call for next week.',
+    nextFollowUp: '2024-12-30',
+    createdAt: '2024-12-14T11:20:00Z',
+    updatedAt: '2024-12-18T09:45:00Z',
+    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&h=80&fit=crop&crop=faces',
+  },
+  {
+    id: 'lead-006',
+    name: 'Tom Eriksson',
+    email: 'tom@verdantops.com',
+    phone: '+1 (720) 344-5567',
+    company: 'Verdant Operations',
+    source: 'Referral',
+    status: 'Lost',
+    dealValue: 3200,
+    notes: 'Went with a competitor due to pricing. Keep in touch for future.',
+    nextFollowUp: null,
+    createdAt: '2024-11-15T08:00:00Z',
+    updatedAt: '2024-12-01T12:00:00Z',
+    avatar: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=80&h=80&fit=crop&crop=faces',
+  },
+  {
+    id: 'lead-007',
+    name: 'Aisha Okafor',
+    email: 'aisha@crestsystems.ng',
+    phone: '+234 812 345 6789',
+    company: 'Crest Systems',
+    source: 'Website',
+    status: 'Qualified',
+    dealValue: 9800,
+    notes: 'CEO of a growing fintech. Very engaged. Wants custom onboarding.',
+    nextFollowUp: '2024-12-29',
+    createdAt: '2024-12-12T15:00:00Z',
+    updatedAt: '2024-12-21T10:15:00Z',
+    avatar: 'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=80&h=80&fit=crop&crop=faces',
+  },
+  {
+    id: 'lead-008',
+    name: 'David Kim',
+    email: 'd.kim@stackflow.co',
+    phone: '+1 (206) 778-3312',
+    company: 'StackFlow',
+    source: 'Event',
+    status: 'New',
+    dealValue: 7100,
+    notes: 'Engineering lead. Wants API integrations. Passed contact from CEO.',
+    nextFollowUp: '2025-01-02',
+    createdAt: '2024-12-20T08:00:00Z',
+    updatedAt: '2024-12-20T08:00:00Z',
+    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&h=80&fit=crop&crop=faces',
+  },
 ];
 
-export const SEVEN_DAY_PLAN: DayTask[] = [
-  { day: 1, title: 'Basics Samjho – Foundation Day', description: 'Aaj hum sikhenge ki video editing kya hoti hai aur basic tools kaise use kare.', videoTitle: 'CapCut se shuru karo – 15 min crash course', assignment: 'Apne phone ka koi ek video edit karo aur WhatsApp pe share karo', earning: 0, completed: true, xp: 100 },
-  { day: 2, title: 'Pehla Kaam – First Task Day', description: 'Aaj tumhara pehla real assignment hai. Ek simple 30-second reel banao.', videoTitle: 'Transitions aur music kaise add kare', assignment: 'Instagram reel banao kisi bhi topic pe – 30 seconds', earning: 150, completed: true, xp: 200 },
-  { day: 3, title: 'Speed Up – Efficiency Training', description: 'Aaj hum shortcut keys aur fast editing techniques seekhenge.', videoTitle: 'Pro editor ki tarah kaam karo – shortcuts guide', assignment: 'Ek product review video banao – 1 minute', earning: 250, completed: true, xp: 300 },
-  { day: 4, title: 'Client Work Simulation', description: 'Real client ki tarah ek brief diya gaya hai. Uss pe kaam karo.', videoTitle: 'Client brief kaise samjhe – real example', assignment: 'Diye gaye brief ke according ek video complete karo', earning: 400, completed: false, xp: 400 },
-  { day: 5, title: 'Portfolio Banao', description: 'Aaj tumhara portfolio banane ka din hai. Yahi tumhe kaam dilaega.', videoTitle: 'Portfolio kaise banaye jisse client hire kare', assignment: 'Apne 3 best videos ka portfolio pack banao', earning: 0, completed: false, xp: 350 },
-  { day: 6, title: 'Pehla Gig Apply Karo', description: 'Aaj pehli baar real platform pe apply karenge. Darr mat!', videoTitle: 'Fiverr/Internshala profile kaise setup kare', assignment: 'Ek platform pe profile banao aur pehla proposal bhejo', earning: 500, completed: false, xp: 500 },
-  { day: 7, title: 'Celebration + Next Steps', description: 'Badhai ho! Tum ab ek earning-ready video editor ho.', videoTitle: 'Scale karo – 10k se 50k per month ka roadmap', assignment: 'Apna success story share karo community mein', earning: 750, completed: false, xp: 600 },
+export const mockNotes: LeadNote[] = [
+  {
+    id: 'note-001',
+    leadId: 'lead-001',
+    content: 'Had a great intro call. Sarah is looking for a solution before end of Q1. Decision-maker confirmed.',
+    authorName: 'You',
+    createdAt: '2024-12-18T14:20:00Z',
+    type: 'call',
+  },
+  {
+    id: 'note-002',
+    leadId: 'lead-001',
+    content: 'Sent proposal via email with pricing details and integration specs.',
+    authorName: 'You',
+    createdAt: '2024-12-15T10:00:00Z',
+    type: 'email',
+  },
+  {
+    id: 'note-003',
+    leadId: 'lead-001',
+    content: 'Initial contact made. She requested a product demo for her team.',
+    authorName: 'You',
+    createdAt: '2024-12-10T08:30:00Z',
+    type: 'note',
+  },
+  {
+    id: 'note-004',
+    leadId: 'lead-002',
+    content: 'Demo call completed. Marcus loved the automation workflows. Sending proposal today.',
+    authorName: 'You',
+    createdAt: '2024-12-20T11:00:00Z',
+    type: 'meeting',
+  },
+  {
+    id: 'note-005',
+    leadId: 'lead-002',
+    content: 'Follow-up email sent with case study links.',
+    authorName: 'You',
+    createdAt: '2024-12-12T09:00:00Z',
+    type: 'email',
+  },
 ];
 
-export const GIG_TASKS: GigTask[] = [
-  { id: 'g1', title: 'Instagram Reels ke liye 3 short videos edit karo', category: 'Video Editing', earning: 800, duration: '2 ghante', difficulty: 'Easy', emoji: '🎬', postedBy: 'Priya Fashion Store' },
-  { id: 'g2', title: 'Restaurant menu ka Canva design banao', category: 'Design', earning: 500, duration: '1 ghanta', difficulty: 'Easy', emoji: '🎨', postedBy: 'Raju Dhaba, Jaipur' },
-  { id: 'g3', title: 'Excel mein 500 entries fill karo', category: 'Data Entry', earning: 350, duration: '3 ghante', difficulty: 'Easy', emoji: '📊', postedBy: 'TechSoft Solutions' },
-  { id: 'g4', title: 'WhatsApp broadcast ke liye 10 messages likhni hain', category: 'Writing', earning: 300, duration: '1 ghanta', difficulty: 'Easy', emoji: '✍️', postedBy: 'Local Kirana Chain' },
-  { id: 'g5', title: 'Facebook page ke liye 7 din ke posts banao', category: 'Social Media', earning: 700, duration: '2 din', difficulty: 'Medium', emoji: '📱', postedBy: 'Sneha Boutique' },
-  { id: 'g6', title: 'Ghar ki wiring check karni hai (on-site)', category: 'Electrical', earning: 1200, duration: '4 ghante', difficulty: 'Medium', emoji: '⚡', postedBy: 'Sharma Niwas, Lucknow' },
+export const mockTasks: Task[] = [
+  {
+    id: 'task-001',
+    leadId: 'lead-001',
+    leadName: 'Sarah Chen',
+    title: 'Send pricing proposal',
+    description: 'Include Pro plan pricing and custom onboarding details.',
+    status: 'Done',
+    priority: 'High',
+    dueDate: '2024-12-18',
+    createdAt: '2024-12-14T08:00:00Z',
+    completedAt: '2024-12-18T14:00:00Z',
+  },
+  {
+    id: 'task-002',
+    leadId: 'lead-001',
+    leadName: 'Sarah Chen',
+    title: 'Follow up on proposal',
+    description: 'Call Sarah to check if she reviewed the proposal.',
+    status: 'Pending',
+    priority: 'High',
+    dueDate: '2024-12-28',
+    createdAt: '2024-12-18T14:25:00Z',
+  },
+  {
+    id: 'task-003',
+    leadId: 'lead-002',
+    leadName: 'Marcus Patel',
+    title: 'Schedule second demo',
+    description: 'Marcus wants to see the reporting module in detail.',
+    status: 'Pending',
+    priority: 'Medium',
+    dueDate: '2024-12-26',
+    createdAt: '2024-12-20T11:05:00Z',
+  },
+  {
+    id: 'task-004',
+    leadId: 'lead-005',
+    leadName: 'Priya Sharma',
+    title: 'Discovery call preparation',
+    description: 'Research Blossom HR before the call. Check their team size.',
+    status: 'Pending',
+    priority: 'Medium',
+    dueDate: '2024-12-29',
+    createdAt: '2024-12-18T09:50:00Z',
+  },
+  {
+    id: 'task-005',
+    leadId: 'lead-007',
+    leadName: 'Aisha Okafor',
+    title: 'Prepare custom onboarding plan',
+    description: 'Aisha requested a bespoke onboarding flow for her fintech team.',
+    status: 'Pending',
+    priority: 'High',
+    dueDate: '2024-12-27',
+    createdAt: '2024-12-21T10:20:00Z',
+  },
+  {
+    id: 'task-006',
+    leadId: 'lead-003',
+    leadName: 'Olivia Reynolds',
+    title: 'Send intro email',
+    description: 'Cold lead — warm them up with value-driven intro email.',
+    status: 'Overdue',
+    priority: 'Low',
+    dueDate: '2024-12-22',
+    createdAt: '2024-12-19T09:05:00Z',
+  },
 ];
 
-export const AI_RESPONSES: Record<string, string> = {
-  default: '🙂 Bilkul bhai! Batao kya jaanna chahte ho? Main yahan hoon tumhari help ke liye!',
-  fast: '🚀 Fast seekhne ke liye yeh 3 tips yaad raho:\n\n1️⃣ Roz 30 min practice karo\n2️⃣ Ek skill pe focus karo\n3️⃣ Seekhke turant apply karo\n\nBas yahi formula hai bhai! 💪',
-  task: '📋 Aaj ke liye 3 tasks hain tumhare:\n\n✅ Task 1: 1 video edit karo (30 min)\n✅ Task 2: Portfolio drive mein save karo\n✅ Task 3: Ek platform pe profile update karo\n\nYeh kar lo, aaj ₹250 earn ho sakta hai! 💰',
-  earn: '💰 Abhi tumhare paas 3 earning options hain:\n\n🔥 Gig 1: Instagram reels – ₹800\n🔥 Gig 2: Canva design – ₹500\n🔥 Gig 3: Data entry – ₹350\n\nKonsa karna chahte ho? 👇',
-  motivation: '🔥 Bhai, tumne yeh start kiya hai toh kuch sochke kiya hai!\n\nIndia mein lakho log freelancing se ₹20,000–₹50,000 per month kama rahe hain.\n\nTum bhi kar sakte ho. Bas 7 din consistent raho! 💯',
-  help: '🙌 Main tumhara AI Coach hoon!\n\nMujhse puchh sakte ho:\n• "Fast kaise seekhun?"\n• "Aaj ke tasks kya hain?"\n• "Earn kaise karu?"\n• "Mujhe motivate karo!"\n\nBolo, main ready hoon! 💬',
-  skill: '🎯 Tumhare liye best 3 skills:\n\n1️⃣ Video Editing – ₹15k–₹40k/month\n2️⃣ Social Media – ₹12k–₹30k/month\n3️⃣ Freelance Writing – ₹8k–₹25k/month\n\nKonsi choose karni hai? 🤔',
-};
-
-export const BADGES: Badge[] = [
-  { id: 'first-step', title: 'Pehla Qadam', description: 'Pehla task complete kiya', emoji: '👣', earned: true, earnedDate: '2 din pehle' },
-  { id: 'streak-3', title: '3-Day Streak', description: '3 din lagatar seekha', emoji: '🔥', earned: true, earnedDate: 'Kal' },
-  { id: 'first-earn', title: 'Pehli Kamai', description: 'Pehli baar paisa kamaya', emoji: '💰', earned: true, earnedDate: 'Aaj' },
-  { id: 'speed-learner', title: 'Speed Learner', description: 'Day 1–3 ek din mein complete kiye', emoji: '⚡', earned: false },
-  { id: 'gig-master', title: 'Gig Master', description: '5 gigs successfully complete kiye', emoji: '🏆', earned: false },
-  { id: 'skill-pro', title: 'Skill Pro', description: 'Ek skill mein expert bane', emoji: '🎯', earned: false },
+export const mockAIMessages: AIMessage[] = [
+  {
+    id: 'ai-001',
+    leadId: 'lead-001',
+    leadName: 'Sarah Chen',
+    tone: 'Professional',
+    content: `Hi Sarah,\n\nI wanted to follow up on the proposal I sent over last week for TechWave Solutions.\n\nI understand you're evaluating options for your team's lead management needs, and I'd love to address any questions you might have about our Pro plan—particularly around the custom onboarding and integrations your team requires.\n\nWould you have 15 minutes this week for a quick call? I'm happy to work around your schedule.\n\nLooking forward to hearing from you.\n\nBest regards,\n[Your Name]`,
+    createdAt: '2024-12-19T09:00:00Z',
+    used: true,
+  },
+  {
+    id: 'ai-002',
+    leadId: 'lead-002',
+    leadName: 'Marcus Patel',
+    tone: 'Friendly',
+    content: `Hey Marcus!\n\nHope you're having a great week! I just wanted to check in after our demo call — it was really great chatting and learning more about BrightForge's goals.\n\nDid you get a chance to look through the proposal I sent? I'm super excited about what we could build together, especially on the automation side.\n\nLet me know if you want to hop on a quick call to go through any questions. Happy to make it work anytime this week!\n\nCheers,\n[Your Name]`,
+    createdAt: '2024-12-21T10:00:00Z',
+    used: false,
+  },
 ];
 
-export const USER_STATS = {
-  name: 'Rahul Kumar',
-  city: 'Lucknow, UP',
-  totalEarned: 1850,
-  currentStreak: 3,
-  tasksCompleted: 8,
-  skillsLearned: 2,
-  rating: 4.6,
-  level: 'Rising Star',
-  xp: 1250,
-  nextLevelXp: 2000,
-  referrals: 2,
-  referralEarnings: 400,
-  joinedDate: '5 din pehle',
-};
+export const mockActivityLogs: ActivityLog[] = [
+  {
+    id: 'act-001',
+    leadId: 'lead-004',
+    leadName: 'James Whitfield',
+    action: 'Deal Won',
+    detail: 'James Whitfield marked as Won — $18,900',
+    createdAt: '2024-12-15T16:30:00Z',
+    icon: 'trophy',
+  },
+  {
+    id: 'act-002',
+    leadId: 'lead-001',
+    leadName: 'Sarah Chen',
+    action: 'Note Added',
+    detail: 'Call log added for Sarah Chen',
+    createdAt: '2024-12-18T14:20:00Z',
+    icon: 'message',
+  },
+  {
+    id: 'act-003',
+    leadId: 'lead-002',
+    leadName: 'Marcus Patel',
+    action: 'Status Changed',
+    detail: 'Marcus Patel → Proposal Sent',
+    createdAt: '2024-12-20T11:00:00Z',
+    icon: 'arrow',
+  },
+  {
+    id: 'act-004',
+    leadId: 'lead-007',
+    leadName: 'Aisha Okafor',
+    action: 'Lead Created',
+    detail: 'New lead added: Aisha Okafor',
+    createdAt: '2024-12-12T15:00:00Z',
+    icon: 'plus',
+  },
+  {
+    id: 'act-005',
+    leadId: 'lead-001',
+    leadName: 'Sarah Chen',
+    action: 'Task Completed',
+    detail: 'Task "Send pricing proposal" marked done',
+    createdAt: '2024-12-18T14:00:00Z',
+    icon: 'check',
+  },
+  {
+    id: 'act-006',
+    leadId: 'lead-008',
+    leadName: 'David Kim',
+    action: 'Lead Created',
+    detail: 'New lead added: David Kim',
+    createdAt: '2024-12-20T08:00:00Z',
+    icon: 'plus',
+  },
+  {
+    id: 'act-007',
+    leadId: 'lead-005',
+    leadName: 'Priya Sharma',
+    action: 'AI Message Generated',
+    detail: 'Follow-up email generated for Priya Sharma',
+    createdAt: '2024-12-18T09:45:00Z',
+    icon: 'ai',
+  },
+];
