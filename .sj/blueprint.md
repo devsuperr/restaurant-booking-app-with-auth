@@ -1,29 +1,41 @@
 # Project blueprint
 
 ## Project brief
-LeadPilot AI — a complete SaaS product for AI-powered lead management and follow-up for small service businesses. Includes landing site, auth flow, dashboard, leads CRUD with kanban + table, lead detail timeline, follow-up tasks, AI follow-up generator (mock first, OpenAI/Claude later), and settings. Visual style: premium SaaS, white/black with violet accent, Linear/Attio/Notion quality.
+Landing page for **Plume** — an autonomous AI for social media (Native.no clone).
+The user pasted https://native.no/en/ as the visual reference. Match its
+minimalist Nordic aesthetic: cream canvas, EB Garamond serif headlines with
+italic accents, yellow highlight, generous whitespace, glassy navbar, hero with
+URL-capture card, "How it works" 3-step section, single-tier pricing,
+testimonial grid.
 
 ## Built so far
-- Phase 1 (frontend landing): Vite + React + TS scaffold, HomePage with hero / product preview / features grid (6) / how-it-works (4 steps) / AI demo card / pricing (3 tiers) / testimonials / CTA / footer. Navbar with mobile menu. Brand identity: ink-* + accent-* (violet) palette, Inter/Geist display.
-- Files: package.json, vite.config.ts, tsconfig*, tailwind.config.ts (custom ink + accent palettes), postcss, src/main.tsx, src/App.tsx (with NotFound catch-all), src/pages/HomePage.tsx, src/pages/NotFound.tsx, src/components/Navbar.tsx, src/components/Footer.tsx, src/lib/{supabase,utils}.ts, src/index.css, index.html (with full inline-fallback mirroring HomePage).
+- Phase 1 (frontend, Vite + React + TS):
+  - Scaffold: package.json, vite.config.ts, tsconfig{,.node}.json, tailwind.config.ts, postcss.config.js, .gitignore, vercel.json, netlify.toml
+  - index.html with Tailwind-styled inline-fallback mirroring the React landing
+  - src/App.tsx + main.tsx + index.css (EB Garamond + Inter + Fragment Mono)
+  - Pages: HomePage, NotFound
+  - Components: Navbar (sticky glass), Hero (URL form + rotating word + caret), HowItWorks (3 steps), Comparison (with/without), Testimonials (6 quotes), Pricing (single tier €349/mo), CTA, Footer
+  - Brand: "Plume" — black + cream + amber-yellow accent (#E9B638)
 
 ## Pending
-- Phase 2: Database schema (users, companies, leads, lead_notes, tasks, ai_messages, activity_logs, subscription_plans) + RLS + edge functions for leads / tasks / ai-messages CRUD + seed data
-- Phase 3: Auth (signup, login, forgot-password) with branded auth pages, profiles trigger, protected routes
-- Phase 4: Dashboard page (KPI cards, recent activity, upcoming follow-ups, lead source chart with Recharts)
-- Phase 5: Leads module (table view + kanban view with drag, create/edit/delete modals, filters)
-- Phase 6: Lead detail page (notes timeline, tasks, AI messages, status updates)
-- Phase 7: Follow-up tasks (calendar/list view, priority, status)
-- Phase 8: AI follow-up generator (mock generator first; edge function with provider abstraction for OpenAI/Anthropic later)
-- Phase 9: Settings (company profile, team placeholder, notifications, subscription placeholder)
-- Phase 10: Stripe billing wiring for the 3 plans
+- Auth (login/signup/forgot-password) + Supabase wiring
+- Real signup flow — capture URL on hero form into a leads table
+- Dashboard for logged-in users (calendar of scheduled posts, channel list)
+- Edge function to actually crawl + analyse a submitted website (Resend for confirmation email per intent classifier)
+- Stripe billing for the €349/mo tier
+- About / Contact / Privacy / Terms pages
 
 ## Architecture
-- Vite + React 18 + TS, React Router 6, TanStack Query, Tailwind 3 with custom ink/accent palettes
-- Animations via framer-motion (used sparingly), icons via lucide-react, charts via recharts (deferred until dashboard phase)
-- Supabase for DB + auth + edge functions (not yet wired — frontend only this phase)
-- Folder structure: src/pages/* for routes, src/components/* for shared, src/lib/* for clients/utilities. Feature folders (src/features/leads, etc.) to be added in phase 5.
-- Mock-AI strategy: edge function with provider switch — defaults to local mock generator that templates from lead data; switches to OpenAI or Anthropic when API key present in Supabase secrets.
+- Vite + React 18 + TS + Tailwind, react-router-dom for routing
+- Cream/dark/yellow palette via Tailwind theme extension (canvas, ink, accent)
+- EB Garamond for display, Inter for UI, Fragment Mono for eyebrow labels
+- index.html ships a Tailwind-CDN inline fallback so the studio iframe shows the
+  rendered landing without a bundle
+- Mock data inline in components — no backend yet
+- NotFound catch-all wired in App.tsx
 
 ## Last session
-2026-05-04 — Phase 1 shipped: landing page (hero + product preview + 6 features + 4-step how-it-works + AI demo card + 3-tier pricing + 3 testimonials + CTA + footer) with full inline-HTML fallback in index.html. Brand: white/black/violet, ink + accent palettes locked in.
+2026-05-04 — Fresh build. Scaffolded full Vite project + Native.no-style landing
+page for "Plume" (social media autopilot SaaS). 6 sections: hero with URL
+capture + rotating word, how-it-works (3 steps), with/without comparison, 6
+testimonials, single-tier pricing, dark CTA, footer. No backend yet.

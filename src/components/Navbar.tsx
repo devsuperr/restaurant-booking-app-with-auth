@@ -1,13 +1,5 @@
 import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
-import { cn } from '@/lib/utils';
-
-const navLinks = [
-  { href: '#features', label: 'Features' },
-  { href: '#how-it-works', label: 'How it works' },
-  { href: '#pricing', label: 'Pricing' },
-  { href: '#testimonials', label: 'Customers' },
-];
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -16,83 +8,79 @@ export default function Navbar() {
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
     onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  const links = [
+    { href: '#how', label: 'How it works' },
+    { href: '#pricing', label: 'Pricing' },
+    { href: '#testimonials', label: 'Customers' },
+    { href: '#contact', label: 'Get in touch' },
+  ];
+
   return (
-    <header
-      className={cn(
-        'fixed top-0 inset-x-0 z-50 transition-all duration-300',
-        scrolled ? 'bg-white/80 backdrop-blur-xl border-b border-ink-100' : 'bg-transparent',
-      )}
-    >
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 h-16 flex items-center justify-between">
-        <a href="/" className="flex items-center gap-2.5 group">
-          <span className="relative w-8 h-8 rounded-lg bg-ink-900 flex items-center justify-center overflow-hidden">
-            <span className="absolute inset-0 bg-gradient-to-br from-accent-500 via-accent-600 to-ink-900 opacity-90" />
-            <svg viewBox="0 0 24 24" className="relative w-4 h-4 text-white" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M3 11l18-8-8 18-2-8-8-2z" />
-            </svg>
+    <header className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[min(96%,1100px)]">
+      <nav
+        className={`flex items-center justify-between px-5 py-3 rounded-2xl border transition-all ${
+          scrolled
+            ? 'bg-white/75 backdrop-blur-xl border-black/5 shadow-[0_4px_24px_rgba(0,0,0,0.06)]'
+            : 'bg-white/55 backdrop-blur-xl border-black/5 shadow-[0_1px_2px_rgba(0,0,0,0.04)]'
+        }`}
+      >
+        <a href="#hero" className="flex items-center gap-2">
+          <span className="w-8 h-8 rounded-lg bg-ink flex items-center justify-center">
+            <span className="font-serif italic text-accent text-lg leading-none">p</span>
           </span>
-          <span className="font-display font-bold text-[17px] tracking-tight text-ink-900">
-            LeadPilot<span className="text-accent-600">.ai</span>
-          </span>
+          <span className="font-serif text-xl text-ink tracking-tightish">Plume</span>
         </a>
 
-        <nav className="hidden md:flex items-center gap-8">
-          {navLinks.map((l) => (
+        <div className="hidden md:flex items-center gap-8 text-sm text-ink/70">
+          {links.map((l) => (
+            <a key={l.href} href={l.href} className="hover:text-ink transition-colors">
+              {l.label}
+            </a>
+          ))}
+        </div>
+
+        <div className="flex items-center gap-2">
+          <a
+            href="#login"
+            className="hidden sm:inline-flex items-center px-5 py-2.5 rounded-xl bg-white border border-black/5 font-serif text-base text-ink hover:bg-cream-50 transition"
+          >
+            Log in
+          </a>
+          <a
+            href="#start"
+            className="hidden sm:inline-flex items-center px-5 py-2.5 rounded-xl bg-ink text-white font-serif text-base shadow-[0_2px_8px_rgba(0,0,0,0.12)] hover:bg-black transition"
+          >
+            Get started
+          </a>
+          <button
+            onClick={() => setOpen((v) => !v)}
+            aria-label="Toggle menu"
+            className="md:hidden w-9 h-9 inline-flex items-center justify-center rounded-lg hover:bg-black/5"
+          >
+            {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
+        </div>
+      </nav>
+
+      {open && (
+        <div className="md:hidden mt-2 rounded-2xl bg-white/90 backdrop-blur-xl border border-black/5 p-5 flex flex-col gap-3 shadow-lg">
+          {links.map((l) => (
             <a
               key={l.href}
               href={l.href}
-              className="text-sm font-medium text-ink-600 hover:text-ink-900 transition-colors"
+              onClick={() => setOpen(false)}
+              className="text-ink/80 font-serif text-lg"
             >
               {l.label}
             </a>
           ))}
-        </nav>
-
-        <div className="hidden md:flex items-center gap-2">
-          <a href="#login" className="px-4 py-2 text-sm font-medium text-ink-700 hover:text-ink-900 transition">
-            Sign in
+          <a href="#start" className="mt-2 inline-flex items-center justify-center px-5 py-3 rounded-xl bg-ink text-white font-serif">
+            Get started
           </a>
-          <a
-            href="#signup"
-            className="px-4 py-2 rounded-full bg-ink-900 text-white text-sm font-medium hover:bg-ink-800 transition shadow-soft"
-          >
-            Start free
-          </a>
-        </div>
-
-        <button
-          onClick={() => setOpen((v) => !v)}
-          className="md:hidden p-2 -mr-2 text-ink-700"
-          aria-label="Toggle menu"
-        >
-          {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-        </button>
-      </div>
-
-      {open && (
-        <div className="md:hidden border-t border-ink-100 bg-white">
-          <div className="px-6 py-4 flex flex-col gap-1">
-            {navLinks.map((l) => (
-              <a
-                key={l.href}
-                href={l.href}
-                onClick={() => setOpen(false)}
-                className="py-2.5 text-sm font-medium text-ink-700"
-              >
-                {l.label}
-              </a>
-            ))}
-            <div className="pt-3 mt-2 border-t border-ink-100 flex flex-col gap-2">
-              <a href="#login" className="py-2.5 text-sm font-medium text-ink-700">Sign in</a>
-              <a href="#signup" className="px-4 py-2.5 rounded-full bg-ink-900 text-white text-sm font-medium text-center">
-                Start free
-              </a>
-            </div>
-          </div>
         </div>
       )}
     </header>

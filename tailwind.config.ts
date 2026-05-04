@@ -1,35 +1,34 @@
 import type { Config } from 'tailwindcss';
+
 export default {
   content: ['./index.html', './src/**/*.{ts,tsx}'],
   theme: {
     extend: {
-      fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        mono: ['JetBrains Mono', 'monospace'],
-      },
       colors: {
-        brand: {
-          50: '#f0fdf4',
-          100: '#dcfce7',
-          200: '#bbf7d0',
-          300: '#86efac',
-          400: '#4ade80',
-          500: '#22c55e',
-          600: '#16a34a',
-          700: '#15803d',
-          800: '#166534',
-          900: '#14532d',
+        canvas: '#F2EFE3',
+        ink: {
+          DEFAULT: '#171717',
+          soft: '#3A3628',
+          muted: '#73705F',
         },
-        surface: {
-          50: '#f8fafc',
-          100: '#f1f5f9',
-          200: '#e2e8f0',
-          300: '#cbd5e1',
-          800: '#1e293b',
-          850: '#172032',
-          900: '#0f172a',
-          950: '#080d17',
+        accent: {
+          DEFAULT: '#E9B638',
+          ink: '#171717',
         },
+        cream: {
+          50: '#FAF9F2',
+          100: '#F2EFE3',
+          200: '#E8E3D2',
+          300: '#D8D1BA',
+        },
+      },
+      fontFamily: {
+        serif: ['"EB Garamond"', 'Georgia', 'serif'],
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        mono: ['"Fragment Mono"', '"IBM Plex Mono"', 'monospace'],
+      },
+      letterSpacing: {
+        tightish: '-0.01em',
       },
     },
   },
