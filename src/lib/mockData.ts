@@ -1,443 +1,120 @@
-export type WarrantyStatus = 'active' | 'expiring' | 'expired';
-export type Category = 'Kitchen' | 'Laundry' | 'Heating/Cooling' | 'Plumbing' | 'Electrical' | 'Security' | 'Outdoor';
+export type Platform = 'Upwork' | 'Toptal' | 'Fiverr' | 'Direct' | 'LinkedIn' | 'Contra';
+export type SkillType = 'React Dev' | 'Full-Stack' | 'UX Design' | 'Strategy' | 'Data Analysis' | 'Mobile Dev' | 'DevOps' | 'Copywriting';
 
-export interface Appliance {
+export interface RateEntry {
+  id: string;
+  clientName: string;
+  platform: Platform;
+  skillType: SkillType;
+  rate: number;
+  previousRate: number | null;
+  hoursLogged: number;
+  date: string;
+  projectName: string;
+  notes: string;
+  currency: 'USD';
+}
+
+export interface Client {
   id: string;
   name: string;
-  category: Category;
-  brand: string;
-  model: string;
-  serialNumber: string;
-  purchaseDate: string;
-  purchasePrice: number;
-  retailer: string;
-  location: string;
-  warrantyExpires: string;
-  extendedWarrantyExpires?: string;
-  warrantyProvider: string;
-  warrantyPhone: string;
-  coverageDetails: string[];
-  exclusions: string[];
-  notes: string;
-  emoji: string;
-  image?: string;
-  status: WarrantyStatus;
-  daysUntilExpiry: number;
+  industry: string;
+  country: string;
+  platform: Platform;
+  totalEarned: number;
+  avgRate: number;
+  hoursWorked: number;
+  projectCount: number;
+  lastEngaged: string;
+  status: 'active' | 'inactive' | 'paused';
+  avatar: string;
 }
 
-export interface MaintenanceLog {
+export interface Goal {
   id: string;
-  applianceId: string;
-  applianceName: string;
-  date: string;
-  type: 'routine' | 'repair' | 'inspection' | 'replacement';
-  description: string;
-  cost: number;
-  technician?: string;
+  skillType: SkillType;
+  currentRate: number;
+  targetRate: number;
+  deadline: string;
+  platform: Platform;
   notes: string;
-  nextDueDate?: string;
+  createdAt: string;
 }
 
-export interface Reminder {
+export interface Project {
   id: string;
-  applianceId: string;
-  applianceName: string;
-  type: 'warranty-expiry' | 'maintenance' | 'inspection';
-  dueDate: string;
-  daysUntil: number;
-  priority: 'high' | 'medium' | 'low';
-  dismissed: boolean;
+  name: string;
+  clientName: string;
+  platform: Platform;
+  skillType: SkillType;
+  rate: number;
+  totalHours: number;
+  totalEarned: number;
+  startDate: string;
+  endDate: string | null;
+  status: 'active' | 'completed' | 'paused';
   description: string;
 }
 
-export const appliances: Appliance[] = [
-  {
-    id: '1',
-    name: 'LG French Door Refrigerator',
-    category: 'Kitchen',
-    brand: 'LG',
-    model: 'LRFXS2503S',
-    serialNumber: 'LG204A738291',
-    purchaseDate: '2022-03-08',
-    purchasePrice: 1849,
-    retailer: "Best Buy",
-    location: 'Kitchen',
-    warrantyExpires: '2025-03-08',
-    extendedWarrantyExpires: '2027-03-08',
-    warrantyProvider: 'LG USA',
-    warrantyPhone: '1-800-243-0000',
-    coverageDetails: [
-      'Parts and labor for manufacturing defects',
-      'Compressor covered for 10 years',
-      'Sealed system parts covered for 5 years',
-      'In-home service included',
-      'Food loss coverage up to $200',
-    ],
-    exclusions: [
-      'Cosmetic damage',
-      'Damage from improper installation',
-      'Commercial use',
-      'Normal wear and tear',
-    ],
-    notes: 'Purchased stainless steel finish. Extended warranty through Geek Squad active.',
-    emoji: '❄️',
-    status: 'expiring',
-    daysUntilExpiry: 67,
-  },
-  {
-    id: '2',
-    name: 'Samsung Electric Range',
-    category: 'Kitchen',
-    brand: 'Samsung',
-    model: 'NE63A6711SS',
-    serialNumber: 'SA031B829477',
-    purchaseDate: '2024-02-12',
-    purchasePrice: 999,
-    retailer: 'Home Depot',
-    location: 'Kitchen',
-    warrantyExpires: '2025-02-12',
-    warrantyProvider: 'Samsung Electronics',
-    warrantyPhone: '1-800-726-7864',
-    coverageDetails: [
-      'Parts and labor for first 12 months',
-      'Ceramic glass cooktop defects covered',
-      'Heating element failures covered',
-      'Control board defects covered',
-    ],
-    exclusions: [
-      'Scratches on glass cooktop from pots',
-      'Damage from power surges',
-      'Misuse or abuse',
-    ],
-    notes: 'Slide-in range with air fry mode. Register at Samsung for extended offer.',
-    emoji: '🍳',
-    status: 'expiring',
-    daysUntilExpiry: 42,
-  },
-  {
-    id: '3',
-    name: 'Carrier Central A/C & Heat',
-    category: 'Heating/Cooling',
-    brand: 'Carrier',
-    model: '24ACC636A003',
-    serialNumber: 'CA190721034',
-    purchaseDate: '2021-03-29',
-    purchasePrice: 4200,
-    retailer: 'Blue Dot HVAC',
-    location: 'Mechanical Room',
-    warrantyExpires: '2025-03-29',
-    extendedWarrantyExpires: '2031-03-29',
-    warrantyProvider: 'Carrier Corporation',
-    warrantyPhone: '1-800-227-7437',
-    coverageDetails: [
-      '10-year parts warranty on compressor',
-      '10-year parts warranty on coil',
-      'Limited 5-year labor warranty',
-      'Refrigerant coverage for first 2 years',
-      'Annual maintenance included first year',
-    ],
-    exclusions: [
-      'Filters and maintenance items',
-      'Ductwork not installed by Carrier dealer',
-      'Damage from flooding',
-    ],
-    notes: 'Installed by Blue Dot HVAC. Registration confirmed online. Annual tune-up in fall.',
-    emoji: '🌬️',
-    status: 'expiring',
-    daysUntilExpiry: 88,
-  },
-  {
-    id: '4',
-    name: 'Bosch 500 Series Dishwasher',
-    category: 'Kitchen',
-    brand: 'Bosch',
-    model: 'SHPM88Z75N',
-    serialNumber: 'BSH8821093',
-    purchaseDate: '2023-06-15',
-    purchasePrice: 1149,
-    retailer: 'AJ Madison',
-    location: 'Kitchen',
-    warrantyExpires: '2026-06-15',
-    warrantyProvider: 'BSH Home Appliances',
-    warrantyPhone: '1-800-944-2904',
-    coverageDetails: [
-      '3-year full parts and labor coverage',
-      'Water damage from internal components covered',
-      'Electronic controls covered',
-      'Door seal and tub liner covered',
-    ],
-    exclusions: [
-      'Damage from hard water (install softener)',
-      'Broken racks from overloading',
-      'Cosmetic damage after delivery',
-    ],
-    notes: '500 Series with CrystalDry. 44 dBA rated. Very quiet.',
-    emoji: '🫧',
-    status: 'active',
-    daysUntilExpiry: 532,
-  },
-  {
-    id: '5',
-    name: 'Whirlpool Front Load Washer',
-    category: 'Laundry',
-    brand: 'Whirlpool',
-    model: 'WFW5000DW',
-    serialNumber: 'WPL20380029',
-    purchaseDate: '2022-09-03',
-    purchasePrice: 799,
-    retailer: 'Lowes',
-    location: 'Laundry Room',
-    warrantyExpires: '2025-09-03',
-    warrantyProvider: 'Whirlpool Corporation',
-    warrantyPhone: '1-800-253-1301',
-    coverageDetails: [
-      '1-year full parts and labor',
-      'Cabinet and tub: 5 years',
-      'Drive motor: 10 years',
-      'Electronic controls: 2 years',
-    ],
-    exclusions: [
-      'Drum scratches from metal objects',
-      'Hose damage from incorrect installation',
-      'Mold from improper ventilation',
-    ],
-    notes: 'Use HE detergent only. Leave door open after each cycle. Clean drum monthly.',
-    emoji: '🌊',
-    status: 'active',
-    daysUntilExpiry: 247,
-  },
-  {
-    id: '6',
-    name: 'Rheem Performance Water Heater',
-    category: 'Plumbing',
-    brand: 'Rheem',
-    model: 'PROG40-38N RH60',
-    serialNumber: 'RHM18C00928',
-    purchaseDate: '2020-11-14',
-    purchasePrice: 549,
-    retailer: 'Home Depot',
-    location: 'Utility Closet',
-    warrantyExpires: '2022-11-14',
-    warrantyProvider: 'Rheem Manufacturing',
-    warrantyPhone: '1-800-432-8373',
-    coverageDetails: [
-      '6-year tank warranty (expired)',
-      '1-year parts and labor (expired)',
-    ],
-    exclusions: [
-      'Sediment buildup from hard water',
-      'Damage from improper pressure settings',
-    ],
-    notes: 'Warranty expired. Consider replacing anode rod — last checked 2022. Flush annually.',
-    emoji: '🔥',
-    status: 'expired',
-    daysUntilExpiry: -790,
-  },
-  {
-    id: '7',
-    name: 'Whirlpool Electric Dryer',
-    category: 'Laundry',
-    brand: 'Whirlpool',
-    model: 'WED5000DW',
-    serialNumber: 'WPL20380030',
-    purchaseDate: '2022-09-03',
-    purchasePrice: 699,
-    retailer: 'Lowes',
-    location: 'Laundry Room',
-    warrantyExpires: '2025-09-03',
-    warrantyProvider: 'Whirlpool Corporation',
-    warrantyPhone: '1-800-253-1301',
-    coverageDetails: [
-      '1-year full parts and labor',
-      'Drum and motor: 5 years',
-      'Heating element: 2 years',
-    ],
-    exclusions: [
-      'Drum scratches from belt buckles',
-      'Lint trap damage from lack of cleaning',
-    ],
-    notes: 'Matching unit with washer. Clean lint trap every load. Annual vent cleaning done Dec 2024.',
-    emoji: '💨',
-    status: 'active',
-    daysUntilExpiry: 247,
-  },
-  {
-    id: '8',
-    name: 'Ring Video Doorbell Pro 2',
-    category: 'Security',
-    brand: 'Ring',
-    model: 'Video Doorbell Pro 2',
-    serialNumber: 'RNG2209AM3',
-    purchaseDate: '2023-01-20',
-    purchasePrice: 249,
-    retailer: 'Amazon',
-    location: 'Front Door',
-    warrantyExpires: '2024-01-20',
-    warrantyProvider: 'Ring LLC (Amazon)',
-    warrantyPhone: '1-800-656-1918',
-    coverageDetails: [
-      '1-year limited hardware warranty',
-      'Replacement unit if hardware fails',
-    ],
-    exclusions: [
-      'Damage from weather extremes',
-      'Theft of device',
-      'Software issues',
-    ],
-    notes: 'Warranty expired. Ring Protect Plus subscription active through Jan 2026. Works great.',
-    emoji: '🔔',
-    status: 'expired',
-    daysUntilExpiry: -370,
-  },
+export const rateEntries: RateEntry[] = [
+  { id: '1', clientName: 'Stripe Inc.', platform: 'Toptal', skillType: 'React Dev', rate: 185, previousRate: 175, hoursLogged: 40, date: '2025-06-12', projectName: 'Payment SDK Revamp', notes: 'Rate negotiated after sprint delivery', currency: 'USD' },
+  { id: '2', clientName: 'Notion Labs', platform: 'Direct', skillType: 'UX Design', rate: 160, previousRate: 140, hoursLogged: 32, date: '2025-06-10', projectName: 'Editor Redesign v3', notes: 'Long-term engagement bumped rate', currency: 'USD' },
+  { id: '3', clientName: 'Vercel Corp', platform: 'Upwork', skillType: 'Full-Stack', rate: 145, previousRate: 145, hoursLogged: 60, date: '2025-06-08', projectName: 'CI/CD Dashboard', notes: 'Steady engagement, rate unchanged', currency: 'USD' },
+  { id: '4', clientName: 'Figma LLC', platform: 'Direct', skillType: 'Strategy', rate: 220, previousRate: 190, hoursLogged: 20, date: '2025-06-05', projectName: 'Product Roadmap Advisory', notes: 'Premium strategy retainer', currency: 'USD' },
+  { id: '5', clientName: 'Linear HQ', platform: 'Toptal', skillType: 'React Dev', rate: 180, previousRate: 160, hoursLogged: 50, date: '2025-05-28', projectName: 'Issue Tracker Rewrite', notes: 'Delivered ahead of schedule', currency: 'USD' },
+  { id: '6', clientName: 'Loom Inc.', platform: 'Contra', skillType: 'Mobile Dev', rate: 155, previousRate: 130, hoursLogged: 45, date: '2025-05-20', projectName: 'iOS Screen Recorder', notes: 'New platform, strong negotiation', currency: 'USD' },
+  { id: '7', clientName: 'Coda.io', platform: 'LinkedIn', skillType: 'Data Analysis', rate: 120, previousRate: 110, hoursLogged: 35, date: '2025-05-15', projectName: 'User Analytics Audit', notes: 'First engagement via LinkedIn', currency: 'USD' },
+  { id: '8', clientName: 'Framer Ltd.', platform: 'Direct', skillType: 'UX Design', rate: 175, previousRate: 155, hoursLogged: 55, date: '2025-05-10', projectName: 'Motion Design System', notes: 'Premium direct client', currency: 'USD' },
+  { id: '9', clientName: 'Railway.app', platform: 'Upwork', skillType: 'DevOps', rate: 135, previousRate: 120, hoursLogged: 28, date: '2025-04-30', projectName: 'K8s Migration', notes: 'Niche skill premium', currency: 'USD' },
+  { id: '10', clientName: 'Ghost CMS', platform: 'Fiverr', skillType: 'Copywriting', rate: 95, previousRate: 85, hoursLogged: 15, date: '2025-04-22', projectName: 'Blog Content Strategy', notes: 'Fast turnaround rate', currency: 'USD' },
 ];
 
-export const maintenanceLogs: MaintenanceLog[] = [
-  {
-    id: 'm1',
-    applianceId: '3',
-    applianceName: 'Carrier HVAC System',
-    date: '2025-01-04',
-    type: 'replacement',
-    description: 'HVAC Filter Replacement',
-    cost: 28,
-    notes: 'Replaced 16×25×1 MERV-11 filter. Changed every 90 days. Next due April 4.',
-    nextDueDate: '2025-04-04',
-  },
-  {
-    id: 'm2',
-    applianceId: '7',
-    applianceName: 'Whirlpool Dryer',
-    date: '2024-12-18',
-    type: 'routine',
-    description: 'Annual Dryer Vent Cleaning',
-    cost: 95,
-    technician: 'AirFlow Plus Services',
-    notes: 'Pro cleaning. Removed lint from 14ft duct run. No blockages found.',
-    nextDueDate: '2025-12-18',
-  },
-  {
-    id: 'm3',
-    applianceId: '6',
-    applianceName: 'Rheem Water Heater',
-    date: '2024-12-05',
-    type: 'routine',
-    description: 'Annual Water Heater Flush',
-    cost: 0,
-    notes: 'DIY flush to remove sediment. Anode rod checked — still good. Pilot looks clean.',
-    nextDueDate: '2025-12-05',
-  },
-  {
-    id: 'm4',
-    applianceId: '3',
-    applianceName: 'Carrier HVAC System',
-    date: '2024-10-15',
-    type: 'inspection',
-    description: 'Fall HVAC Tune-Up',
-    cost: 129,
-    technician: 'Blue Dot HVAC',
-    notes: 'Checked refrigerant levels, cleaned coils, inspected blower. All systems normal. Freon OK.',
-    nextDueDate: '2025-04-15',
-  },
-  {
-    id: 'm5',
-    applianceId: '5',
-    applianceName: 'Whirlpool Washer',
-    date: '2024-09-10',
-    type: 'routine',
-    description: 'Drum Cleaning Cycle + Gasket Wipe',
-    cost: 0,
-    notes: 'DIY monthly cleaning with Affresh tablet. Wiped door gasket with diluted bleach. No mold.',
-    nextDueDate: '2025-01-10',
-  },
-  {
-    id: 'm6',
-    applianceId: '1',
-    applianceName: 'LG Refrigerator',
-    date: '2024-08-22',
-    type: 'repair',
-    description: 'Ice Maker Repair',
-    cost: 0,
-    technician: 'LG Authorized Service',
-    notes: 'Ice maker stopped producing. Technician replaced water inlet valve under warranty. Working now.',
-  },
-  {
-    id: 'm7',
-    applianceId: '4',
-    applianceName: 'Bosch Dishwasher',
-    date: '2024-07-05',
-    type: 'routine',
-    description: 'Filter Cleaning + Spray Arm Check',
-    cost: 0,
-    notes: 'Monthly filter cleaning per manual. Soaked in warm water. Spray arms clear. Citric acid tablet run.',
-    nextDueDate: '2025-01-05',
-  },
+export const clients: Client[] = [
+  { id: '1', name: 'Stripe Inc.', industry: 'Fintech', country: 'USA', platform: 'Toptal', totalEarned: 28400, avgRate: 180, hoursWorked: 158, projectCount: 3, lastEngaged: '2025-06-12', status: 'active', avatar: 'https://images.unsplash.com/photo-1560472355-536de3962603?w=80&h=80&fit=crop&crop=faces' },
+  { id: '2', name: 'Notion Labs', industry: 'Productivity', country: 'USA', platform: 'Direct', totalEarned: 18560, avgRate: 150, hoursWorked: 124, projectCount: 2, lastEngaged: '2025-06-10', status: 'active', avatar: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=80&h=80&fit=crop&crop=faces' },
+  { id: '3', name: 'Vercel Corp', industry: 'Infrastructure', country: 'USA', platform: 'Upwork', totalEarned: 15660, avgRate: 141, hoursWorked: 111, projectCount: 4, lastEngaged: '2025-06-08', status: 'active', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=faces' },
+  { id: '4', name: 'Figma LLC', industry: 'Design Tools', country: 'USA', platform: 'Direct', totalEarned: 22000, avgRate: 215, hoursWorked: 102, projectCount: 2, lastEngaged: '2025-06-05', status: 'active', avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=80&h=80&fit=crop&crop=faces' },
+  { id: '5', name: 'Linear HQ', industry: 'Project Mgmt', country: 'Canada', platform: 'Toptal', totalEarned: 14400, avgRate: 170, hoursWorked: 85, projectCount: 2, lastEngaged: '2025-05-28', status: 'active', avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=80&h=80&fit=crop&crop=faces' },
+  { id: '6', name: 'Loom Inc.', industry: 'Video Tech', country: 'USA', platform: 'Contra', totalEarned: 8620, avgRate: 145, hoursWorked: 59, projectCount: 1, lastEngaged: '2025-05-20', status: 'paused', avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=faces' },
+  { id: '7', name: 'Coda.io', industry: 'Productivity', country: 'USA', platform: 'LinkedIn', totalEarned: 5250, avgRate: 115, hoursWorked: 46, projectCount: 1, lastEngaged: '2025-05-15', status: 'inactive', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=faces' },
+  { id: '8', name: 'Framer Ltd.', industry: 'Design Tools', country: 'Netherlands', platform: 'Direct', totalEarned: 18480, avgRate: 162, hoursWorked: 114, projectCount: 3, lastEngaged: '2025-05-10', status: 'active', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&h=80&fit=crop&crop=faces' },
 ];
 
-export const reminders: Reminder[] = [
-  {
-    id: 'r1',
-    applianceId: '2',
-    applianceName: 'Samsung Electric Range',
-    type: 'warranty-expiry',
-    dueDate: '2025-02-12',
-    daysUntil: 42,
-    priority: 'high',
-    dismissed: false,
-    description: 'Manufacturer warranty expires in 42 days. Consider purchasing extended coverage.',
-  },
-  {
-    id: 'r2',
-    applianceId: '1',
-    applianceName: 'LG Refrigerator',
-    type: 'warranty-expiry',
-    dueDate: '2025-03-08',
-    daysUntil: 67,
-    priority: 'high',
-    dismissed: false,
-    description: 'Base warranty expires in 67 days. Extended Geek Squad warranty active until 2027.',
-  },
-  {
-    id: 'r3',
-    applianceId: '3',
-    applianceName: 'Carrier HVAC System',
-    type: 'maintenance',
-    dueDate: '2025-04-04',
-    daysUntil: 94,
-    priority: 'medium',
-    dismissed: false,
-    description: 'HVAC filter replacement due. Replace 16×25×1 MERV-11 every 90 days.',
-  },
-  {
-    id: 'r4',
-    applianceId: '3',
-    applianceName: 'Carrier HVAC System',
-    type: 'inspection',
-    dueDate: '2025-04-15',
-    daysUntil: 105,
-    priority: 'medium',
-    dismissed: false,
-    description: 'Spring HVAC tune-up due. Schedule with Blue Dot HVAC.',
-  },
-  {
-    id: 'r5',
-    applianceId: '3',
-    applianceName: 'Carrier HVAC System',
-    type: 'warranty-expiry',
-    dueDate: '2025-03-29',
-    daysUntil: 88,
-    priority: 'high',
-    dismissed: false,
-    description: 'Parts warranty expires. 10-year extended labor warranty continues until 2031.',
-  },
-  {
-    id: 'r6',
-    applianceId: '6',
-    applianceName: 'Rheem Water Heater',
-    type: 'maintenance',
-    dueDate: '2025-12-05',
-    daysUntil: 339,
-    priority: 'low',
-    dismissed: false,
-    description: 'Annual water heater flush scheduled. DIY task — drain 2 gallons to remove sediment.',
-  },
+export const goals: Goal[] = [
+  { id: '1', skillType: 'React Dev', currentRate: 185, targetRate: 250, deadline: '2025-12-31', platform: 'Toptal', notes: 'Focus on senior-level enterprise clients', createdAt: '2025-01-15' },
+  { id: '2', skillType: 'UX Design', currentRate: 160, targetRate: 195, deadline: '2025-09-30', platform: 'Direct', notes: 'Specialize in SaaS product design', createdAt: '2025-02-01' },
+  { id: '3', skillType: 'Strategy', currentRate: 220, targetRate: 240, deadline: '2025-08-01', platform: 'Direct', notes: 'Almost at goal — target advisory roles', createdAt: '2025-01-10' },
+  { id: '4', skillType: 'Full-Stack', currentRate: 145, targetRate: 180, deadline: '2025-10-31', platform: 'Upwork', notes: 'Build portfolio of complex architectures', createdAt: '2025-03-01' },
+  { id: '5', skillType: 'Mobile Dev', currentRate: 155, targetRate: 200, deadline: '2025-12-15', platform: 'Contra', notes: 'Obtain iOS certifications', createdAt: '2025-02-20' },
+];
+
+export const projects: Project[] = [
+  { id: '1', name: 'Payment SDK Revamp', clientName: 'Stripe Inc.', platform: 'Toptal', skillType: 'React Dev', rate: 185, totalHours: 160, totalEarned: 29600, startDate: '2025-04-01', endDate: null, status: 'active', description: 'Full rewrite of Stripe Elements v3 with React 18 concurrent features and accessibility overhaul.' },
+  { id: '2', name: 'Editor Redesign v3', clientName: 'Notion Labs', platform: 'Direct', skillType: 'UX Design', rate: 160, totalHours: 120, totalEarned: 19200, startDate: '2025-03-15', endDate: null, status: 'active', description: 'Third iteration of the Notion block editor interface with improved mobile experience.' },
+  { id: '3', name: 'CI/CD Dashboard', clientName: 'Vercel Corp', platform: 'Upwork', skillType: 'Full-Stack', rate: 145, totalHours: 200, totalEarned: 29000, startDate: '2025-01-10', endDate: '2025-05-30', status: 'completed', description: 'Internal deployment monitoring dashboard with real-time build logs and team notifications.' },
+  { id: '4', name: 'Product Roadmap Advisory', clientName: 'Figma LLC', platform: 'Direct', skillType: 'Strategy', rate: 220, totalHours: 80, totalEarned: 17600, startDate: '2025-02-01', endDate: null, status: 'active', description: 'Ongoing product strategy retainer covering competitive analysis, roadmap prioritization, and GTM.' },
+  { id: '5', name: 'Issue Tracker Rewrite', clientName: 'Linear HQ', platform: 'Toptal', skillType: 'React Dev', rate: 180, totalHours: 300, totalEarned: 54000, startDate: '2024-11-01', endDate: '2025-04-30', status: 'completed', description: 'Complete frontend rewrite of Linear's issue tracking UI with new filtering engine.' },
+  { id: '6', name: 'iOS Screen Recorder', clientName: 'Loom Inc.', platform: 'Contra', skillType: 'Mobile Dev', rate: 155, totalHours: 140, totalEarned: 21700, startDate: '2025-03-01', endDate: null, status: 'paused', description: 'Native iOS screen recording module with real-time compression and Loom cloud upload.' },
+  { id: '7', name: 'User Analytics Audit', clientName: 'Coda.io', platform: 'LinkedIn', skillType: 'Data Analysis', rate: 120, totalHours: 60, totalEarned: 7200, startDate: '2025-04-15', endDate: '2025-05-20', status: 'completed', description: 'Deep-dive analysis of Coda user retention metrics and A/B test result interpretation.' },
+  { id: '8', name: 'Motion Design System', clientName: 'Framer Ltd.', platform: 'Direct', skillType: 'UX Design', rate: 175, totalHours: 180, totalEarned: 31500, startDate: '2025-02-15', endDate: null, status: 'active', description: 'Comprehensive animation system for Framer's component library with Lottie integration.' },
+];
+
+export const earningsByMonth = [
+  { month: 'Jan', upwork: 3200, toptal: 5800, direct: 2100, contra: 800, linkedin: 400, fiverr: 600 },
+  { month: 'Feb', upwork: 3600, toptal: 6200, direct: 2800, contra: 900, linkedin: 500, fiverr: 700 },
+  { month: 'Mar', upwork: 4100, toptal: 7100, direct: 3200, contra: 1100, linkedin: 600, fiverr: 500 },
+  { month: 'Apr', upwork: 4500, toptal: 7800, direct: 3800, contra: 1200, linkedin: 700, fiverr: 800 },
+  { month: 'May', upwork: 4800, toptal: 8400, direct: 4100, contra: 1400, linkedin: 600, fiverr: 600 },
+  { month: 'Jun', upwork: 5200, toptal: 9100, direct: 4600, contra: 1600, linkedin: 700, fiverr: 700 },
+];
+
+export const ratesBySkill = [
+  { skill: 'Strategy', avgRate: 220, entries: 8, topRate: 240 },
+  { skill: 'React Dev', avgRate: 182, entries: 24, topRate: 200 },
+  { skill: 'UX Design', avgRate: 163, entries: 18, topRate: 185 },
+  { skill: 'Mobile Dev', avgRate: 155, entries: 10, topRate: 175 },
+  { skill: 'Full-Stack', avgRate: 144, entries: 15, topRate: 165 },
+  { skill: 'DevOps', avgRate: 135, entries: 7, topRate: 150 },
+  { skill: 'Data Analysis', avgRate: 118, entries: 6, topRate: 130 },
+  { skill: 'Copywriting', avgRate: 95, entries: 4, topRate: 110 },
 ];

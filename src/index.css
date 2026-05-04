@@ -2,34 +2,90 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
 
 :root {
-  --brand-primary: #0d9488;
-  --brand-accent: #14b8a6;
-  --surface: #f8fafc;
-  --border: #e2e8f0;
+  --color-primary: #22c55e;
+  --color-primary-dark: #16a34a;
+  --color-accent: #4ade80;
+  --color-bg: #080d17;
+  --color-surface: #0f172a;
+  --color-card: #1e293b;
+  --color-border: #334155;
+  --color-text: #f1f5f9;
+  --color-muted: #64748b;
+  --radius: 12px;
 }
 
 * {
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
   font-family: 'Inter', system-ui, sans-serif;
-  background: var(--surface);
-  color: #0f172a;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.font-mono {
+  font-family: 'JetBrains Mono', monospace;
 }
 
 /* Custom scrollbar */
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
 
 /* Focus ring */
-:focus-visible {
-  outline: 2px solid var(--brand-primary);
+*:focus-visible {
+  outline: 2px solid var(--color-primary);
   outline-offset: 2px;
+}
+
+/* Custom gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, #22c55e, #4ade80);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Recharts tooltip override */
+.recharts-tooltip-wrapper {
+  outline: none !important;
+}
+
+.recharts-default-tooltip {
+  background: #1e293b !important;
+  border: 1px solid #334155 !important;
+  border-radius: 10px !important;
+  padding: 10px 14px !important;
+}
+
+.recharts-tooltip-label {
+  color: #94a3b8 !important;
+  font-size: 12px !important;
+  margin-bottom: 4px !important;
+}
+
+.recharts-tooltip-item {
+  color: #f1f5f9 !important;
+  font-size: 13px !important;
 }
