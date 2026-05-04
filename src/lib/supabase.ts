@@ -1,6 +1,12 @@
 import { createClient } from '@supabase/supabase-js';
 
-const url = 'https://flizmxoouctgvrjxrbhm.supabase.co';
-const anonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZsaXpteG9vdWN0Z3ZyanhyYmhtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc4MzUxNDYsImV4cCI6MjA5MzQxMTE0Nn0.3m2gumJPbRFnqd6yDetAiawPfP12cpcU_TTCu3mi_RY';
+const url = import.meta.env.VITE_SUPABASE_URL as string | undefined;
+const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
 
-export const supabase = createClient(url, anonKey);
+// Falls back to a no-op stub during pre-backend phases so the app still renders.
+export const supabase =
+  url && anonKey
+    ? createClient(url, anonKey)
+    : (null as unknown as ReturnType<typeof createClient>);
+
+export const isSupabaseReady = Boolean(url && anonKey);

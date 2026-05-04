@@ -1,39 +1,376 @@
+<!-- route: / -->
 <!doctype html>
-<html lang="hi">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SkillForBharat – 7 Din Mein Earning Shuru Karo</title>
-    <meta name="description" content="India ka #1 AI-powered skill learning platform. 7 din mein earning shuru karo. Bilkul FREE." />
+    <title>LeadPilot AI — AI-powered lead management & follow-ups for small businesses</title>
+    <meta name="description" content="Capture leads, track deals, automate follow-ups, and grow revenue with AI. The CRM small service businesses actually use." />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              ink: { DEFAULT: '#0A0A0B', soft: '#1A1A1D', muted: '#5A5A63' },
+              accent: { DEFAULT: '#4F46E5', hover: '#4338CA', soft: '#EEF0FF' },
+              line: '#ECECEF',
+            },
+            fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+            boxShadow: {
+              card: '0 1px 2px rgba(10,10,11,0.04), 0 8px 24px -12px rgba(10,10,11,0.08)',
+              glow: '0 20px 60px -20px rgba(79,70,229,0.45)',
+            },
+          },
+        },
+      };
+    </script>
     <style>
-      body { font-family: 'Inter', sans-serif; background: #0A0A0A; color: #fff; margin: 0; }
-      .gy { background: linear-gradient(135deg,#FFD700,#FFA500); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+      html, body { font-family: 'Inter', system-ui, sans-serif; background: #fff; color: #0A0A0B; -webkit-font-smoothing: antialiased; }
+      .grid-bg { background-image: radial-gradient(circle at 1px 1px, #ECECEF 1px, transparent 0); background-size: 24px 24px; }
     </style>
   </head>
-  <body>
+  <body class="bg-white text-ink antialiased">
     <div id="root">
-      <!-- Static fallback -->
-      <nav style="background:#111;border-bottom:1px solid #222;padding:0 20px;height:64px;display:flex;align-items:center;justify-between;position:sticky;top:0;z-index:50;">
-        <div style="display:flex;align-items:center;gap:8px;">
-          <div style="width:32px;height:32px;background:#FFD700;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;">⚡</div>
-          <span style="font-weight:900;font-size:18px;">Skill<span style="color:#FFD700">ForBharat</span></span>
-        </div>
-        <a href="/signup" style="background:#FFD700;color:#000;font-weight:800;padding:8px 20px;border-radius:10px;text-decoration:none;font-size:14px;">FREE Mein Shuru Karo</a>
-      </nav>
-      <main style="max-width:900px;margin:0 auto;padding:60px 20px;text-align:center;">
-        <div style="display:inline-block;background:rgba(255,215,0,0.15);color:#FFD700;border:1px solid rgba(255,215,0,0.3);border-radius:999px;padding:4px 16px;font-size:12px;font-weight:700;margin-bottom:24px;">🇮🇳 India Ka #1 AI Skill Platform</div>
-        <h1 style="font-size:clamp(2rem,6vw,3.5rem);font-weight:900;line-height:1.15;margin-bottom:20px;">7 Din Mein <span style="color:#FFD700">Skill Seekho</span>,<br/>Earning Shuru Karo!</h1>
-        <p style="color:#9ca3af;font-size:1.1rem;margin-bottom:36px;max-width:520px;margin-left:auto;margin-right:auto;">Students, freelancers, electricians, plumbers – sabke liye. AI Coach tumhare saath hai 24/7. Bilkul FREE.</p>
-        <a href="/signup" style="display:inline-flex;align-items:center;gap:10px;background:#FFD700;color:#000;font-weight:900;font-size:1.1rem;padding:18px 40px;border-radius:16px;text-decoration:none;box-shadow:0 0 30px rgba(255,215,0,0.3);">⚡ FREE Skill Assessment Karo →</a>
-        <div style="display:flex;gap:32px;justify-content:center;margin-top:48px;flex-wrap:wrap;">
-          <div style="text-align:center;"><div style="font-size:2rem;font-weight:900;color:#FFD700;">2.4L+</div><div style="color:#6b7280;font-size:0.85rem;">Active Learners</div></div>
-          <div style="text-align:center;"><div style="font-size:2rem;font-weight:900;color:#FFD700;">₹18K+</div><div style="color:#6b7280;font-size:0.85rem;">Avg Monthly Earning</div></div>
-          <div style="text-align:center;"><div style="font-size:2rem;font-weight:900;color:#FFD700;">7 Din</div><div style="color:#6b7280;font-size:0.85rem;">Mein Result</div></div>
-        </div>
+      <!-- Inline fallback (rendered when no JS bundle is loaded — studio iframe). React replaces on mount. -->
+      <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-line">
+        <nav class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+          <a href="/" class="flex items-center gap-2 font-bold text-lg">
+            <span class="w-8 h-8 rounded-lg bg-ink text-white grid place-items-center text-sm font-black">L</span>
+            <span>LeadPilot<span class="text-accent">.</span></span>
+          </a>
+          <div class="hidden md:flex items-center gap-8 text-sm font-medium text-ink/70">
+            <a href="#features" class="hover:text-ink">Features</a>
+            <a href="#how" class="hover:text-ink">How it works</a>
+            <a href="#pricing" class="hover:text-ink">Pricing</a>
+            <a href="#testimonials" class="hover:text-ink">Customers</a>
+          </div>
+          <div class="flex items-center gap-3">
+            <a href="/login" class="hidden sm:inline text-sm font-medium text-ink/70 hover:text-ink">Sign in</a>
+            <a href="/signup" class="inline-flex items-center gap-1.5 bg-ink text-white text-sm font-semibold px-4 py-2 rounded-full hover:bg-ink-soft">Start free →</a>
+          </div>
+        </nav>
+      </header>
+
+      <main>
+        <!-- HERO -->
+        <section class="relative overflow-hidden border-b border-line">
+          <div class="absolute inset-0 grid-bg opacity-60"></div>
+          <div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-accent/10 rounded-full blur-3xl"></div>
+          <div class="relative max-w-7xl mx-auto px-6 pt-20 pb-24 lg:pt-28 lg:pb-32 text-center">
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent-soft text-accent text-xs font-semibold mb-8">
+              <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
+              New · AI follow-up generator is live
+            </div>
+            <h1 class="text-5xl md:text-7xl font-black tracking-tight leading-[1.05] max-w-4xl mx-auto">
+              The CRM small businesses<br/>
+              <span class="bg-gradient-to-r from-accent to-indigo-400 bg-clip-text text-transparent">actually use.</span>
+            </h1>
+            <p class="mt-6 text-lg md:text-xl text-ink-muted max-w-2xl mx-auto leading-relaxed">
+              Capture leads, track deals, and let AI write your follow-ups. LeadPilot is the lightweight CRM built for service businesses that need to close more — without the spreadsheet chaos.
+            </p>
+            <div class="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
+              <a href="/signup" class="inline-flex items-center justify-center gap-2 bg-ink text-white font-semibold px-7 py-3.5 rounded-full hover:bg-ink-soft shadow-glow">
+                Start free — no card
+              </a>
+              <a href="#demo" class="inline-flex items-center justify-center gap-2 bg-white border border-line text-ink font-semibold px-7 py-3.5 rounded-full hover:border-ink/30">
+                Book a demo →
+              </a>
+            </div>
+            <p class="mt-6 text-xs text-ink-muted">Free forever for solo founders · No credit card · 2-minute setup</p>
+
+            <!-- Hero product card -->
+            <div class="mt-16 max-w-5xl mx-auto">
+              <div class="bg-white border border-line rounded-3xl shadow-card p-2">
+                <div class="bg-[#FAFAFB] rounded-2xl p-6 md:p-8">
+                  <div class="grid md:grid-cols-3 gap-4 text-left">
+                    <div class="bg-white rounded-xl border border-line p-5">
+                      <div class="text-xs text-ink-muted font-medium uppercase tracking-wider">Total leads</div>
+                      <div class="mt-2 text-3xl font-black">1,284</div>
+                      <div class="mt-1 text-xs font-semibold text-emerald-600">↑ 12.4% this week</div>
+                    </div>
+                    <div class="bg-white rounded-xl border border-line p-5">
+                      <div class="text-xs text-ink-muted font-medium uppercase tracking-wider">Pipeline value</div>
+                      <div class="mt-2 text-3xl font-black">$184k</div>
+                      <div class="mt-1 text-xs font-semibold text-emerald-600">↑ $24k this month</div>
+                    </div>
+                    <div class="bg-white rounded-xl border border-line p-5">
+                      <div class="text-xs text-ink-muted font-medium uppercase tracking-wider">Conversion rate</div>
+                      <div class="mt-2 text-3xl font-black">28.7%</div>
+                      <div class="mt-1 text-xs font-semibold text-accent">+3.1pt vs last month</div>
+                    </div>
+                  </div>
+                  <div class="mt-4 grid md:grid-cols-4 gap-3">
+                    <div class="bg-white rounded-lg border border-line p-3 text-xs">
+                      <div class="font-semibold text-ink-muted uppercase tracking-wider mb-2">New · 24</div>
+                      <div class="space-y-1.5">
+                        <div class="bg-[#FAFAFB] rounded p-2 font-medium">Sarah Chen — Acme Co</div>
+                        <div class="bg-[#FAFAFB] rounded p-2 font-medium">Marcus Patel — Halo</div>
+                      </div>
+                    </div>
+                    <div class="bg-white rounded-lg border border-line p-3 text-xs">
+                      <div class="font-semibold text-ink-muted uppercase tracking-wider mb-2">Contacted · 18</div>
+                      <div class="space-y-1.5">
+                        <div class="bg-[#FAFAFB] rounded p-2 font-medium">Lena Rodriguez</div>
+                        <div class="bg-[#FAFAFB] rounded p-2 font-medium">Theo Nakamura</div>
+                      </div>
+                    </div>
+                    <div class="bg-white rounded-lg border border-line p-3 text-xs">
+                      <div class="font-semibold text-ink-muted uppercase tracking-wider mb-2">Qualified · 11</div>
+                      <div class="space-y-1.5">
+                        <div class="bg-accent-soft rounded p-2 font-medium text-accent">Priya Shah · $12k</div>
+                        <div class="bg-[#FAFAFB] rounded p-2 font-medium">Daniel Voss</div>
+                      </div>
+                    </div>
+                    <div class="bg-white rounded-lg border border-line p-3 text-xs">
+                      <div class="font-semibold text-ink-muted uppercase tracking-wider mb-2">Won · 7</div>
+                      <div class="space-y-1.5">
+                        <div class="bg-emerald-50 rounded p-2 font-medium text-emerald-700">Atlas Studio · $34k</div>
+                        <div class="bg-emerald-50 rounded p-2 font-medium text-emerald-700">Northbound · $9k</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- FEATURES -->
+        <section id="features" class="py-24 lg:py-32 border-b border-line">
+          <div class="max-w-7xl mx-auto px-6">
+            <div class="max-w-2xl">
+              <div class="text-xs font-bold uppercase tracking-widest text-accent mb-3">Everything you need</div>
+              <h2 class="text-4xl md:text-5xl font-black tracking-tight">A CRM that fits in your week, not the other way around.</h2>
+              <p class="mt-4 text-lg text-ink-muted leading-relaxed">Built for service businesses — from agencies and consultants to local studios and contractors.</p>
+            </div>
+            <div class="mt-16 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div class="group bg-white border border-line rounded-2xl p-7 hover:shadow-card hover:-translate-y-0.5 transition-all">
+                <div class="w-11 h-11 rounded-xl bg-accent-soft text-accent grid place-items-center text-lg font-bold mb-5">◎</div>
+                <h3 class="font-bold text-lg mb-2">Leads, organized</h3>
+                <p class="text-sm text-ink-muted leading-relaxed">Kanban or table — switch on the fly. Filter by status, source, value, or follow-up date.</p>
+              </div>
+              <div class="bg-white border border-line rounded-2xl p-7 hover:shadow-card hover:-translate-y-0.5 transition-all">
+                <div class="w-11 h-11 rounded-xl bg-accent-soft text-accent grid place-items-center text-lg font-bold mb-5">✦</div>
+                <h3 class="font-bold text-lg mb-2">AI follow-ups</h3>
+                <p class="text-sm text-ink-muted leading-relaxed">Pick a tone — professional, friendly, sales, short — and ship a polished follow-up in seconds.</p>
+              </div>
+              <div class="bg-white border border-line rounded-2xl p-7 hover:shadow-card hover:-translate-y-0.5 transition-all">
+                <div class="w-11 h-11 rounded-xl bg-accent-soft text-accent grid place-items-center text-lg font-bold mb-5">◐</div>
+                <h3 class="font-bold text-lg mb-2">Tasks & reminders</h3>
+                <p class="text-sm text-ink-muted leading-relaxed">Never drop a deal again. Priorities, due dates, overdue alerts — surfaced where you work.</p>
+              </div>
+              <div class="bg-white border border-line rounded-2xl p-7 hover:shadow-card hover:-translate-y-0.5 transition-all">
+                <div class="w-11 h-11 rounded-xl bg-accent-soft text-accent grid place-items-center text-lg font-bold mb-5">▤</div>
+                <h3 class="font-bold text-lg mb-2">Pipeline analytics</h3>
+                <p class="text-sm text-ink-muted leading-relaxed">Conversion rate, source breakdown, revenue projection — calculated live from your real data.</p>
+              </div>
+              <div class="bg-white border border-line rounded-2xl p-7 hover:shadow-card hover:-translate-y-0.5 transition-all">
+                <div class="w-11 h-11 rounded-xl bg-accent-soft text-accent grid place-items-center text-lg font-bold mb-5">✎</div>
+                <h3 class="font-bold text-lg mb-2">Notes & timeline</h3>
+                <p class="text-sm text-ink-muted leading-relaxed">Every interaction in one place. Internal comments, status changes, AI drafts — fully searchable.</p>
+              </div>
+              <div class="bg-white border border-line rounded-2xl p-7 hover:shadow-card hover:-translate-y-0.5 transition-all">
+                <div class="w-11 h-11 rounded-xl bg-accent-soft text-accent grid place-items-center text-lg font-bold mb-5">⚡</div>
+                <h3 class="font-bold text-lg mb-2">Built to grow with you</h3>
+                <p class="text-sm text-ink-muted leading-relaxed">Solo today, team tomorrow. Add seats, roles, and shared pipelines whenever you're ready.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- HOW IT WORKS -->
+        <section id="how" class="py-24 lg:py-32 border-b border-line bg-[#FAFAFB]">
+          <div class="max-w-7xl mx-auto px-6">
+            <div class="max-w-2xl mb-16">
+              <div class="text-xs font-bold uppercase tracking-widest text-accent mb-3">How it works</div>
+              <h2 class="text-4xl md:text-5xl font-black tracking-tight">Three steps. Same afternoon.</h2>
+            </div>
+            <div class="grid md:grid-cols-3 gap-6">
+              <div class="bg-white border border-line rounded-2xl p-8">
+                <div class="text-5xl font-black text-accent/20 mb-4">01</div>
+                <h3 class="font-bold text-xl mb-2">Import your leads</h3>
+                <p class="text-sm text-ink-muted leading-relaxed">Paste a spreadsheet, forward emails, or add manually. We auto-detect duplicates and clean it up.</p>
+              </div>
+              <div class="bg-white border border-line rounded-2xl p-8">
+                <div class="text-5xl font-black text-accent/20 mb-4">02</div>
+                <h3 class="font-bold text-xl mb-2">Move them through your pipeline</h3>
+                <p class="text-sm text-ink-muted leading-relaxed">Drag-and-drop kanban. Set follow-up dates. Add notes. Tag deal value. Done.</p>
+              </div>
+              <div class="bg-white border border-line rounded-2xl p-8">
+                <div class="text-5xl font-black text-accent/20 mb-4">03</div>
+                <h3 class="font-bold text-xl mb-2">Let AI handle the words</h3>
+                <p class="text-sm text-ink-muted leading-relaxed">Generate, edit, send. Every follow-up sounds like you wrote it — because you did, faster.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- PRICING -->
+        <section id="pricing" class="py-24 lg:py-32 border-b border-line">
+          <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+              <div class="text-xs font-bold uppercase tracking-widest text-accent mb-3">Pricing</div>
+              <h2 class="text-4xl md:text-5xl font-black tracking-tight">Simple, honest, scales when you do.</h2>
+              <p class="mt-4 text-lg text-ink-muted">Start free forever. Upgrade when you outgrow the limits.</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+              <div class="bg-white border border-line rounded-2xl p-8">
+                <div class="text-sm font-bold text-ink mb-1">Solo</div>
+                <div class="text-xs text-ink-muted mb-6">For founders flying solo.</div>
+                <div class="flex items-baseline gap-1 mb-6">
+                  <span class="text-5xl font-black">$0</span>
+                  <span class="text-sm text-ink-muted">/forever</span>
+                </div>
+                <a href="/signup" class="block text-center w-full bg-white border border-line text-ink font-semibold py-3 rounded-full hover:border-ink/30 mb-6">Start free</a>
+                <ul class="space-y-3 text-sm">
+                  <li class="flex gap-2"><span class="text-accent">✓</span> Up to 100 leads</li>
+                  <li class="flex gap-2"><span class="text-accent">✓</span> Kanban & table views</li>
+                  <li class="flex gap-2"><span class="text-accent">✓</span> 25 AI drafts / month</li>
+                  <li class="flex gap-2"><span class="text-accent">✓</span> Tasks & reminders</li>
+                </ul>
+              </div>
+              <div class="bg-ink text-white rounded-2xl p-8 shadow-glow relative ring-2 ring-accent">
+                <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-accent text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Most popular</div>
+                <div class="text-sm font-bold mb-1">Studio</div>
+                <div class="text-xs text-white/60 mb-6">For growing service businesses.</div>
+                <div class="flex items-baseline gap-1 mb-6">
+                  <span class="text-5xl font-black">$29</span>
+                  <span class="text-sm text-white/60">/month</span>
+                </div>
+                <a href="/signup" class="block text-center w-full bg-accent text-white font-semibold py-3 rounded-full hover:bg-accent-hover mb-6">Start 14-day trial</a>
+                <ul class="space-y-3 text-sm">
+                  <li class="flex gap-2"><span class="text-accent">✓</span> Unlimited leads</li>
+                  <li class="flex gap-2"><span class="text-accent">✓</span> 500 AI drafts / month</li>
+                  <li class="flex gap-2"><span class="text-accent">✓</span> Pipeline analytics</li>
+                  <li class="flex gap-2"><span class="text-accent">✓</span> Email follow-up automation</li>
+                  <li class="flex gap-2"><span class="text-accent">✓</span> Priority support</li>
+                </ul>
+              </div>
+              <div class="bg-white border border-line rounded-2xl p-8">
+                <div class="text-sm font-bold text-ink mb-1">Team</div>
+                <div class="text-xs text-ink-muted mb-6">For agencies & shared pipelines.</div>
+                <div class="flex items-baseline gap-1 mb-6">
+                  <span class="text-5xl font-black">$79</span>
+                  <span class="text-sm text-ink-muted">/month</span>
+                </div>
+                <a href="/signup" class="block text-center w-full bg-white border border-line text-ink font-semibold py-3 rounded-full hover:border-ink/30 mb-6">Start trial</a>
+                <ul class="space-y-3 text-sm">
+                  <li class="flex gap-2"><span class="text-accent">✓</span> Everything in Studio</li>
+                  <li class="flex gap-2"><span class="text-accent">✓</span> Up to 10 team seats</li>
+                  <li class="flex gap-2"><span class="text-accent">✓</span> Unlimited AI drafts</li>
+                  <li class="flex gap-2"><span class="text-accent">✓</span> Roles & permissions</li>
+                  <li class="flex gap-2"><span class="text-accent">✓</span> Custom fields & API</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TESTIMONIALS -->
+        <section id="testimonials" class="py-24 lg:py-32 border-b border-line bg-[#FAFAFB]">
+          <div class="max-w-7xl mx-auto px-6">
+            <div class="max-w-2xl mb-16">
+              <div class="text-xs font-bold uppercase tracking-widest text-accent mb-3">Customers</div>
+              <h2 class="text-4xl md:text-5xl font-black tracking-tight">Loved by 2,400+ small business owners.</h2>
+            </div>
+            <div class="grid md:grid-cols-3 gap-6">
+              <figure class="bg-white border border-line rounded-2xl p-7">
+                <blockquote class="text-base leading-relaxed text-ink">"Closed three deals my second week using LeadPilot. The AI follow-ups sound like me but ten minutes faster."</blockquote>
+                <figcaption class="mt-6 flex items-center gap-3">
+                  <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=faces" alt="Sarah Chen" class="w-10 h-10 rounded-full object-cover" loading="lazy" />
+                  <div>
+                    <div class="font-semibold text-sm">Sarah Chen</div>
+                    <div class="text-xs text-ink-muted">Founder · Northbound Studio</div>
+                  </div>
+                </figcaption>
+              </figure>
+              <figure class="bg-white border border-line rounded-2xl p-7">
+                <blockquote class="text-base leading-relaxed text-ink">"Switched from a spreadsheet and a HubSpot trial. LeadPilot is the only one that didn't make me hate Mondays."</blockquote>
+                <figcaption class="mt-6 flex items-center gap-3">
+                  <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=faces" alt="Marcus Patel" class="w-10 h-10 rounded-full object-cover" loading="lazy" />
+                  <div>
+                    <div class="font-semibold text-sm">Marcus Patel</div>
+                    <div class="text-xs text-ink-muted">Owner · Halo Roofing Co.</div>
+                  </div>
+                </figcaption>
+              </figure>
+              <figure class="bg-white border border-line rounded-2xl p-7">
+                <blockquote class="text-base leading-relaxed text-ink">"My follow-up rate went from 'whenever I remember' to 100%. Pipeline is up 38% in two months."</blockquote>
+                <figcaption class="mt-6 flex items-center gap-3">
+                  <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=faces" alt="Priya Shah" class="w-10 h-10 rounded-full object-cover" loading="lazy" />
+                  <div>
+                    <div class="font-semibold text-sm">Priya Shah</div>
+                    <div class="text-xs text-ink-muted">Consultant · Slatehouse Advisory</div>
+                  </div>
+                </figcaption>
+              </figure>
+            </div>
+          </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="py-24 lg:py-32">
+          <div class="max-w-5xl mx-auto px-6">
+            <div class="bg-ink text-white rounded-3xl p-12 lg:p-20 text-center relative overflow-hidden">
+              <div class="absolute inset-0 bg-gradient-to-br from-accent/20 via-transparent to-transparent"></div>
+              <div class="relative">
+                <h2 class="text-4xl md:text-6xl font-black tracking-tight">Stop losing leads<br/>to a sticky note.</h2>
+                <p class="mt-5 text-lg text-white/70 max-w-xl mx-auto">Set up your pipeline in 2 minutes. Free forever for solo founders.</p>
+                <div class="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
+                  <a href="/signup" class="inline-flex items-center justify-center bg-white text-ink font-semibold px-7 py-3.5 rounded-full hover:bg-white/90">Start free</a>
+                  <a href="#demo" class="inline-flex items-center justify-center bg-white/10 border border-white/20 text-white font-semibold px-7 py-3.5 rounded-full hover:bg-white/20">Book a demo →</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
+
+      <footer class="border-t border-line py-12">
+        <div class="max-w-7xl mx-auto px-6">
+          <div class="grid md:grid-cols-4 gap-8">
+            <div>
+              <a href="/" class="flex items-center gap-2 font-bold text-lg">
+                <span class="w-8 h-8 rounded-lg bg-ink text-white grid place-items-center text-sm font-black">L</span>
+                <span>LeadPilot<span class="text-accent">.</span></span>
+              </a>
+              <p class="mt-3 text-sm text-ink-muted">The CRM small businesses actually use.</p>
+            </div>
+            <div>
+              <div class="text-xs font-bold uppercase tracking-widest text-ink-muted mb-3">Product</div>
+              <ul class="space-y-2 text-sm">
+                <li><a href="#features" class="text-ink/70 hover:text-ink">Features</a></li>
+                <li><a href="#pricing" class="text-ink/70 hover:text-ink">Pricing</a></li>
+                <li><a href="#how" class="text-ink/70 hover:text-ink">How it works</a></li>
+              </ul>
+            </div>
+            <div>
+              <div class="text-xs font-bold uppercase tracking-widest text-ink-muted mb-3">Company</div>
+              <ul class="space-y-2 text-sm">
+                <li><a href="#" class="text-ink/70 hover:text-ink">About</a></li>
+                <li><a href="#" class="text-ink/70 hover:text-ink">Customers</a></li>
+                <li><a href="#" class="text-ink/70 hover:text-ink">Contact</a></li>
+              </ul>
+            </div>
+            <div>
+              <div class="text-xs font-bold uppercase tracking-widest text-ink-muted mb-3">Legal</div>
+              <ul class="space-y-2 text-sm">
+                <li><a href="#" class="text-ink/70 hover:text-ink">Privacy</a></li>
+                <li><a href="#" class="text-ink/70 hover:text-ink">Terms</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="mt-12 pt-8 border-t border-line text-xs text-ink-muted flex flex-col sm:flex-row justify-between gap-3">
+            <div>© 2026 LeadPilot AI. All rights reserved.</div>
+            <div>Made for small businesses that close.</div>
+          </div>
+        </div>
+      </footer>
     </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
