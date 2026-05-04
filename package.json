@@ -1,13 +1,12 @@
 {
-  "name": "leadpilot-ai",
+  "name": "homevault",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "preview": "vite preview",
-    "lint": "eslint ."
+    "preview": "vite preview"
   },
   "dependencies": {
     "react": "^18.3.1",
@@ -20,16 +19,7 @@
     "tailwind-merge": "^2.5.0",
     "class-variance-authority": "^0.7.1",
     "framer-motion": "^11.11.0",
-    "recharts": "^2.15.0",
-    "@radix-ui/react-slot": "^1.1.0",
-    "@radix-ui/react-dialog": "^1.1.0",
-    "@radix-ui/react-dropdown-menu": "^2.1.0",
-    "@radix-ui/react-label": "^2.1.0",
-    "@radix-ui/react-tabs": "^1.1.0",
-    "@radix-ui/react-select": "^2.1.0",
-    "@radix-ui/react-toast": "^1.2.0",
-    "@radix-ui/react-tooltip": "^1.1.0",
-    "date-fns": "^4.1.0"
+    "date-fns": "^3.6.0"
   },
   "devDependencies": {
     "@types/react": "^18.3.12",

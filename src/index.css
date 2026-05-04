@@ -2,73 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
 :root {
-  --bg: #ffffff;
-  --fg: #0f0f12;
-  --muted: #6b7280;
-  --brand: #6366f1;
-  --brand-dark: #4f46e5;
-  --border: #ececf1;
-  --radius: 14px;
+  --brand-primary: #0d9488;
+  --brand-accent: #14b8a6;
+  --surface: #f8fafc;
+  --border: #e2e8f0;
 }
 
-html, body, #root { height: 100%; }
+* {
+  box-sizing: border-box;
+}
 
 body {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  background: var(--bg);
-  color: var(--fg);
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--surface);
+  color: #0f172a;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-feature-settings: 'cv11', 'ss01';
 }
 
-.gradient-text {
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a78bfa 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
-.hero-glow {
-  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(99,102,241,0.12) 0%, transparent 70%);
-}
-
-.bg-dots {
-  background-image: radial-gradient(circle at 1px 1px, rgba(15,15,18,0.06) 1px, transparent 0);
-  background-size: 22px 22px;
-}
-
-@layer components {
-  .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-brand-600 px-4 py-2.5 text-sm font-medium text-white shadow-soft transition-all duration-200 hover:bg-brand-700 hover:shadow-card focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed;
-  }
-  .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 shadow-soft transition-all duration-200 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 active:scale-[0.98] disabled:opacity-50;
-  }
-  .btn-ghost {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl px-3 py-2 text-sm font-medium text-gray-600 transition-all duration-200 hover:bg-gray-100 hover:text-gray-900 active:scale-[0.98];
-  }
-  .btn-danger {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-red-600 px-4 py-2.5 text-sm font-medium text-white shadow-soft transition-all duration-200 hover:bg-red-700 active:scale-[0.98];
-  }
-  .card {
-    @apply rounded-2xl border border-gray-100 bg-white shadow-card;
-  }
-  .input {
-    @apply w-full rounded-xl border border-gray-200 bg-white px-3.5 py-2.5 text-sm text-gray-900 placeholder-gray-400 transition-all duration-200 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20;
-  }
-  .label {
-    @apply block text-sm font-medium text-gray-700 mb-1.5;
-  }
-}
-
-/* Hide scrollbars on Kanban */
-.kanban-scroll::-webkit-scrollbar { height: 8px; }
-.kanban-scroll::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 8px; }
-
-button:focus-visible, a:focus-visible {
-  outline: 2px solid var(--brand);
+/* Focus ring */
+:focus-visible {
+  outline: 2px solid var(--brand-primary);
   outline-offset: 2px;
-  border-radius: 10px;
 }
