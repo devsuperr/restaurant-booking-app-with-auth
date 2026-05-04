@@ -1,88 +1,109 @@
 import { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Menu, X, Zap } from 'lucide-react';
+import { cn } from '@/lib/utils';
+
+const navLinks = [
+  { label: 'Features', href: '#features' },
+  { label: 'Pricing', href: '#pricing' },
+  { label: 'Testimonials', href: '#testimonials' },
+  { label: 'FAQ', href: '#faq' },
+];
 
 export default function Navbar() {
-  const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
-    onScroll();
-    window.addEventListener('scroll', onScroll);
-    return () => window.removeEventListener('scroll', onScroll);
+    const handler = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', handler);
+    return () => window.removeEventListener('scroll', handler);
   }, []);
 
-  const links = [
-    { href: '#how', label: 'How it works' },
-    { href: '#pricing', label: 'Pricing' },
-    { href: '#testimonials', label: 'Customers' },
-    { href: '#contact', label: 'Get in touch' },
-  ];
-
   return (
-    <header className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[min(96%,1100px)]">
-      <nav
-        className={`flex items-center justify-between px-5 py-3 rounded-2xl border transition-all ${
-          scrolled
-            ? 'bg-white/75 backdrop-blur-xl border-black/5 shadow-[0_4px_24px_rgba(0,0,0,0.06)]'
-            : 'bg-white/55 backdrop-blur-xl border-black/5 shadow-[0_1px_2px_rgba(0,0,0,0.04)]'
-        }`}
-      >
-        <a href="#hero" className="flex items-center gap-2">
-          <span className="w-8 h-8 rounded-lg bg-ink flex items-center justify-center">
-            <span className="font-serif italic text-accent text-lg leading-none">p</span>
-          </span>
-          <span className="font-serif text-xl text-ink tracking-tightish">Plume</span>
+    <header
+      className={cn(
+        'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
+        scrolled ? 'bg-gray-950/80 backdrop-blur-xl border-b border-white/10 shadow-xl' : 'bg-transparent',
+      )}
+    >
+      <nav className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+        {/* Logo */}
+        <a href="#" className="flex items-center gap-2 group">
+          <div className="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center group-hover:bg-brand-500 transition-colors">
+            <Zap className="w-4 h-4 text-white" strokeWidth={2.5} />
+          </div>
+          <span className="text-white font-bold text-lg tracking-tight">Nexus</span>
         </a>
 
-        <div className="hidden md:flex items-center gap-8 text-sm text-ink/70">
-          {links.map((l) => (
-            <a key={l.href} href={l.href} className="hover:text-ink transition-colors">
-              {l.label}
-            </a>
+        {/* Desktop nav */}
+        <ul className="hidden md:flex items-center gap-1">
+          {navLinks.map((link) => (
+            <li key={link.label}>
+              <a
+                href={link.href}
+                className="px-4 py-2 text-sm text-gray-400 hover:text-white rounded-lg hover:bg-white/5 transition-all duration-200"
+              >
+                {link.label}
+              </a>
+            </li>
           ))}
+        </ul>
+
+        {/* Desktop CTA */}
+        <div className="hidden md:flex items-center gap-3">
+          <a href="#" className="text-sm text-gray-400 hover:text-white transition-colors px-4 py-2">
+            Sign in
+          </a>
+          <a
+            href="#pricing"
+            className="px-4 py-2 bg-brand-600 hover:bg-brand-500 text-white text-sm font-semibold rounded-xl transition-all duration-200 hover:shadow-lg hover:shadow-brand-600/30"
+          >
+            Get started free
+          </a>
         </div>
 
-        <div className="flex items-center gap-2">
-          <a
-            href="#login"
-            className="hidden sm:inline-flex items-center px-5 py-2.5 rounded-xl bg-white border border-black/5 font-serif text-base text-ink hover:bg-cream-50 transition"
-          >
-            Log in
-          </a>
-          <a
-            href="#start"
-            className="hidden sm:inline-flex items-center px-5 py-2.5 rounded-xl bg-ink text-white font-serif text-base shadow-[0_2px_8px_rgba(0,0,0,0.12)] hover:bg-black transition"
-          >
-            Get started
-          </a>
-          <button
-            onClick={() => setOpen((v) => !v)}
-            aria-label="Toggle menu"
-            className="md:hidden w-9 h-9 inline-flex items-center justify-center rounded-lg hover:bg-black/5"
-          >
-            {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
-        </div>
+        {/* Mobile menu toggle */}
+        <button
+          className="md:hidden p-2 text-gray-400 hover:text-white transition-colors"
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label="Toggle menu"
+        >
+          {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+        </button>
       </nav>
 
-      {open && (
-        <div className="md:hidden mt-2 rounded-2xl bg-white/90 backdrop-blur-xl border border-black/5 p-5 flex flex-col gap-3 shadow-lg">
-          {links.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              onClick={() => setOpen(false)}
-              className="text-ink/80 font-serif text-lg"
-            >
-              {l.label}
-            </a>
-          ))}
-          <a href="#start" className="mt-2 inline-flex items-center justify-center px-5 py-3 rounded-xl bg-ink text-white font-serif">
-            Get started
-          </a>
-        </div>
-      )}
+      {/* Mobile menu */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="md:hidden bg-gray-950/95 backdrop-blur-xl border-b border-white/10"
+          >
+            <div className="px-6 py-4 flex flex-col gap-2">
+              {navLinks.map((link) => (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  onClick={() => setMenuOpen(false)}
+                  className="py-2 text-gray-400 hover:text-white transition-colors text-sm"
+                >
+                  {link.label}
+                </a>
+              ))}
+              <a
+                href="#pricing"
+                onClick={() => setMenuOpen(false)}
+                className="mt-2 py-2.5 bg-brand-600 text-white text-sm font-semibold rounded-xl text-center"
+              >
+                Get started free
+              </a>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }

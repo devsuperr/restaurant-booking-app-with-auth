@@ -3,18 +3,14 @@ import { useNavigate } from 'react-router-dom';
 export default function NotFound() {
   const navigate = useNavigate();
   return (
-    <div className="min-h-screen bg-canvas flex items-center justify-center px-6">
-      <div className="text-center max-w-md">
-        <p className="font-mono text-[11px] tracking-[0.2em] uppercase text-ink/50 mb-5">404 — adrift</p>
-        <h1 className="font-serif text-5xl tracking-tightish text-ink leading-[1.05]">
-          Page not built <span className="italic text-ink/60">yet.</span>
-        </h1>
-        <p className="font-serif italic text-lg text-ink/60 mt-5">
-          This page hasn't been generated. Plume is busy elsewhere.
-        </p>
+    <div className="min-h-screen bg-gray-950 flex items-center justify-center text-center px-6">
+      <div>
+        <p className="text-brand-400 text-sm font-semibold uppercase tracking-widest mb-4">404</p>
+        <h1 className="text-4xl font-bold text-white mb-4">Page not built yet</h1>
+        <p className="text-gray-400 mb-8">This page hasn't been generated. Head back home to explore what's ready.</p>
         <button
           onClick={() => navigate('/')}
-          className="mt-8 inline-flex items-center px-6 py-3 rounded-xl bg-ink text-white font-serif"
+          className="px-6 py-3 bg-brand-600 hover:bg-brand-700 text-white rounded-xl font-semibold transition-colors"
         >
           ← Back to home
         </button>
