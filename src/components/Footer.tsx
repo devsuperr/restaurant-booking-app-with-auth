@@ -1,43 +1,60 @@
+import { Link } from 'react-router-dom';
+
 export default function Footer() {
   return (
-    <footer className="border-t border-black/5 px-6 py-16 bg-cream-50">
-      <div className="max-w-6xl mx-auto grid md:grid-cols-4 gap-10">
-        <div className="md:col-span-2">
-          <a href="#hero" className="flex items-center gap-2">
-            <span className="w-8 h-8 rounded-lg bg-ink flex items-center justify-center">
-              <span className="font-serif italic text-accent text-lg leading-none">p</span>
+    <footer className="border-t border-neutral-100 bg-white">
+      <div className="max-w-7xl mx-auto px-6 py-14 grid md:grid-cols-4 gap-10">
+        <div className="md:col-span-1">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center text-white font-bold">
+              R
+            </div>
+            <span className="font-display font-bold text-lg tracking-tight">
+              Red Orange<span className="text-brand-600">.</span>
             </span>
-            <span className="font-serif text-xl">Plume</span>
-          </a>
-          <p className="font-serif italic text-ink/55 mt-4 max-w-sm">
-            The first autonomous AI for social media. Made in Oslo, used everywhere.
+          </div>
+          <p className="mt-4 text-sm text-ink-500 leading-relaxed">
+            Senior engineers, embedded into your roadmap. 14+ years across Asia, Europe and the US.
           </p>
         </div>
 
         <div>
-          <p className="font-mono text-[10px] tracking-[0.2em] uppercase text-ink/50 mb-3">Product</p>
-          <ul className="space-y-2 text-ink/70 text-sm">
-            <li><a href="#how" className="hover:text-ink">How it works</a></li>
-            <li><a href="#pricing" className="hover:text-ink">Pricing</a></li>
-            <li><a href="#testimonials" className="hover:text-ink">Customers</a></li>
-            <li><a href="#contact" className="hover:text-ink">Contact</a></li>
+          <div className="text-xs font-semibold uppercase tracking-wider text-ink-400">Services</div>
+          <ul className="mt-4 space-y-2 text-sm text-ink-700">
+            <li><Link to="/services" className="hover:text-brand-600">Staff augmentation</Link></li>
+            <li><Link to="/services" className="hover:text-brand-600">Salesforce delivery</Link></li>
+            <li><Link to="/services" className="hover:text-brand-600">Platform engineering</Link></li>
+            <li><Link to="/services" className="hover:text-brand-600">Managed pods</Link></li>
           </ul>
         </div>
 
         <div>
-          <p className="font-mono text-[10px] tracking-[0.2em] uppercase text-ink/50 mb-3">Company</p>
-          <ul className="space-y-2 text-ink/70 text-sm">
-            <li><a href="#" className="hover:text-ink">About</a></li>
-            <li><a href="#" className="hover:text-ink">Careers</a></li>
-            <li><a href="#" className="hover:text-ink">Privacy</a></li>
-            <li><a href="#" className="hover:text-ink">Terms</a></li>
+          <div className="text-xs font-semibold uppercase tracking-wider text-ink-400">Company</div>
+          <ul className="mt-4 space-y-2 text-sm text-ink-700">
+            <li><Link to="/about" className="hover:text-brand-600">About</Link></li>
+            <li><Link to="/about" className="hover:text-brand-600">Our story</Link></li>
+            <li><Link to="/contact" className="hover:text-brand-600">Contact</Link></li>
+            <li><a href="mailto:careers@redorangetech.com" className="hover:text-brand-600">Careers</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div className="text-xs font-semibold uppercase tracking-wider text-ink-400">Get in touch</div>
+          <ul className="mt-4 space-y-2 text-sm text-ink-700">
+            <li><a href="mailto:hello@redorangetech.com" className="hover:text-brand-600">hello@redorangetech.com</a></li>
+            <li className="text-ink-500">Bangalore · Lisbon · Austin</li>
           </ul>
         </div>
       </div>
-
-      <div className="max-w-6xl mx-auto mt-12 pt-8 border-t border-black/5 flex flex-wrap justify-between gap-3 text-xs text-ink/50">
-        <p>© 2026 Plume AS. Built quietly in Oslo.</p>
-        <p className="font-mono">v1.0 · status: all systems go</p>
+      <div className="border-t border-neutral-100">
+        <div className="max-w-7xl mx-auto px-6 py-6 text-xs text-ink-400 flex flex-wrap justify-between gap-3">
+          <div>© {new Date().getFullYear()} Red Orange Technologies. All rights reserved.</div>
+          <div className="flex gap-5">
+            <a href="#" className="hover:text-brand-600">Privacy</a>
+            <a href="#" className="hover:text-brand-600">Terms</a>
+            <a href="#" className="hover:text-brand-600">Security</a>
+          </div>
+        </div>
       </div>
     </footer>
   );
